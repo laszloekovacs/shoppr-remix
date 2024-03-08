@@ -7,6 +7,7 @@ import {
 	Scripts,
 	ScrollRestoration,
 	isRouteErrorResponse,
+	useLocation,
 	useRouteError
 } from '@remix-run/react'
 import styles from '~/tailwind.css'
@@ -40,12 +41,14 @@ export default function App() {
 
 export const ErrorBoundary = () => {
 	const error = useRouteError()
+	const location = useLocation()
 
 	if (isRouteErrorResponse(error)) {
 		return (
 			<Layout>
 				<div className='grid place-content-center min-h-screen'>
 					<h1 className='text-5xl mb-4'>{error.status}</h1>
+					<p>pathname: {location.pathname}</p>
 					<p>nothing to see here</p>
 					<p>{error.data.message}</p>
 				</div>

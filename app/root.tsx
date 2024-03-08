@@ -50,7 +50,7 @@ export const ErrorBoundary = () => {
 					<h1 className='text-5xl mb-4'>{error.status}</h1>
 					<p>pathname: {location.pathname}</p>
 					<p>nothing to see here</p>
-					<p>{error.data.message}</p>
+					<p>{error.data}</p>
 				</div>
 			</Layout>
 		)

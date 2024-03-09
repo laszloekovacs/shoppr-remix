@@ -5,7 +5,7 @@ input {
 }
 
 button {
-	@apply bg-cyan-200 px-2 my-1;
+	@apply bg-cyan-200 px-2 my-1 disabled:bg-slate-200;
 }
 
 @tailwind components;

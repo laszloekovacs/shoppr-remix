@@ -3,21 +3,20 @@ import {
 	Form,
 	isRouteErrorResponse,
 	useActionData,
+	useFetcher,
 	useLoaderData,
 	useRouteError,
 	useSubmit
 } from '@remix-run/react'
 import { useRef, useState } from 'react'
 import { db } from '~/services/database.server'
+import invariant from 'tiny-invariant'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
+	invariant(params.brand, 'brand is required')
+	invariant(params.name, 'name is required')
 	const { brand, name } = params
 
-	if (!brand || !name) {
-		throw new Response('Not found', { status: 404 })
-	}
-
-	// fetch the product from the database
 	const product = await db.products.findOne({ name, brand })
 
 	if (!product) {
@@ -32,21 +31,22 @@ export default function ItemPage() {
 	const actionData = useActionData<typeof action>()
 	const formRef = useRef<HTMLFormElement>(null)
 	const [isEditing, setEditing] = useState(false)
-	const submit = useSubmit()
-
-	const handleEditing = (event: React.MouseEvent<HTMLButtonElement>) => {
-		if (isEditing) {
-			//	formRef.current?.reset()
-			setEditing(false)
-		} else {
-			setEditing(true)
-		}
-	}
+	const fetcher = useFetcher()
 
 	const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
 		setEditing(false)
-		submit(formRef.current)
+
+		const data = new FormData(formRef?.current!)
+		console.log(data)
+
+		fetcher.submit(event.currentTarget)
+	}
+
+	const handleEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault()
+		setEditing(!isEditing)
+		formRef.current?.reset()
 	}
 
 	return (
@@ -57,15 +57,32 @@ export default function ItemPage() {
 			<h2>{product.department}</h2>
 			<p>_id: {product._id}</p>
 
-			<Form method='POST' ref={formRef}>
+			<fetcher.Form method='POST' ref={formRef}>
 				<fieldset disabled={!isEditing}>
 					<label htmlFor='department'>Department</label>
+					<input id='department' type='text' name='department' defaultValue={product?.department} />
+
+					<label htmlFor='price'>Unit price</label>
+					<input id='price' type='number' name='price' defaultValue={product?.price} />
+
+					<label htmlFor='stock'>Stock</label>
+					<input id='stock' type='number' name='stock' defaultValue={product?.stock} />
+
+					<label htmlFor='published'>Published</label>
+					<input
+						id='published'
+						type='checkbox'
+						name='published'
+						defaultChecked={product?.published}
+					/>
+
 					<br />
-					<input id='department' name='department' defaultValue={product.department} />
-					<button onClick={handleSubmit}>Update</button>
+					<button onClick={handleSubmit}>
+						{fetcher.state === 'submitting' ? 'Updating...' : 'Update'}
+					</button>
 				</fieldset>
-				<button onClick={handleEditing}>{isEditing ? 'Cancel' : 'Edit'}</button>
-			</Form>
+				<button onClick={handleEdit}>{isEditing ? 'Cancel' : 'Edit'}</button>
+			</fetcher.Form>
 			<p>{actionData?.error}</p>
 			<pre>{JSON.stringify(product, null, 2)}</pre>
 		</div>
@@ -73,16 +90,17 @@ export default function ItemPage() {
 }
 
 export const action = async ({ request, params }: LoaderFunctionArgs) => {
+	invariant(params.brand, 'brand is required')
+	invariant(params.name, 'name is required')
 	const { name, brand } = params
 
-	if (!name || !brand) {
-		throw new Response('Not found', { status: 404 })
-	}
-
 	const formData = await request.formData()
-	const department = formData.get('department')
+	const data = Object.fromEntries(formData)
 
-	const result = await db.products.updateOne({ name, brand }, { $set: { department } })
+	// checkbox does not send anything when not on.
+	const published = data?.published === 'on' ? true : false
+
+	const result = await db.products.replaceOne({ name, brand }, { name, brand, ...data, published })
 
 	if (result.modifiedCount !== 1) {
 		return { error: 'Could not update product' }

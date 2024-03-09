@@ -1,4 +1,4 @@
-import { Link, isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
+import { Link, useLoaderData } from '@remix-run/react'
 import { db } from '~/services/database.server'
 
 export const loader = async () => {

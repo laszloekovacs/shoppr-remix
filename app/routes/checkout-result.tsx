@@ -3,8 +3,9 @@ import { Link, useLoaderData } from '@remix-run/react'
 import invariant from 'tiny-invariant'
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-	invariant(params.status, 'status is required')
-	const { status } = params
+	const url = new URL(request.url)
+	const status = url.searchParams.get('status')
+	invariant(status, 'status is required')
 
 	return status
 }

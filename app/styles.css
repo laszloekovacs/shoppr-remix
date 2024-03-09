@@ -1,0 +1,5 @@
+button {
+	background-color: var(--blue-200);
+	padding: var(--size-03);
+	min-width: var(--size-11);
+}

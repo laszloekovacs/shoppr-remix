@@ -13,8 +13,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		let event = stripe.webhooks.constructEvent(payload, sig, STRIPE_ENDPOINT_SECRET)
 
 		switch (event.type) {
-			case 'payment_intent.succeeded':
-				handlePaymentIntentSucceeded(event)
+			case 'checkout.session.completed':
+				handleCheckoutSessionComplete(event)
 				break
 
 			default:
@@ -28,11 +28,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 }
 
-const handlePaymentIntentSucceeded = async (event: Stripe.Event) => {
-	const paymentIntent = event.data.object as Stripe.PaymentIntent
-
+const handleCheckoutSessionComplete = async (event: Stripe.Event) => {
 	// just place the whole order object into database, and pull whatever you need later on
 	const order = await db.orders.insertOne({
-		paymentIntent
+		...event.data.object
 	})
 }

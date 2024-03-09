@@ -1,5 +1,4 @@
 import { ActionFunctionArgs, redirect } from '@remix-run/node'
-import { Form } from '@remix-run/react'
 import { SHOPPR_DOMAIN } from '~/services/constants.server'
 import { stripe } from '~/services/stripe.server'
 
@@ -39,8 +38,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		],
 		shipping_address_collection: { allowed_countries: ['HU'] },
 		mode: 'payment',
-		success_url: `${SHOPPR_DOMAIN}/checkout-result/?status=success`,
-		cancel_url: `${SHOPPR_DOMAIN}/checkout-result/?status=canceled`
+		success_url: `${SHOPPR_DOMAIN}/checkout/result/?status=success`,
+		cancel_url: `${SHOPPR_DOMAIN}/checkout/result/?status=canceled`
 	})
 
 	if (session.url === null) {
@@ -48,16 +47,4 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 
 	return redirect(session.url)
-}
-
-export default function CheckoutPage() {
-	return (
-		<section>
-			<h1>CheckoutPage</h1>
-
-			<Form method='POST'>
-				<button type='submit'>Checkout</button>
-			</Form>
-		</section>
-	)
 }

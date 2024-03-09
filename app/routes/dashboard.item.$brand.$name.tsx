@@ -1,5 +1,12 @@
-import { LoaderFunctionArgs } from '@remix-run/node'
-import { Form, isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
+import { LoaderFunctionArgs, redirect } from '@remix-run/node'
+import {
+	Form,
+	isRouteErrorResponse,
+	useActionData,
+	useLoaderData,
+	useRouteError,
+	useSubmit
+} from '@remix-run/react'
 import { useRef, useState } from 'react'
 import { db } from '~/services/database.server'
 
@@ -22,16 +29,24 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 export default function ItemPage() {
 	const product = useLoaderData<typeof loader>()
+	const actionData = useActionData<typeof action>()
 	const formRef = useRef<HTMLFormElement>(null)
 	const [isEditing, setEditing] = useState(false)
+	const submit = useSubmit()
 
 	const handleEditing = (event: React.MouseEvent<HTMLButtonElement>) => {
 		if (isEditing) {
-			formRef.current?.reset()
+			//	formRef.current?.reset()
 			setEditing(false)
 		} else {
 			setEditing(true)
 		}
+	}
+
+	const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault()
+		setEditing(false)
+		submit(formRef.current)
 	}
 
 	return (
@@ -47,18 +62,31 @@ export default function ItemPage() {
 					<label htmlFor='department'>Department</label>
 					<br />
 					<input id='department' name='department' defaultValue={product.department} />
-					<input type='submit' value='Save' />
+					<button onClick={handleSubmit}>Update</button>
 				</fieldset>
 				<button onClick={handleEditing}>{isEditing ? 'Cancel' : 'Edit'}</button>
 			</Form>
-
+			<p>{actionData?.error}</p>
 			<pre>{JSON.stringify(product, null, 2)}</pre>
 		</div>
 	)
 }
 
-export const action = async ({ request }: LoaderFunctionArgs) => {
+export const action = async ({ request, params }: LoaderFunctionArgs) => {
+	const { name, brand } = params
+
+	if (!name || !brand) {
+		throw new Response('Not found', { status: 404 })
+	}
+
 	const formData = await request.formData()
+	const department = formData.get('department')
+
+	const result = await db.products.updateOne({ name, brand }, { $set: { department } })
+
+	if (result.modifiedCount !== 1) {
+		return { error: 'Could not update product' }
+	}
 
 	return null
 }

@@ -5,6 +5,8 @@ import {
 	useActionData,
 	useFetcher,
 	useLoaderData,
+	useNavigate,
+	useNavigation,
 	useRouteError,
 	useSubmit
 } from '@remix-run/react'
@@ -32,6 +34,7 @@ export default function ItemPage() {
 	const formRef = useRef<HTMLFormElement>(null)
 	const [isEditing, setEditing] = useState(false)
 	const fetcher = useFetcher()
+	const navigate = useNavigate()
 
 	const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
@@ -56,6 +59,8 @@ export default function ItemPage() {
 			</h1>
 			<h2>{product.department}</h2>
 			<p>_id: {product._id}</p>
+
+			<button onClick={() => navigate(-1)}>back</button>
 
 			<fetcher.Form method='POST' ref={formRef}>
 				<fieldset disabled={!isEditing}>

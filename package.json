@@ -15,6 +15,7 @@
 		"@remix-run/node": "^2.8.0",
 		"@remix-run/react": "^2.8.0",
 		"@remix-run/serve": "^2.8.0",
+		"dashvar": "^0.4.3",
 		"isbot": "^4.1.0",
 		"mongodb": "^6.4.0",
 		"react": "^18.2.0",

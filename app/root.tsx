@@ -11,14 +11,16 @@ import {
 	useRouteError
 } from '@remix-run/react'
 import { cssBundleHref } from '@remix-run/css-bundle'
+import 'dashvar/dist/base.css'
 
 export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : [])
 	// ...
 ]
+import * as styles from './styles.css'
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
-	<html lang='en'>
+	<html lang='en' className={styles.themeClass}>
 		<head>
 			<meta charSet='utf-8' />
 			<meta name='viewport' content='width=device-width, initial-scale=1' />

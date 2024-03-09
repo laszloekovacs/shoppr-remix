@@ -10,7 +10,7 @@ export default function DemoPage() {
 			<br />
 			<Button>Generic button</Button>
 			<Button>Btn</Button>
-			<Button>Secondary</Button>
+			<Button variant='secondary'>Secondary</Button>
 		</section>
 	)
 }

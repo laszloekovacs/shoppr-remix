@@ -9,7 +9,7 @@ import {
 } from '@remix-run/react'
 import { useRef, useState } from 'react'
 import invariant from 'tiny-invariant'
-import { H1 } from '~/components'
+import { Button, H1 } from '~/components'
 import { db } from '~/services/database.server'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -58,7 +58,7 @@ export default function ItemPage() {
 			<h2>{product.department}</h2>
 			<p>_id: {product._id}</p>
 
-			<button onClick={() => navigate(-1)}>back</button>
+			<Button onClick={() => navigate(-1)}>back</Button>
 
 			<fetcher.Form method='POST' ref={formRef}>
 				<fieldset disabled={!isEditing}>
@@ -80,11 +80,11 @@ export default function ItemPage() {
 					/>
 
 					<br />
-					<button onClick={handleSubmit}>
+					<Button onClick={handleSubmit}>
 						{fetcher.state === 'submitting' ? 'Updating...' : 'Update'}
-					</button>
+					</Button>
 				</fieldset>
-				<button onClick={handleEdit}>{isEditing ? 'Cancel' : 'Edit'}</button>
+				<Button onClick={handleEdit}>{isEditing ? 'Cancel' : 'Edit'}</Button>
 			</fetcher.Form>
 			<p>{actionData?.error}</p>
 			<pre>{JSON.stringify(product, null, 2)}</pre>

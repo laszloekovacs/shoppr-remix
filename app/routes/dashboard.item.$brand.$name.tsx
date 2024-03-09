@@ -1,18 +1,16 @@
-import { LoaderFunctionArgs, redirect } from '@remix-run/node'
+import { LoaderFunctionArgs } from '@remix-run/node'
 import {
-	Form,
 	isRouteErrorResponse,
 	useActionData,
 	useFetcher,
 	useLoaderData,
 	useNavigate,
-	useNavigation,
-	useRouteError,
-	useSubmit
+	useRouteError
 } from '@remix-run/react'
 import { useRef, useState } from 'react'
-import { db } from '~/services/database.server'
 import invariant from 'tiny-invariant'
+import { H1 } from '~/components'
+import { db } from '~/services/database.server'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
 	invariant(params.brand, 'brand is required')
@@ -54,9 +52,9 @@ export default function ItemPage() {
 
 	return (
 		<div>
-			<h1>
+			<H1>
 				{product.brand} - {product.name}
-			</h1>
+			</H1>
 			<h2>{product.department}</h2>
 			<p>_id: {product._id}</p>
 

@@ -10,9 +10,15 @@ import {
 	useLocation,
 	useRouteError
 } from '@remix-run/react'
-import styles from '~/tailwind.css'
+import { cssBundleHref } from '@remix-run/css-bundle'
 
-export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
+import 'dashvar/dist/base.css' // Optional
+import 'dashvar/dist/dashvar.css'
+
+export const links: LinksFunction = () => [
+	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : [])
+	// ...
+]
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
 	<html lang='en'>

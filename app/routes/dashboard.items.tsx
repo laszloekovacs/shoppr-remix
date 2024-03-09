@@ -7,7 +7,7 @@ export const loader = async () => {
 	return products
 }
 
-export default function Items() {
+export default function ItemListPage() {
 	const products = useLoaderData<typeof loader>()
 
 	return (

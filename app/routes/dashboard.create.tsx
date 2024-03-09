@@ -1,15 +1,16 @@
 import { ActionFunctionArgs } from '@remix-run/node'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
 import { redirect } from 'react-router'
+import { Button, H2 } from '~/components'
 import { db } from '~/services/database.server'
 
-export default function DashboardCreate() {
+export default function DashboardCreatePage() {
 	const actionData = useActionData<typeof action>()
 	const navigation = useNavigation()
 
 	return (
 		<div>
-			<h2>Create product</h2>
+			<H2>Create product</H2>
 
 			<Form method='POST'>
 				<div className='flex flex-col'>
@@ -21,9 +22,9 @@ export default function DashboardCreate() {
 					<input id='brand' type='text' name='brand' placeholder='brand' required />
 					<p>{actionData?.brand}</p>
 
-					<button type='submit' disabled={navigation.state === 'submitting'}>
+					<Button type='submit' disabled={navigation.state === 'submitting'}>
 						{navigation.state === 'submitting' ? 'Creating...' : 'Create'}
-					</button>
+					</Button>
 					<p>{actionData?.formError}</p>
 				</div>
 			</Form>

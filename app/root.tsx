@@ -27,7 +27,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
 			<Meta />
 			<Links />
 		</head>
-		<body>
+		<body className={styles.container}>
 			{children}
 			<ScrollRestoration />
 			<Scripts />

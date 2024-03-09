@@ -1,10 +1,12 @@
-import { style, createTheme, styleVariants } from '@vanilla-extract/css'
+import { style, createTheme, styleVariants, globalStyle } from '@vanilla-extract/css'
 
 export const [themeClass, vars] = createTheme({
 	colors: {
-		red50: 'hsl(0 100% 50%)',
-		red100: 'hsl(0 100% 60%)',
-		red200: 'hsl(0 100% 80%)'
+		red50: 'hsl(0 95% 50%)',
+		red100: 'hsl(0 95% 60%)',
+		red200: 'hsl(0 95% 80%)',
+
+		gray: 'hsl(0 0% 18%)'
 	},
 	spacing: {
 		space0: '0',
@@ -18,7 +20,23 @@ export const [themeClass, vars] = createTheme({
 		space8: '2rem',
 		space9: '2.25rem',
 		space10: '2.5rem'
+	},
+	shadows: {
+		shadow1: '0 1px 1px 0 rgba(0, 0, 0, 0.05)',
+		shadow2: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+	},
+	border: {
+		radius0: '0',
+		radius1: '0.25rem',
+		radius2: '0.5rem',
+		radius3: '0.75rem',
+		radius4: '1rem',
+		full: '9999px'
 	}
+})
+
+globalStyle('html', {
+	color: vars.colors.gray
 })
 
 /* Buttons */
@@ -27,7 +45,11 @@ export const ButtonBase = style({
 	padding: vars.spacing.space2,
 	minWidth: '110px',
 	':hover': {
-		background: vars.colors.red200
+		color: 'white'
+	},
+
+	':disabled': {
+		opacity: 0.5
 	}
 })
 
@@ -38,11 +60,21 @@ export const Button = styleVariants({
 
 /* Heading */
 
-export const H1 = style({
+export const heading1 = style({
 	fontSize: vars.spacing.space9
 })
 
-export const H2 = style({
+export const heading2 = style({
 	fontSize: vars.spacing.space6,
 	color: vars.colors.red200
+})
+
+export const card = style({
+	boxShadow: vars.shadows.shadow2
+})
+
+/* macro, page layouts */
+export const container = style({
+	padding: vars.spacing.space4,
+	margin: '0 auto'
 })

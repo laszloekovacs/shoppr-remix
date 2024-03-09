@@ -1,4 +1,4 @@
-import { Button, H1, H2 } from '~/components'
+import { Button, Card, H1, H2 } from '~/components'
 
 export default function DemoPage() {
 	return (
@@ -11,6 +11,12 @@ export default function DemoPage() {
 			<Button>Generic button</Button>
 			<Button>Btn</Button>
 			<Button variant='secondary'>Secondary</Button>
+			<br />
+			<Card>
+				<p>Card</p>
+				<img src='http://picsum.photos/200/300' alt='card image' />
+				<p>hello card</p>
+			</Card>
 		</section>
 	)
 }

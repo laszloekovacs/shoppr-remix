@@ -7,5 +7,6 @@ const { MONGODB_CONNECTION_STRING, MONGODB_DATABASE } = constants
 export const mongodb = singleton('mongodb', () => new MongoClient(MONGODB_CONNECTION_STRING))
 
 export const db = {
-	products: mongodb.db(MONGODB_DATABASE).collection('products')
+	products: mongodb.db(MONGODB_DATABASE).collection('products'),
+	orders: mongodb.db(MONGODB_DATABASE).collection('orders')
 }

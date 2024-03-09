@@ -1,24 +1,38 @@
 import { ActionFunctionArgs, json } from '@remix-run/node'
+import { stripe } from '~/services/stripe.server'
+import { STRIPE_ENDPOINT_SECRET } from '~/services/constants.server'
+import Stripe from 'stripe'
+import { db } from '~/services/database.server'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-	const event = await request.json()
-	const sig = request.headers.get('stripe-signature')
+	const payload = await request.text()
+	const sig = request.headers.get('stripe-signature') as string
 
-	console.log(sig)
+	try {
+		// check if the event came from stripe
+		let event = stripe.webhooks.constructEvent(payload, sig, STRIPE_ENDPOINT_SECRET)
 
-	// check if the event came from stripe
-	//let	event = stripe.webhooks.constructEvent(body, sig, endpointSecret)
+		switch (event.type) {
+			case 'payment_intent.succeeded':
+				handlePaymentIntentSucceeded(event)
+				break
 
-	switch (event.type) {
-		case 'payment_intent.succeeded':
-			console.log('PaymentIntent was successful', event.data.object)
-			// handlePaymentIntentSucceeded(event)
-			break
+			default:
+				console.log('Unhandled event type', event.type)
+				break
+		}
 
-		default:
-			console.log('Unhandled event type', event.type)
-			break
+		return json({ received: true })
+	} catch (err) {
+		return json({ received: false })
 	}
+}
 
-	return json({ received: true })
+const handlePaymentIntentSucceeded = async (event: Stripe.Event) => {
+	const paymentIntent = event.data.object as Stripe.PaymentIntent
+
+	// just place the whole order object into database, and pull whatever you need later on
+	const order = await db.orders.insertOne({
+		paymentIntent
+	})
 }

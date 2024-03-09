@@ -1,5 +1,13 @@
 import { LoaderFunctionArgs } from '@remix-run/node'
-import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
+import {
+	Form,
+	isRouteErrorResponse,
+	useFetcher,
+	useLoaderData,
+	useRouteError,
+	useSubmit
+} from '@remix-run/react'
+import { useState } from 'react'
 import { db } from '~/services/database.server'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -21,14 +29,46 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 export default function ItemPage() {
 	const product = useLoaderData<typeof loader>()
+	const [isEditing, setEditing] = useState(false)
+	const submit = useSubmit()
+
+	const handleEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault()
+		console.log('handleEdit')
+
+		if (isEditing) {
+			submit(event.currentTarget.form)
+		}
+
+		setEditing(isEditing => !isEditing)
+	}
 
 	return (
 		<div>
-			<h1>Item Page</h1>
+			<h1>
+				{product.brand} - {product.name}
+			</h1>
+			<h2>{product.department}</h2>
+			<p>_id: {product._id}</p>
+
+			<Form method='POST'>
+				<fieldset disabled={!isEditing}>
+					<label htmlFor='department'>Department</label>
+					<br />
+					<input id='department' name='department' defaultValue={product.department} />
+				</fieldset>
+				<button onClick={handleEdit}>{isEditing ? 'Save' : 'Edit'}</button>
+			</Form>
 
 			<pre>{JSON.stringify(product, null, 2)}</pre>
 		</div>
 	)
+}
+
+export const action = async ({ request }: LoaderFunctionArgs) => {
+	const formData = await request.formData()
+
+	return null
 }
 
 export const ErrorBoundary = () => {
@@ -39,6 +79,16 @@ export const ErrorBoundary = () => {
 			<div>
 				<h1>{error.status}</h1>
 				<p>{error.data}</p>
+			</div>
+		)
+	}
+
+	if (error instanceof Error) {
+		return (
+			<div>
+				<h1>Oops, something went wrong!</h1>
+				<pre>{error.message}</pre>
+				<pre>{error.stack}</pre>
 			</div>
 		)
 	}

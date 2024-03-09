@@ -12,9 +12,6 @@ import {
 } from '@remix-run/react'
 import { cssBundleHref } from '@remix-run/css-bundle'
 
-import 'dashvar/dist/base.css' // Optional
-import 'dashvar/dist/dashvar.css'
-
 export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : [])
 	// ...

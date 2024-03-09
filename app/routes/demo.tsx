@@ -1,4 +1,4 @@
-import { H1, H2 } from '~/components'
+import { Button, H1, H2 } from '~/components'
 
 export default function DemoPage() {
 	return (
@@ -8,6 +8,9 @@ export default function DemoPage() {
 			<H1>Heading 1</H1>
 			<H2>Heading 2</H2>
 			<br />
+			<Button>Generic button</Button>
+			<Button>Btn</Button>
+			<Button>Secondary</Button>
 		</section>
 	)
 }

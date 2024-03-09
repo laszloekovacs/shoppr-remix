@@ -9,7 +9,7 @@ import {
 } from '@remix-run/react'
 import { useRef, useState } from 'react'
 import invariant from 'tiny-invariant'
-import { Button, Heading } from '~/components'
+import { Button, Flex, Heading, Subheading } from '~/components'
 import { db } from '~/services/database.server'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -36,59 +36,77 @@ export default function ItemPage() {
 
 	const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
+
 		setEditing(false)
-
-		const data = new FormData(formRef?.current!)
-		console.log(data)
-
 		fetcher.submit(event.currentTarget)
 	}
 
 	const handleEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
+
 		setEditing(!isEditing)
 		formRef.current?.reset()
 	}
 
 	return (
-		<div>
+		<section>
 			<Heading>
 				{product.brand} - {product.name}
 			</Heading>
-			<h2>{product.department}</h2>
-			<p>_id: {product._id}</p>
+
+			<Subheading>
+				<span>Department:&nbsp;</span>
+				{product.department}
+			</Subheading>
+
+			<p>database _id:&nbsp;{product._id}</p>
 
 			<Button onClick={() => navigate(-1)}>back</Button>
 
 			<fetcher.Form method='POST' ref={formRef}>
 				<fieldset disabled={!isEditing}>
-					<label htmlFor='department'>Department</label>
-					<input id='department' type='text' name='department' defaultValue={product?.department} />
+					<Flex variant='column'>
+						<Flex variant='row'>
+							<label htmlFor='department'>Department</label>
+							<input
+								id='department'
+								type='text'
+								name='department'
+								defaultValue={product?.department}
+							/>
+						</Flex>
 
-					<label htmlFor='price'>Unit price</label>
-					<input id='price' type='number' name='price' defaultValue={product?.price} />
+						<Flex variant='row'>
+							<label htmlFor='price'>Unit price</label>
+							<input id='price' type='number' name='price' defaultValue={product?.price} />
+						</Flex>
 
-					<label htmlFor='stock'>Stock</label>
-					<input id='stock' type='number' name='stock' defaultValue={product?.stock} />
+						<Flex variant='row'>
+							<label htmlFor='stock'>Stock</label>
+							<input id='stock' type='number' name='stock' defaultValue={product?.stock} />
+						</Flex>
 
-					<label htmlFor='published'>Published</label>
-					<input
-						id='published'
-						type='checkbox'
-						name='published'
-						defaultChecked={product?.published}
-					/>
-
-					<br />
+						<Flex variant='row'>
+							<label htmlFor='published'>Published</label>
+							<input
+								id='published'
+								type='checkbox'
+								name='published'
+								defaultChecked={product?.published}
+							/>
+						</Flex>
+					</Flex>
+				</fieldset>
+				<Flex variant='row'>
 					<Button onClick={handleSubmit}>
 						{fetcher.state === 'submitting' ? 'Updating...' : 'Update'}
 					</Button>
-				</fieldset>
-				<Button onClick={handleEdit}>{isEditing ? 'Cancel' : 'Edit'}</Button>
+
+					<Button onClick={handleEdit}>{isEditing ? 'Cancel' : 'Edit'}</Button>
+				</Flex>
 			</fetcher.Form>
 			<p>{actionData?.error}</p>
-			<pre>{JSON.stringify(product, null, 2)}</pre>
-		</div>
+		</section>
 	)
 }
 

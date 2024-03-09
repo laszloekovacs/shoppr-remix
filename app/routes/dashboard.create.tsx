@@ -79,5 +79,5 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		return errors
 	}
 
-	return redirect('/')
+	return redirect('/dashboard/item/' + brand + '/' + name)
 }

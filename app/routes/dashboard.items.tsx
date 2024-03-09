@@ -1,4 +1,5 @@
 import { Link, useLoaderData } from '@remix-run/react'
+import { Heading } from '~/components'
 import { db } from '~/services/database.server'
 
 export const loader = async () => {
@@ -11,7 +12,7 @@ export default function ItemListPage() {
 
 	return (
 		<section>
-			<h1>Items</h1>
+			<Heading>Products</Heading>
 
 			<ul>
 				{products.map(product => (

@@ -39,6 +39,14 @@ globalStyle('html', {
 	color: vars.colors.gray
 })
 
+globalStyle('a:hover', {
+	textDecoration: 'underline dotted'
+})
+
+globalStyle('input', {
+	border: '1px dashed black'
+})
+
 /* Buttons */
 const ButtonBase = style({
 	background: vars.colors.red100,

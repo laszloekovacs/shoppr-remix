@@ -1,5 +1,4 @@
 import { Link, Outlet } from '@remix-run/react'
-import { Flex, Heading } from '~/components'
 
 const links = [
 	{ label: 'Home', to: '/' },
@@ -12,15 +11,15 @@ export default function DashboardPage() {
 	return (
 		<section>
 			<Link to='/dashboard'>
-				<Heading>Dashboard</Heading>
+				<h1>Dashboard</h1>
 			</Link>
-			<Flex>
+			<nav>
 				{links.map(link => (
 					<Link key={link.to} to={link.to}>
 						{link.label}
 					</Link>
 				))}
-			</Flex>
+			</nav>
 			<Outlet />
 		</section>
 	)

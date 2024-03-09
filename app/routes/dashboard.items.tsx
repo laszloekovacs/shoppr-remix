@@ -1,5 +1,4 @@
 import { Link, useLoaderData } from '@remix-run/react'
-import { Heading } from '~/components'
 import { db } from '~/services/database.server'
 
 export const loader = async () => {
@@ -12,11 +11,11 @@ export default function ItemListPage() {
 
 	return (
 		<section>
-			<Heading>Products</Heading>
+			<h2>Products</h2>
 
 			<ul>
 				{products.map(product => (
-					<li key={product._id} className='flex flex-row gap-2 border'>
+					<li key={product._id}>
 						<p>{product.name}</p>
 						<Link to={`/dashboard/item/${product.brand}/${product.name}`}>details</Link>
 					</li>

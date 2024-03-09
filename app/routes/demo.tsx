@@ -1,22 +1,20 @@
-import { Button, Card, Heading, Subheading } from '~/components'
-
 export default function DemoPage() {
 	return (
 		<section>
-			<Heading>Demo page</Heading>
+			<h1>Demo page</h1>
 			<br />
-			<Heading>Heading 1</Heading>
-			<Subheading>Heading 2</Subheading>
+			<h1>Heading 1</h1>
+			<h2>Heading 2</h2>
 			<br />
-			<Button>Generic button</Button>
-			<Button>Btn</Button>
-			<Button variant='secondary'>Secondary</Button>
+			<button>Generic button</button>
+			<button>Btn</button>
+			<button>Secondary</button>
 			<br />
-			<Card>
+			<div>
 				<p>Card</p>
 				<img src='http://picsum.photos/200/300' alt='card image' />
 				<p>hello card</p>
-			</Card>
+			</div>
 		</section>
 	)
 }

@@ -10,10 +10,10 @@ export default function DashboardCreatePage() {
 
 	return (
 		<div>
-			<Subheading>Create product</Subheading>
+			<h2>Create product</h2>
 
 			<Form method='POST'>
-				<div className='flex flex-col'>
+				<div>
 					<label htmlFor='name'>name of the new product</label>
 					<input id='name' name='name' placeholder='name' required />
 					<p>{actionData?.name}</p>
@@ -22,9 +22,9 @@ export default function DashboardCreatePage() {
 					<input id='brand' type='text' name='brand' placeholder='brand' required />
 					<p>{actionData?.brand}</p>
 
-					<Button type='submit' disabled={navigation.state === 'submitting'}>
+					<button type='submit' disabled={navigation.state === 'submitting'}>
 						{navigation.state === 'submitting' ? 'Creating...' : 'Create'}
-					</Button>
+					</button>
 					<p>{actionData?.formError}</p>
 				</div>
 			</Form>

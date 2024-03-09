@@ -1,13 +1,6 @@
 import { LoaderFunctionArgs } from '@remix-run/node'
-import {
-	Form,
-	isRouteErrorResponse,
-	useFetcher,
-	useLoaderData,
-	useRouteError,
-	useSubmit
-} from '@remix-run/react'
-import { useState } from 'react'
+import { Form, isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
+import { useRef, useState } from 'react'
 import { db } from '~/services/database.server'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -29,18 +22,16 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 export default function ItemPage() {
 	const product = useLoaderData<typeof loader>()
+	const formRef = useRef<HTMLFormElement>(null)
 	const [isEditing, setEditing] = useState(false)
-	const submit = useSubmit()
 
-	const handleEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault()
-		console.log('handleEdit')
-
+	const handleEditing = (event: React.MouseEvent<HTMLButtonElement>) => {
 		if (isEditing) {
-			submit(event.currentTarget.form)
+			formRef.current?.reset()
+			setEditing(false)
+		} else {
+			setEditing(true)
 		}
-
-		setEditing(isEditing => !isEditing)
 	}
 
 	return (
@@ -51,13 +42,14 @@ export default function ItemPage() {
 			<h2>{product.department}</h2>
 			<p>_id: {product._id}</p>
 
-			<Form method='POST'>
+			<Form method='POST' ref={formRef}>
 				<fieldset disabled={!isEditing}>
 					<label htmlFor='department'>Department</label>
 					<br />
 					<input id='department' name='department' defaultValue={product.department} />
+					<input type='submit' value='Save' />
 				</fieldset>
-				<button onClick={handleEdit}>{isEditing ? 'Save' : 'Edit'}</button>
+				<button onClick={handleEditing}>{isEditing ? 'Cancel' : 'Edit'}</button>
 			</Form>
 
 			<pre>{JSON.stringify(product, null, 2)}</pre>

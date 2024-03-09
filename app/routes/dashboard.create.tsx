@@ -1,7 +1,7 @@
 import { ActionFunctionArgs } from '@remix-run/node'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
 import { redirect } from 'react-router'
-import { Button, H2 } from '~/components'
+import { Button, Subheading } from '~/components'
 import { db } from '~/services/database.server'
 
 export default function DashboardCreatePage() {
@@ -10,7 +10,7 @@ export default function DashboardCreatePage() {
 
 	return (
 		<div>
-			<H2>Create product</H2>
+			<Subheading>Create product</Subheading>
 
 			<Form method='POST'>
 				<div className='flex flex-col'>

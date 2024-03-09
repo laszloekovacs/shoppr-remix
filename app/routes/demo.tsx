@@ -1,12 +1,12 @@
-import { Button, Card, H1, H2 } from '~/components'
+import { Button, Card, Heading, Subheading } from '~/components'
 
 export default function DemoPage() {
 	return (
 		<section>
-			<H1>Demo page</H1>
+			<Heading>Demo page</Heading>
 			<br />
-			<H1>Heading 1</H1>
-			<H2>Heading 2</H2>
+			<Heading>Heading 1</Heading>
+			<Subheading>Heading 2</Subheading>
 			<br />
 			<Button>Generic button</Button>
 			<Button>Btn</Button>

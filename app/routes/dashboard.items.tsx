@@ -3,7 +3,6 @@ import { db } from '~/services/database.server'
 
 export const loader = async () => {
 	const products = db.products.find({}).toArray()
-
 	return products
 }
 

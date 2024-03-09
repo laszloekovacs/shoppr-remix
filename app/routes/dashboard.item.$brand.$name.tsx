@@ -9,7 +9,7 @@ import {
 } from '@remix-run/react'
 import { useRef, useState } from 'react'
 import invariant from 'tiny-invariant'
-import { Button, H1 } from '~/components'
+import { Button, Heading } from '~/components'
 import { db } from '~/services/database.server'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -52,9 +52,9 @@ export default function ItemPage() {
 
 	return (
 		<div>
-			<H1>
+			<Heading>
 				{product.brand} - {product.name}
-			</H1>
+			</Heading>
 			<h2>{product.department}</h2>
 			<p>_id: {product._id}</p>
 

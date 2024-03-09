@@ -40,7 +40,7 @@ globalStyle('html', {
 })
 
 /* Buttons */
-export const ButtonBase = style({
+const ButtonBase = style({
 	background: vars.colors.red100,
 	padding: vars.spacing.space2,
 	minWidth: '110px',
@@ -77,4 +77,14 @@ export const card = style({
 export const container = style({
 	padding: vars.spacing.space4,
 	margin: '0 auto'
+})
+
+const flexBaseStyle = style({
+	display: 'flex',
+	gap: vars.spacing.space2
+})
+
+export const flex = styleVariants({
+	row: [flexBaseStyle, { flexDirection: 'row' }],
+	column: [flexBaseStyle, { flexDirection: 'column' }]
 })

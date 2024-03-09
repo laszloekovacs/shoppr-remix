@@ -26,3 +26,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps & ComponentProps
 export const Card = ({ children }: { children: React.ReactNode }) => (
 	<div className={styles.card}>{children}</div>
 )
+
+type FlexProps = {
+	children: React.ReactNode
+	variant?: keyof typeof styles.flex
+}
+export const Flex = ({ children, ...props }: FlexProps) => (
+	<div className={styles.flex[props.variant ?? 'row']}>{children}</div>
+)

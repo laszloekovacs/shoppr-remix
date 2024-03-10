@@ -32,23 +32,27 @@ export default function LoginPage() {
 						<input type='password' name='password' placeholder='Password' />
 
 						<div>
-							<button className='btn' type='submit' name='intent' value='login'>
+							<button className='btn' type='submit'>
 								Login
 							</button>
 							<hr />
-							<p>or</p>
-							<button className='btn' type='submit' name='intent' value='register'>
-								Create Account
-							</button>
 						</div>
 					</div>
+				</form>
+				<form method='POST'>
+					<p>or</p>
+					<input type='email' name='email' placeholder='Email' />
+					<input type='password' name='password' placeholder='Password' />
+					<button className='btn' type='submit' name='intent' value='register'>
+						Create Account
+					</button>
 				</form>
 			</div>
 		</section>
 	)
 }
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, params }: ActionFunctionArgs) => {
 	const url = new URL(request.url)
 	const returnTo = url.searchParams.get('returnTo') || '/'
 

@@ -21,6 +21,8 @@
 		"mongodb": "^6.4.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"remix-auth": "^3.6.0",
+		"remix-auth-form": "^1.4.0",
 		"stripe": "^14.20.0",
 		"tiny-invariant": "^1.3.3"
 	},

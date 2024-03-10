@@ -30,7 +30,5 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 const handleCheckoutSessionComplete = async (event: Stripe.Event) => {
 	// just place the whole order object into database, and pull whatever you need later on
-	const order = await db.orders.insertOne({
-		...event.data.object
-	})
+	const order = await db.orders.insertOne(event.data.object)
 }

@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { useFetcher, useLoaderData, useNavigate } from '@remix-run/react'
 import invariant from 'tiny-invariant'
-import { commitSession, getSession } from '~/services/account.server'
+import { commitSession, getSession } from '~/services/session.server'
 import { db } from '~/services/database.server'
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {

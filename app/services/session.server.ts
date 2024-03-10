@@ -1,4 +1,4 @@
-import { createCookieSessionStorage } from '@remix-run/node'
+import { Session, createCookieSessionStorage } from '@remix-run/node'
 import * as bcrypt from 'bcrypt'
 import { Authenticator, AuthorizationError } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
@@ -7,14 +7,11 @@ import { db } from './database.server'
 import invariant from 'tiny-invariant'
 
 type SessionData = {
-	cart: string[]
+	id: string
+	email: string
 }
 
-type SessionFlashData = {
-	error: string
-}
-
-export const sessionStorage = createCookieSessionStorage({
+export const sessionStorage = createCookieSessionStorage<SessionData>({
 	cookie: {
 		name: '__shoppr_session',
 		httpOnly: true,

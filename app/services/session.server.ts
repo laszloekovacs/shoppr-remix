@@ -33,9 +33,18 @@ authenticator.use(
 		const rawPassword = form.get('password') as string
 		const password = await hash(rawPassword, CRYPT_SALT)
 
-		const user = await db.accounts.findOne({ email, password })
+		const user = await db.accounts.findOne({ email })
 
-		return user
+		if (!user) {
+			throw new Error('Invalid email')
+		}
+
+		if (user.password !== password) {
+			throw new Error('Invalid password')
+		}
+
+		// make sure you dont return the password
+		return { id: user.id, email: user.email }
 	}),
 	'user-pass'
 )

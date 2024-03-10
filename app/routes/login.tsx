@@ -1,20 +1,25 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
+import { ActionFunctionArgs, LoaderFunctionArgs, json, redirect } from '@remix-run/node'
 import { Form, useActionData, useLoaderData, useNavigate } from '@remix-run/react'
-import { hash } from 'bcrypt'
-import { CRYPT_SALT } from '~/services/constants.server'
-import { db } from '~/services/database.server'
 import { authenticator } from '~/services/session.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const url = new URL(request.url)
 	const returnTo = url.searchParams.get('returnTo') || '/'
-	return json({ returnTo })
+
+	// redirect if logged in, or return with the error
+	const user = await authenticator.isAuthenticated(request, {
+		successRedirect: returnTo
+	})
+
+	return { returnTo }
 }
 
 export default function LoginPage() {
 	const navigate = useNavigate()
 	const actionData = useActionData<typeof action>()
 	const { returnTo } = useLoaderData<typeof loader>()
+
+	console.log('actionData', actionData)
 
 	return (
 		<section>
@@ -52,7 +57,6 @@ export default function LoginPage() {
 					</button>
 				</Form>
 			</div>
-			{actionData && <pre>{JSON.stringify(actionData)}</pre>}
 		</section>
 	)
 }
@@ -61,7 +65,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const url = new URL(request.url)
 	const returnTo = url.searchParams.get('returnTo') || '/'
 
-	return authenticator.authenticate('user-pass', request, {
-		successRedirect: returnTo
+	await authenticator.authenticate('user-pass', request, {
+		successRedirect: returnTo,
+		failureRedirect: '/login'
 	})
 }

@@ -1,6 +1,18 @@
-import { Form, Link } from '@remix-run/react'
+import { LoaderFunctionArgs, json } from '@remix-run/node'
+import { Form, Link, useLoaderData } from '@remix-run/react'
+import { getSession } from '~/services/account.server'
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+	const session = await getSession(request.headers.get('Cookie'))
+
+	const cart = session.get('cart') || []
+
+	return json({ cart })
+}
 
 export default function CheckoutCart() {
+	const { cart } = useLoaderData<typeof loader>()
+
 	return (
 		<section>
 			<h1>Checkout Cart</h1>
@@ -10,6 +22,8 @@ export default function CheckoutCart() {
 			</Form>
 
 			<Link to='/'>Home</Link>
+
+			<pre>{JSON.stringify(cart, null, 2)}</pre>
 		</section>
 	)
 }

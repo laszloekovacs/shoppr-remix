@@ -13,9 +13,11 @@ export default function ItemListPage() {
 			<h2>Products</h2>
 
 			<table>
-				{products.map(product => (
-					<ProductTableItem key={product._id} name={product.name} brand={product.brand} />
-				))}
+				<tbody>
+					{products.map(product => (
+						<ProductTableItem key={product._id} name={product.name} brand={product.brand} />
+					))}
+				</tbody>
 			</table>
 		</section>
 	)

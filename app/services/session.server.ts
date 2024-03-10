@@ -1,9 +1,8 @@
-import { createCookieSessionStorage, json } from '@remix-run/node'
+import { createCookieSessionStorage } from '@remix-run/node'
+import { hash } from 'bcrypt'
 import { Authenticator } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
-import { genSalt, hash } from 'bcrypt'
 import { CRYPT_SALT } from './constants.server'
-import invariant from 'tiny-invariant'
 import { db } from './database.server'
 
 type SessionData = {
@@ -31,22 +30,20 @@ export const authenticator = new Authenticator(sessionStorage)
 authenticator.use(
 	new FormStrategy(async ({ form }) => {
 		const email = form.get('email') as string
-		const password = form.get('password') as string
-		invariant(email, 'Email is required')
-		invariant(password, 'Password is required')
+		const rawPassword = form.get('password') as string
 
 		console.log('logging in ', email)
 
 		//const salt = await genSalt(10)
 		//console.log(salt)
 
-		const passwordHash = await hash(password, CRYPT_SALT)
+		const password = await hash(rawPassword, CRYPT_SALT)
 
 		// find account
-		const user = await db.accounts.findOne({ email, password: passwordHash })
+		const user = await db.accounts.findOne({ email, password })
 
 		// return user
-		return json({ user })
+		return user
 	}),
 	'user-pass'
 )

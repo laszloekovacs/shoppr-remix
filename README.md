@@ -1,5 +1,6 @@
 https://dashvar.com/
 https://tachyons.io/
+https://www.npmjs.com/package/crypto-js
 
 implement email auth 
 https://github.com/sergiodxa/remix-auth

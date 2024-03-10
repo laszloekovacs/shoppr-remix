@@ -1,5 +1,5 @@
 import { createCookieSessionStorage } from '@remix-run/node'
-import { hash } from 'bcrypt'
+import * as bcrypt from 'bcrypt'
 import { Authenticator, AuthorizationError } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
 import { CRYPT_SALT } from './constants.server'
@@ -32,7 +32,7 @@ authenticator.use(
 	new FormStrategy(async ({ form }) => {
 		const email = form.get('email') as string
 		const rawPassword = form.get('password') as string
-		const password = await hash(rawPassword, CRYPT_SALT)
+		const password = await bcrypt.hash(rawPassword, CRYPT_SALT)
 		invariant(email, 'Email is required')
 		invariant(rawPassword, 'Password is required')
 
@@ -51,3 +51,6 @@ authenticator.use(
 	}),
 	'user-pass'
 )
+
+// reexport hash from bcrypt
+export const { hash } = bcrypt

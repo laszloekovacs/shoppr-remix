@@ -2,7 +2,6 @@ import { Link, Outlet } from '@remix-run/react'
 
 const links = [
 	{ label: 'Home', to: '/' },
-	{ label: 'Dashboard', to: '/dashboard' },
 	{ label: 'Create product', to: '/dashboard/create' },
 	{ label: 'Items', to: '/dashboard/items' }
 ]

@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, json } from '@remix-run/node'
-import { useFetcher, useLoaderData } from '@remix-run/react'
+import { useFetcher, useLoaderData, useNavigate } from '@remix-run/react'
 import invariant from 'tiny-invariant'
 import { commitSession, getSession } from '~/services/account.server'
 import { db } from '~/services/database.server'
@@ -19,11 +19,14 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export default function ProductPage() {
 	const fetcher = useFetcher()
 	const { product, data } = useLoaderData<typeof loader>()
+	const navigate = useNavigate()
 
 	return (
 		<div>
 			<h1>Product Page</h1>
-
+			<div>
+				<button onClick={() => navigate(-1)}>back</button>
+			</div>
 			<pre>{JSON.stringify(product, null, 2)}</pre>
 			<fetcher.Form method='post'>
 				<button>Add to Cart</button>

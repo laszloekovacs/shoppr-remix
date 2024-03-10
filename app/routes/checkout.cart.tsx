@@ -1,4 +1,4 @@
-import { Form } from '@remix-run/react'
+import { Form, Link } from '@remix-run/react'
 
 export default function CheckoutCart() {
 	return (
@@ -8,6 +8,8 @@ export default function CheckoutCart() {
 			<Form method='POST' action='/checkout/payment'>
 				<button type='submit'>Go to Payment</button>
 			</Form>
+
+			<Link to='/'>Home</Link>
 		</section>
 	)
 }

@@ -38,8 +38,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		],
 		shipping_address_collection: { allowed_countries: ['HU'] },
 		mode: 'payment',
-		success_url: `${SHOPPR_DOMAIN}/checkout/result/?status=success`,
-		cancel_url: `${SHOPPR_DOMAIN}/checkout/result/?status=canceled`
+		success_url: `${SHOPPR_DOMAIN}/checkout/thankyou/?status=success`,
+		cancel_url: `${SHOPPR_DOMAIN}/checkout/thankyou/?status=canceled`
 	})
 
 	if (session.url === null) {

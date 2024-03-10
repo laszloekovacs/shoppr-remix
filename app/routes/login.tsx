@@ -32,41 +32,34 @@ export default function LoginPage() {
 				</button>
 			</div>
 
-			<div>
-				<Form method='POST'>
-					<div className='column center'>
-						<input type='hidden' name='returnTo' value={returnTo} />
-						<input type='email' name='email' placeholder='Email' />
-						<input type='password' name='password' placeholder='Password' />
-
-						<div>
-							<button className='btn' type='submit'>
-								Login
-							</button>
-							<hr />
-						</div>
-					</div>
-				</Form>
-				<Form method='POST'>
-					<p>or</p>
-
+			<Form method='POST'>
+				<div className='column center'>
+					<input type='hidden' name='returnTo' value={returnTo} />
 					<input type='email' name='email' placeholder='Email' />
 					<input type='password' name='password' placeholder='Password' />
-					<button className='btn' type='submit' name='intent' value='register'>
-						Create Account
-					</button>
-				</Form>
-			</div>
+
+					<div>
+						<button className='btn' type='submit'>
+							Login
+						</button>
+					</div>
+				</div>
+			</Form>
 		</section>
 	)
 }
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-	const url = new URL(request.url)
-	const returnTo = url.searchParams.get('returnTo') || '/'
+export const action = async ({ request, params }: ActionFunctionArgs) => {
+	try {
+		const url = new URL(request.url)
+		const returnTo = url.searchParams.get('returnTo') || '/'
 
-	await authenticator.authenticate('user-pass', request, {
-		successRedirect: returnTo,
-		failureRedirect: '/login'
-	})
+		const user = await authenticator.authenticate('user-pass', request)
+
+		return redirect(returnTo)
+	} catch (error: unknown) {
+		if (error instanceof Error) {
+			return json({ message: error.message })
+		}
+	}
 }

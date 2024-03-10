@@ -44,7 +44,7 @@ authenticator.use(
 		}
 
 		// make sure you dont return the password
-		return { id: user.id, email: user.email }
+		return { id: user._id, email: user.email }
 	}),
 	'user-pass'
 )

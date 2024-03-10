@@ -11,6 +11,7 @@ button {
 	background-color: var(--green-200);
 	padding: var(--size-01);
 	min-width: var(--size-10);
+	border-radius: var(--size-02);
 }
 
 .nav {

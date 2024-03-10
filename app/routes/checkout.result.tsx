@@ -15,10 +15,8 @@ export default function CheckoutResultPage() {
 
 	return (
 		<div>
-			<h1>{status}</h1>
-
-			{status === 'success' && <p>Checkout successful</p>}
-			{status === 'canceled' && <p>Checkout canceled</p>}
+			{status === 'success' && <h1>Checkout successful!</h1>}
+			{status === 'canceled' && <h1>Checkout canceled</h1>}
 
 			<Link to='/'>Home</Link>
 		</div>

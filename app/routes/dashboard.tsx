@@ -13,7 +13,7 @@ export default function DashboardPage() {
 			<Link to='/dashboard'>
 				<h1>Dashboard</h1>
 			</Link>
-			<nav>
+			<nav className='nav'>
 				{links.map(link => (
 					<Link key={link.to} to={link.to}>
 						{link.label}

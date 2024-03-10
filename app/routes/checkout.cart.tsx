@@ -5,7 +5,7 @@ export default function CheckoutCart() {
 		<section>
 			<h1>CheckoutCart</h1>
 
-			<Form method='POST'>
+			<Form method='POST' action='/checkout/payment'>
 				<button type='submit'>Go to Payment</button>
 			</Form>
 		</section>

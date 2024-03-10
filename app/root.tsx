@@ -10,15 +10,9 @@ import {
 	useLocation,
 	useRouteError
 } from '@remix-run/react'
-import { cssBundleHref } from '@remix-run/css-bundle'
-import 'dashvar/dist/base.css'
-import 'dashvar/dist/dashvar.css'
-import './styles.css'
+import styles from './tailwind.css'
 
-export const links: LinksFunction = () => [
-	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : [])
-	// ...
-]
+export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
 	<html lang='en'>
@@ -28,7 +22,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
 			<Meta />
 			<Links />
 		</head>
-		<body>
+		<body className='sans-serif'>
 			{children}
 			<ScrollRestoration />
 			<Scripts />

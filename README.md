@@ -1,5 +1,7 @@
 https://dashvar.com/
 
+implement email auth 
+https://github.com/sergiodxa/remix-auth
 
 ## test stripe endpoint
 

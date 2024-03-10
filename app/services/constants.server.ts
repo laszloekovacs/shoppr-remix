@@ -5,7 +5,9 @@ export const constants = {
 
 	STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY as string,
 	STRIPE_ENDPOINT_SECRET: process.env.STRIPE_ENDPOINT_SECRET as string,
-	SHOPPR_DOMAIN: process.env.SHOPPR_DOMAIN as string
+	SHOPPR_DOMAIN: process.env.SHOPPR_DOMAIN as string,
+
+	CRYPT_SALT: process.env.CRYPT_SALT as string
 }
 
 for (const [key, value] of Object.entries(constants)) {
@@ -19,5 +21,6 @@ export const {
 	MONGODB_DATABASE,
 	STRIPE_SECRET_KEY,
 	STRIPE_ENDPOINT_SECRET,
-	SHOPPR_DOMAIN
+	SHOPPR_DOMAIN,
+	CRYPT_SALT
 } = constants

@@ -9,5 +9,6 @@ export const mongodb = singleton('mongodb', () => new MongoClient(MONGODB_CONNEC
 export const db = {
 	products: mongodb.db(MONGODB_DATABASE).collection('products'),
 	orders: mongodb.db(MONGODB_DATABASE).collection('orders'),
-	sessions: mongodb.db(MONGODB_DATABASE).collection('sessions')
+	sessions: mongodb.db(MONGODB_DATABASE).collection('sessions'),
+	accounts: mongodb.db(MONGODB_DATABASE).collection('accounts')
 }

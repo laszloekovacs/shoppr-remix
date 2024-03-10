@@ -1,7 +1,10 @@
-import { useNavigate } from '@remix-run/react'
+import { ActionFunctionArgs, json } from '@remix-run/node'
+import { useActionData, useNavigate } from '@remix-run/react'
+import { authenticator } from '~/services/session.server'
 
 export default function LoginPage() {
 	const navigate = useNavigate()
+	const actionData = useActionData<typeof action>()
 
 	return (
 		<section>
@@ -19,10 +22,13 @@ export default function LoginPage() {
 					<div className='column center'>
 						<input type='email' name='email' placeholder='Email' />
 						<input type='password' name='password' placeholder='Password' />
+
 						<div>
-							<button className='btn' type='submit' value='intent'>
+							<button className='btn' type='submit' name='intent' value='login'>
 								Login
 							</button>
+							<br />
+							<p>or</p>
 							<button className='btn' type='submit' value='intent'>
 								Create Account
 							</button>
@@ -30,6 +36,13 @@ export default function LoginPage() {
 					</div>
 				</form>
 			</div>
+			{actionData && <pre>{JSON.stringify(actionData, null, 0)}</pre>}
 		</section>
 	)
+}
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+	const user = await authenticator.authenticate('user-pass', request)
+
+	return json({ user })
 }

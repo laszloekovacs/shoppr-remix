@@ -11,7 +11,7 @@ type SessionData = {
 	email: string
 }
 
-export const sessionStorage = createCookieSessionStorage<SessionData>({
+export const sessionStorage = createCookieSessionStorage({
 	cookie: {
 		name: '__shoppr_session',
 		httpOnly: true,
@@ -23,10 +23,10 @@ export const sessionStorage = createCookieSessionStorage<SessionData>({
 	}
 })
 
-export const authenticator = new Authenticator(sessionStorage)
+export const authenticator = new Authenticator<SessionData>(sessionStorage)
 
 authenticator.use(
-	new FormStrategy(async ({ form }) => {
+	new FormStrategy<SessionData>(async ({ form }) => {
 		const email = form.get('email') as string
 		const rawPassword = form.get('password') as string
 		const password = await bcrypt.hash(rawPassword, CRYPT_SALT)
@@ -43,9 +43,8 @@ authenticator.use(
 			throw new AuthorizationError('Invalid password')
 		}
 
-		console.log('user', user)
 		// make sure you dont return the password
-		return { id: user._id, email: user.email }
+		return { id: user._id.toString(), email: user.email }
 	}),
 	'user-pass'
 )

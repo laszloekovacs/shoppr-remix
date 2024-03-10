@@ -1,10 +1,6 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
-import {
-	useActionData,
-	useFetcher,
-	useLoaderData,
-	useNavigate
-} from '@remix-run/react'
+import { useFetcher, useLoaderData, useNavigate } from '@remix-run/react'
+import * as mongodb from 'mongodb'
 import invariant from 'tiny-invariant'
 import { db } from '~/services/database.server'
 import { authenticator } from '~/services/session.server'
@@ -28,7 +24,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export default function ProductPage() {
 	const { product } = useLoaderData<typeof loader>()
 	const navigate = useNavigate()
-	const fetcher = useFetcher()
+	const fetcher = useFetcher<typeof action>()
 
 	return (
 		<div>
@@ -41,6 +37,8 @@ export default function ProductPage() {
 				<input type='hidden' name='productId' value={product._id} />
 				<button>Add to Cart</button>
 			</fetcher.Form>
+
+			{fetcher.data?.message && <p>{fetcher.data.message}</p>}
 		</div>
 	)
 }
@@ -52,8 +50,24 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		failureRedirect: `/login?returnTo=${pathname}`
 	})
 
-	console.log('user', user)
-	console.log('request', request)
+	const formData = await request.formData()
+	const productId = formData.get('productId') as string
+	invariant(productId, 'productId is missing')
 
-	return json({ message: 'added to cart' }, { status: 201 })
+	const result = await db.accounts.updateOne(
+		{
+			email: user.email
+		},
+		{
+			$addToSet: {
+				cart: productId
+			}
+		}
+	)
+
+	if (!result.acknowledged) {
+		throw new Error('Failed to add to cart')
+	}
+
+	return json({ message: 'added to cart!' }, { status: 201 })
 }

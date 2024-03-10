@@ -38,7 +38,7 @@ const List = ({ products }: { products: any[] }) => {
 			{products.map(product => {
 				return (
 					<li key={product.id}>
-						<Link to={`/product/${product.id}`}>{product.name}</Link>
+						<Link to={`/${product.brand}/${product.name}`}>{product.name}</Link>
 					</li>
 				)
 			})}

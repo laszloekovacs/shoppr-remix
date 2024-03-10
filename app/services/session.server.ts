@@ -43,6 +43,7 @@ authenticator.use(
 			throw new AuthorizationError('Invalid password')
 		}
 
+		console.log('user', user)
 		// make sure you dont return the password
 		return { id: user._id, email: user.email }
 	}),

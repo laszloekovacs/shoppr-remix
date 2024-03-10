@@ -1,5 +1,15 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json, redirect } from '@remix-run/node'
-import { Form, useActionData, useLoaderData, useNavigate } from '@remix-run/react'
+import {
+	ActionFunctionArgs,
+	LoaderFunctionArgs,
+	json,
+	redirect
+} from '@remix-run/node'
+import {
+	Form,
+	useActionData,
+	useLoaderData,
+	useNavigate
+} from '@remix-run/react'
 import { AuthorizationError } from 'remix-auth'
 import { authenticator } from '~/services/session.server'
 
@@ -31,7 +41,12 @@ export default function LoginPage() {
 					<input type='hidden' name='returnTo' value={returnTo} />
 					<input type='email' name='email' placeholder='Email' required />
 					{actionData?.error.includes('email') && <p>{actionData.error}</p>}
-					<input type='password' name='password' placeholder='Password' required />
+					<input
+						type='password'
+						name='password'
+						placeholder='Password'
+						required
+					/>
 					{actionData?.error.includes('password') && <p>{actionData.error}</p>}
 					<div>
 						<button className='btn' type='submit'>
@@ -49,9 +64,10 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 		const url = new URL(request.url)
 		const returnTo = url.searchParams.get('returnTo') || '/'
 
-		await authenticator.authenticate('user-pass', request, { throwOnError: true })
-
-		return redirect(returnTo)
+		return authenticator.authenticate('user-pass', request, {
+			throwOnError: true,
+			successRedirect: returnTo
+		})
 	} catch (error: unknown) {
 		if (error instanceof AuthorizationError) {
 			return json({ error: error.message }, { status: 401 })

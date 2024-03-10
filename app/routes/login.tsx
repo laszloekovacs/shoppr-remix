@@ -1,5 +1,8 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
-import { useActionData, useLoaderData, useLocation, useNavigate } from '@remix-run/react'
+import { Form, useActionData, useLoaderData, useNavigate } from '@remix-run/react'
+import { hash } from 'bcrypt'
+import { CRYPT_SALT } from '~/services/constants.server'
+import { db } from '~/services/database.server'
 import { authenticator } from '~/services/session.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -25,7 +28,7 @@ export default function LoginPage() {
 			</div>
 
 			<div>
-				<form method='POST'>
+				<Form method='POST'>
 					<div className='column center'>
 						<input type='hidden' name='returnTo' value={returnTo} />
 						<input type='email' name='email' placeholder='Email' />
@@ -38,27 +41,27 @@ export default function LoginPage() {
 							<hr />
 						</div>
 					</div>
-				</form>
-				<form method='POST'>
+				</Form>
+				<Form method='POST'>
 					<p>or</p>
+
 					<input type='email' name='email' placeholder='Email' />
 					<input type='password' name='password' placeholder='Password' />
 					<button className='btn' type='submit' name='intent' value='register'>
 						Create Account
 					</button>
-				</form>
+				</Form>
 			</div>
+			{actionData && <pre>{JSON.stringify(actionData)}</pre>}
 		</section>
 	)
 }
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
 	const url = new URL(request.url)
 	const returnTo = url.searchParams.get('returnTo') || '/'
 
-	await authenticator.authenticate('user-pass', request, {
+	return authenticator.authenticate('user-pass', request, {
 		successRedirect: returnTo
 	})
-
-	return null
 }

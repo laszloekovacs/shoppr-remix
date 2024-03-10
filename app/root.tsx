@@ -10,9 +10,12 @@ import {
 	useLocation,
 	useRouteError
 } from '@remix-run/react'
-import styles from './tailwind.css'
+import styles from './styles.css'
 
-export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }]
+export const links: LinksFunction = () => [
+	{ rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/gh/dashvars/dashvar/dist/base.css' },
+	{ rel: 'stylesheet', href: styles }
+]
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
 	<html lang='en'>
@@ -22,7 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
 			<Meta />
 			<Links />
 		</head>
-		<body className='sans-serif'>
+		<body>
 			{children}
 			<ScrollRestoration />
 			<Scripts />

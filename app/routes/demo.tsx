@@ -7,9 +7,9 @@ export default function DemoPage() {
 			<h2 className='f2'>heading 2</h2>
 			<h3 className='f3'>heading 3</h3>
 			<br />
-			<button>Generic button</button>
-			<button>Btn</button>
-			<button>Secondary</button>
+			<button className='btn'>Generic button</button>
+			<button className='btn'>Btn</button>
+
 			<br />
 			<div>
 				<p>Card</p>
@@ -17,20 +17,17 @@ export default function DemoPage() {
 				<p>hello card</p>
 			</div>
 
-			<form className='pa4 black-80'>
-				<div className='measure'>
-					<label htmlFor='name' className='f6 b db mb2'>
-						Name <span className='normal black-60'>(optional)</span>
+			<form className='form'>
+				<div className='column center'>
+					<legend className='bold'>Sign in</legend>
+					<label htmlFor='name' className='bold'>
+						Name <span className='normal'>(optional)</span>
 					</label>
-					<input
-						id='name'
-						className='input-reset ba b--black-20 pa2 mb2 db w-100'
-						type='text'
-						aria-describedby='name-desc'
-					/>
-					<small id='name-desc' className='f6 black-60 db mb2'>
-						Helper text for the form control.
-					</small>
+					<input id='name' type='text' aria-describedby='name-desc' />
+					<small id='name-desc'>Helper text for the form control.</small>
+					<div>
+						<input type='submit' value='Submit' name='intent' className='btn' />
+					</div>
 				</div>
 			</form>
 		</section>

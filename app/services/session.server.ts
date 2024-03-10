@@ -1,10 +1,10 @@
-import { Session, createCookieSessionStorage } from '@remix-run/node'
+import { createCookieSessionStorage } from '@remix-run/node'
 import * as bcrypt from 'bcrypt'
 import { Authenticator, AuthorizationError } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
+import invariant from 'tiny-invariant'
 import { CRYPT_SALT } from './constants.server'
 import { db } from './database.server'
-import invariant from 'tiny-invariant'
 
 type SessionData = {
 	id: string

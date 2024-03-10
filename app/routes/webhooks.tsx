@@ -1,8 +1,7 @@
 import { ActionFunctionArgs, json } from '@remix-run/node'
-import { stripe } from '~/services/stripe.server'
 import { STRIPE_ENDPOINT_SECRET } from '~/services/constants.server'
-import Stripe from 'stripe'
 import { db } from '~/services/database.server'
+import { stripe } from '~/services/stripe.server'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const payload = await request.text()
@@ -14,7 +13,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 		switch (event.type) {
 			case 'checkout.session.completed':
-				handleCheckoutSessionComplete(event)
+				await db.orders.insertOne(event.data.object)
 				break
 
 			default:
@@ -26,9 +25,4 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	} catch (err) {
 		return json({ received: false })
 	}
-}
-
-const handleCheckoutSessionComplete = async (event: Stripe.Event) => {
-	// just place the whole order object into database, and pull whatever you need later on
-	const order = await db.orders.insertOne(event.data.object)
 }

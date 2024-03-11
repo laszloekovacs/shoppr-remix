@@ -19,6 +19,7 @@ export default function CheckoutResultPage() {
 			{status === 'canceled' && <h1>Checkout canceled</h1>}
 
 			<Link to='/'>Home</Link>
+			<Link to='/account/cart'>Account</Link>
 		</div>
 	)
 }

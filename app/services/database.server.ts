@@ -1,10 +1,13 @@
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 import { singleton } from './singleton.server'
 import { constants } from './constants.server'
 
 const { MONGODB_CONNECTION_STRING, MONGODB_DATABASE } = constants
 
-export const mongodb = singleton('mongodb', () => new MongoClient(MONGODB_CONNECTION_STRING))
+export const mongodb = singleton(
+	'mongodb',
+	() => new MongoClient(MONGODB_CONNECTION_STRING)
+)
 
 export const db = {
 	products: mongodb.db(MONGODB_DATABASE).collection('products'),
@@ -12,3 +15,5 @@ export const db = {
 	sessions: mongodb.db(MONGODB_DATABASE).collection('sessions'),
 	accounts: mongodb.db(MONGODB_DATABASE).collection('accounts')
 }
+
+export const toObjectId = (id: string) => new ObjectId(id)

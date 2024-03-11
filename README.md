@@ -16,3 +16,12 @@ trigger a successfull payment intent
 ```
 stripe trigger checkout.session.completed
 ```
+
+
+## TODOS:
+- when querying, project the required fields
+- use invariant and add more null, undefined checking
+- more ErrorBoundaries
+- proper headers
+- more load indicators, disabling, streaming
+- http headers

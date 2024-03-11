@@ -13,8 +13,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const account = await db.accounts.findOne({ email: user.email })
 	invariant(account, 'Account not found')
 
+	// get all products in the cart from database
 	const ids = account.cart.map((id: string) => toObjectId(id))
-
 	const items = await db.products.find({ _id: { $in: [...ids] } }).toArray()
 
 	return json({ account, items })
@@ -30,7 +30,7 @@ export default function AcccountPage() {
 			<pre>{JSON.stringify({ account, items }, null, 2)}</pre>
 
 			<Form method='POST' action='/checkout/payment'>
-				<button type='submit'>Checkout</button>
+				<button type='submit'>Go to Checkout</button>
 			</Form>
 		</div>
 	)

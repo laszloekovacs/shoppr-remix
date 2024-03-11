@@ -6,9 +6,8 @@ export default function ShopLayout() {
 			<h1 className='f1'>Shoppr</h1>
 			<nav className='nav'>
 				<Link to='/dashboard'>dashboard</Link>
-				<Link to='/checkout/cart'>cart</Link>
 				<Link to='/'>home</Link>
-				<Link to='/checkout/cart'>checkout</Link>
+				<Link to='/account/cart'>checkout</Link>
 			</nav>
 
 			<Outlet />

@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { Await, Link, defer, useLoaderData } from '@remix-run/react'
 import { Suspense } from 'react'
+import { Card } from '~/components'
 import { db } from '~/services/database.server'
 
 export const meta: MetaFunction = () => {
@@ -34,11 +35,13 @@ export default function Index() {
 
 const List = ({ products }: { products: any[] }) => {
 	return (
-		<ul>
+		<ul className='flex flex-wrap'>
 			{products.map(product => {
 				return (
 					<li key={product._id}>
-						<Link to={`/${product.brand}/${product.name}`}>{product.name}</Link>
+						<Link to={`/${product.brand}/${product.name}`}>
+							<Card title={product.name} />
+						</Link>
 					</li>
 				)
 			})}

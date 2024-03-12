@@ -10,3 +10,13 @@ export const Footer = () => (
 		</nav>
 	</footer>
 )
+
+export const Card = ({ title }: { title: string }) => {
+	return (
+		<div className='shadow-md rounded-md p-4 inline-block'>
+			<h3 className='text-lg font-semibold mb-2'>{title}</h3>
+			<img src='https://picsum.photos/200' />
+			<p className='text-sm text-stone-500'>This is a card component</p>
+		</div>
+	)
+}

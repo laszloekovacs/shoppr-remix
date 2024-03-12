@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { Form, useLoaderData } from '@remix-run/react'
 import invariant from 'tiny-invariant'
+import { Card } from '~/components'
 import { db, toObjectId } from '~/services/database.server'
 import { auth } from '~/services/session.server'
 
@@ -28,7 +29,9 @@ export default function AcccountPage() {
 			<div className='flex justify-between'>
 				<h1>Acccount</h1>
 				<Form method='POST' action='/checkout/payment'>
-					<button type='submit'>Go to Checkout</button>
+					<button type='submit' disabled={items.length == 0}>
+						Go to Checkout
+					</button>
 				</Form>
 			</div>
 			{items.length == 0 && (
@@ -41,7 +44,7 @@ export default function AcccountPage() {
 				<div>
 					<ul>
 						{items.map(item => (
-							<li key={item._id.toString()}>{item.name}</li>
+							<Card key={item._id.toString()} title={item.name} />
 						))}
 					</ul>
 				</div>

@@ -11,7 +11,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-	return auth.authenticate('user-pass', request, {
+	await auth.authenticate('user-pass', request, {
 		successRedirect: '/',
 		failureRedirect: '/login'
 	})

@@ -20,28 +20,27 @@ export const sessionStorage = createCookieSessionStorage({
 export const { getSession, commitSession, destroySession } = sessionStorage
 export const auth = new Authenticator<string>(sessionStorage)
 
-auth.use(
-	new FormStrategy(async ({ form }) => {
-		const email = form.get('email') as string
-		const rawPassword = form.get('password') as string
-		const password = await bcrypt.hash(rawPassword, CRYPT_SALT)
-		invariant(email, 'Email is required')
-		invariant(rawPassword, 'Password is required')
+const formStrategy = new FormStrategy<string>(async ({ form }) => {
+	const email = form.get('email') as string
+	const rawPassword = form.get('password') as string
+	const password = await bcrypt.hash(rawPassword, CRYPT_SALT)
+	invariant(email, 'Email is required')
+	invariant(rawPassword, 'Password is required')
 
-		const user = await db.accounts.findOne({ email })
+	const user = await db.accounts.findOne({ email })
 
-		if (!user) {
-			throw new AuthorizationError('Invalid email')
-		}
+	if (!user) {
+		throw new AuthorizationError('Invalid email')
+	}
 
-		if (user.password !== password) {
-			throw new AuthorizationError('Invalid password')
-		}
+	if (user.password !== password) {
+		throw new AuthorizationError('Invalid password')
+	}
 
-		return email
-	}),
-	'user-pass'
-)
+	return email
+})
+
+auth.use(formStrategy, 'user-pass')
 
 // reexport hash from bcrypt
 export const { hash } = bcrypt

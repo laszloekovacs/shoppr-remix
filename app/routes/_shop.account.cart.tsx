@@ -36,56 +36,9 @@ export default function AcccountPage() {
 
 			<pre>{JSON.stringify({ account, items }, null, 2)}</pre>
 
-			<Form method='POST'>
+			<Form method='POST' action='/checkout/payment'>
 				<button type='submit'>Go to Checkout</button>
 			</Form>
 		</div>
 	)
-}
-
-export const action = async ({ request }: ActionFunctionArgs) => {
-	const session = await stripe.checkout.sessions.create({
-		line_items: [
-			{
-				price_data: {
-					currency: 'huf',
-					unit_amount: 500000,
-					product_data: {
-						name: 'T-shirt',
-						description: 'A red t-shirt',
-						images: ['https://picsum.photos/200'],
-						metadata: {
-							_id: 23
-						}
-					}
-				},
-				quantity: 1
-			},
-			{
-				price_data: {
-					currency: 'huf',
-					unit_amount: 230000,
-					product_data: {
-						name: 'T-shirts',
-						description: 'A blue t-shirt',
-						images: ['https://picsum.photos/300'],
-						metadata: {
-							_id: 233
-						}
-					}
-				},
-				quantity: 2
-			}
-		],
-		shipping_address_collection: { allowed_countries: ['HU'] },
-		mode: 'payment',
-		success_url: `${SHOPPR_DOMAIN}/checkout/thankyou/?status=success`,
-		cancel_url: `${SHOPPR_DOMAIN}/checkout/thankyou/?status=canceled`
-	})
-
-	if (session.url === null) {
-		throw new Error('stripe redirect url is null')
-	}
-
-	return redirect(session.url)
 }

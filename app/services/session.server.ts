@@ -17,6 +17,7 @@ export const sessionStorage = createCookieSessionStorage({
 	}
 })
 
+export const { getSession, commitSession, destroySession } = sessionStorage
 export const auth = new Authenticator<string>(sessionStorage)
 
 auth.use(

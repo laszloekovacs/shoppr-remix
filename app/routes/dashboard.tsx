@@ -8,11 +8,11 @@ const links = [
 
 export default function DashboardPage() {
 	return (
-		<section>
+		<section className='p-4'>
 			<Link to='/dashboard'>
 				<h1>Dashboard</h1>
 			</Link>
-			<nav className='nav'>
+			<nav className='flex gap-2'>
 				{links.map(link => (
 					<Link key={link.to} to={link.to}>
 						{link.label}

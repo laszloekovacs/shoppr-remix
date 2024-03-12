@@ -7,13 +7,11 @@ import {
 import { Form, useLoaderData } from '@remix-run/react'
 import invariant from 'tiny-invariant'
 import { db, toObjectId } from '~/services/database.server'
-import { authenticator } from '~/services/session.server'
-import { SHOPPR_DOMAIN } from '~/services/constants.server'
-import { stripe } from '~/services/stripe.server'
+import { auth } from '~/services/session.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const pathname = new URL(request.url).pathname
-	const user = await authenticator.isAuthenticated(request, {
+	const user = await auth.isAuthenticated(request, {
 		failureRedirect: `/login?returnTo=${pathname}`
 	})
 

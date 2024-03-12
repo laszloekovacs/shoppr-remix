@@ -3,7 +3,7 @@ import { useFetcher, useLoaderData, useNavigate } from '@remix-run/react'
 import * as mongodb from 'mongodb'
 import invariant from 'tiny-invariant'
 import { db } from '~/services/database.server'
-import { authenticator } from '~/services/session.server'
+import { auth } from '~/services/session.server'
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 	invariant(params.brand, 'brand is required')
@@ -54,7 +54,7 @@ export default function ProductPage() {
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const pathname = new URL(request.url).pathname
 
-	const user = await authenticator.isAuthenticated(request, {
+	const user = await auth.isAuthenticated(request, {
 		failureRedirect: `/login?returnTo=${pathname}`
 	})
 

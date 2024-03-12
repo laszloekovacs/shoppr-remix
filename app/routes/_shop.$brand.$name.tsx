@@ -26,19 +26,27 @@ export default function ProductPage() {
 	const navigate = useNavigate()
 	const fetcher = useFetcher<typeof action>()
 
+	const { _id, brand, name, department, attributes } = product
+
 	return (
-		<div>
-			<h1>Product Page</h1>
+		<div className='flex gap-4 flex-col'>
 			<div>
 				<button onClick={() => navigate(-1)}>back</button>
 			</div>
-			<pre>{JSON.stringify(product, null, 2)}</pre>
+			<h1>
+				{brand} {name}
+			</h1>
+			<small className='text-neutral-500'>
+				{_id} / {department}
+			</small>
+
 			<fetcher.Form method='post'>
 				<input type='hidden' name='productId' value={product._id} />
 				<button>Add to Cart</button>
 			</fetcher.Form>
 
 			{fetcher.data?.message && <p>{fetcher.data.message}</p>}
+			<pre>{JSON.stringify(product, null, 2)}</pre>
 		</div>
 	)
 }

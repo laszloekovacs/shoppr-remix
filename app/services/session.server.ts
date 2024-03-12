@@ -17,9 +17,7 @@ export const sessionStorage = createCookieSessionStorage({
 	}
 })
 
-export const auth = new Authenticator<{ email: string; id: string }>(
-	sessionStorage
-)
+export const auth = new Authenticator<string>(sessionStorage)
 
 auth.use(
 	new FormStrategy(async ({ form }) => {
@@ -39,7 +37,7 @@ auth.use(
 			throw new AuthorizationError('Invalid password')
 		}
 
-		return { email, id: user._id.toString() }
+		return email
 	}),
 	'user-pass'
 )

@@ -14,13 +14,12 @@ export default function ShopLayout() {
 
 	return (
 		<main className='grid grid-rows-layout min-h-screen p-4 gap-4'>
-			<header>
+			<header className='flex justify-between'>
 				<Link to='/'>
 					<h1>Shoppr</h1>
 				</Link>
-				<div>
-					<pre>{JSON.stringify(user, null, 2)}</pre>
-
+				<div className='flex gap-4'>
+					<Link to='/account/cart'>{user}</Link>
 					{user ? (
 						<Link to='/logout'>Logout</Link>
 					) : (

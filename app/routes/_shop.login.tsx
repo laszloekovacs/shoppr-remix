@@ -6,6 +6,7 @@ import {
 } from '@remix-run/node'
 import {
 	Form,
+	Link,
 	useActionData,
 	useLoaderData,
 	useNavigate
@@ -27,34 +28,40 @@ export default function LoginPage() {
 
 	return (
 		<section>
-			<h1>Login</h1>
-			<p>Welcome to our website! Please login</p>
+			<div className='max-w-[40ch] mx-auto'>
+				<Form method='POST' className='grid gap-8'>
+					<h1>Login</h1>
+					<p>Welcome to our website! Please login</p>
 
-			<div>
-				<button className='btn' onClick={() => navigate(-1)}>
-					back
-				</button>
-			</div>
-
-			<Form method='POST'>
-				<div className='column center'>
 					<input type='hidden' name='returnTo' value={returnTo} />
-					<input type='email' name='email' placeholder='Email' required />
+					<input
+						type='email'
+						name='email'
+						placeholder='Email'
+						required
+						className='border border-black px-2 py-1'
+					/>
 					{actionData?.error.includes('email') && <p>{actionData.error}</p>}
 					<input
 						type='password'
 						name='password'
 						placeholder='Password'
 						required
+						className='border border-black px-2 py-1'
 					/>
 					{actionData?.error.includes('password') && <p>{actionData.error}</p>}
+
+					<button type='submit'>Login</button>
+
+					<p>Don't have an account?</p>
+					<Link to='/register'>Register</Link>
+
+					<p>Dont want low prices and good deals?</p>
 					<div>
-						<button className='btn' type='submit'>
-							Login
-						</button>
+						<button onClick={() => navigate(-1)}>go back</button>
 					</div>
-				</div>
-			</Form>
+				</Form>
+			</div>
 		</section>
 	)
 }

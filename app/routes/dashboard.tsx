@@ -6,11 +6,14 @@ import { auth } from '~/services/session.server'
 const links = [
 	{ label: 'Home', to: '/' },
 	{ label: 'Create product', to: '/dashboard/create' },
-	{ label: 'Items', to: '/dashboard/items' }
+	{ label: 'Items', to: '/dashboard/items' },
+	{ label: 'Orders', to: '/dashboard/orders' }
 ]
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-	const user = await auth.isAuthenticated(request)
+	const user = await auth.isAuthenticated(request, {
+		failureRedirect: '/login'
+	})
 
 	return { user }
 }

@@ -40,6 +40,8 @@ export default function ProductPage() {
 				{_id} / {department}
 			</small>
 
+			<img src='https://picsum.photos/400/300' alt={name} width={400} />
+
 			<fetcher.Form method='post'>
 				<input type='hidden' name='productId' value={product._id} />
 				<button>Add to Cart</button>

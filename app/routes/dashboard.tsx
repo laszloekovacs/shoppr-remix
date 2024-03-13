@@ -1,5 +1,7 @@
-import { Link, Outlet } from '@remix-run/react'
+import { LoaderFunctionArgs } from '@remix-run/node'
+import { Link, Outlet, useLoaderData } from '@remix-run/react'
 import { Footer } from '~/components'
+import { auth } from '~/services/session.server'
 
 const links = [
 	{ label: 'Home', to: '/' },
@@ -7,19 +9,34 @@ const links = [
 	{ label: 'Items', to: '/dashboard/items' }
 ]
 
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+	const user = await auth.isAuthenticated(request)
+
+	return { user }
+}
+
 export default function DashboardPage() {
+	const { user } = useLoaderData<typeof loader>()
+
 	return (
 		<section className='grid grid-rows-layout min-h-screen p-4 gap-4'>
-			<Link to='/dashboard'>
-				<h1>Dashboard</h1>
-			</Link>
-			<nav className='flex gap-2'>
-				{links.map(link => (
-					<Link key={link.to} to={link.to}>
-						{link.label}
+			<div>
+				<div className='flex flex-row justify-between'>
+					<Link to='/dashboard'>
+						<h1>Dashboard</h1>
 					</Link>
-				))}
-			</nav>
+
+					<div>{user && <p>{user}</p>}</div>
+				</div>
+
+				<nav className='flex gap-2'>
+					{links.map(link => (
+						<Link key={link.to} to={link.to}>
+							{link.label}
+						</Link>
+					))}
+				</nav>
+			</div>
 			<Outlet />
 
 			<Footer />

@@ -12,13 +12,26 @@ export default function DashboardCreatePage() {
 			<h2>Create product</h2>
 
 			<Form method='POST'>
-				<div>
+				<div className='flex flex-col max-w-[30ch] gap-2'>
 					<label htmlFor='name'>name of the new product</label>
-					<input id='name' name='name' placeholder='name' required />
+					<input
+						id='name'
+						name='name'
+						placeholder='name'
+						required
+						className='border border-black px-2 py-1'
+					/>
 					<p>{actionData?.name}</p>
 
 					<label htmlFor='brand'>brand</label>
-					<input id='brand' type='text' name='brand' placeholder='brand' required />
+					<input
+						id='brand'
+						type='text'
+						name='brand'
+						placeholder='brand'
+						required
+						className='border border-black px-2 py-1'
+					/>
 					<p>{actionData?.brand}</p>
 
 					<button type='submit' disabled={navigation.state === 'submitting'}>

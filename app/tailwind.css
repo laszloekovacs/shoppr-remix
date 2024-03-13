@@ -7,6 +7,10 @@
 		@apply text-4xl font-light mb-4;
 	}
 
+	h2 {
+		@apply text-2xl font-light mb-4;
+	}
+
 	a:hover {
 		@apply decoration-1 decoration-dotted decoration-stone-900;
 	}

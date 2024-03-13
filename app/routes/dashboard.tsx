@@ -7,7 +7,8 @@ const links = [
 	{ label: 'Home', to: '/' },
 	{ label: 'Create product', to: '/dashboard/create' },
 	{ label: 'Items', to: '/dashboard/items' },
-	{ label: 'Orders', to: '/dashboard/orders' }
+	{ label: 'Orders', to: '/dashboard/orders' },
+	{ label: 'Products', to: '/dashboard/products' }
 ]
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

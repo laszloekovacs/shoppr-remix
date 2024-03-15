@@ -27,7 +27,7 @@ export default function AcccountPage() {
 	return (
 		<div>
 			<div className='flex justify-between'>
-				<h1>Acccount</h1>
+				<h2>Shopping Cart</h2>
 				<Form method='POST' action='/checkout/payment'>
 					<button type='submit' disabled={items.length == 0}>
 						Go to Checkout

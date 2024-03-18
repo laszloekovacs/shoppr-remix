@@ -13,12 +13,12 @@ export default function ShopLayout() {
 	const { user } = useLoaderData<typeof loader>()
 
 	return (
-		<main className='grid grid-rows-layout min-h-screen p-4 gap-4'>
+		<main className='grid grid-rows-layout min-h-screen p-4 lg:container lg:mx-auto'>
 			<header className='flex justify-between'>
 				<Link to='/'>
 					<h1>Shoppr</h1>
 				</Link>
-				<div className='flex gap-4'>
+				<div className='flex gap-4 items-center'>
 					<Link to='/account/cart'>{user}</Link>
 					{user ? (
 						<Link to='/logout'>Logout</Link>

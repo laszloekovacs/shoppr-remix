@@ -12,10 +12,14 @@ export default function ItemListPage() {
 		<section>
 			<h2>Products</h2>
 
-			<table>
+			<table className='w-full'>
 				<tbody>
 					{products.map(product => (
-						<ProductTableItem key={product._id} name={product.name} brand={product.brand} />
+						<ProductTableItem
+							key={product._id}
+							name={product.name}
+							brand={product.brand}
+						/>
 					))}
 				</tbody>
 			</table>

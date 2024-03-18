@@ -42,7 +42,7 @@ export default function AcccountPage() {
 
 			{items.length > 0 && (
 				<div>
-					<ul>
+					<ul className='flex flex-col gap-2'>
 						{items.map(item => (
 							<li key={item._id}>
 								<CartItem _id={item._id} name={item.name} />
@@ -62,10 +62,14 @@ type CartItemProps = {
 
 const CartItem = (props: CartItemProps) => {
 	return (
-		<article>
-			<h3>{props.name}</h3>
-			<img src={`http://picsum.photos/200`} alt={props.name} />
-			<button>Remove</button>
+		<article className='flex flex-row gap-4'>
+			<img src={`http://picsum.photos/100`} alt={props.name} />
+			<div className='flex flex-col justify-between'>
+				<h3>{props.name}</h3>
+				<div>
+					<button>Remove</button>
+				</div>
+			</div>
 		</article>
 	)
 }

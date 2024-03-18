@@ -21,9 +21,6 @@ export default function Index() {
 
 	return (
 		<div>
-			<h1>Welcome to Shoppr</h1>
-
-			<h2>Products</h2>
 			<Suspense fallback={<p>Loading products...</p>}>
 				<Await resolve={products}>
 					{products => <List products={products} />}
@@ -35,7 +32,7 @@ export default function Index() {
 
 const List = ({ products }: { products: any[] }) => {
 	return (
-		<ul className='flex flex-wrap'>
+		<ul className='grid grid-flow-row grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6'>
 			{products.map(product => {
 				return (
 					<li key={product._id}>

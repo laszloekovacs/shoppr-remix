@@ -16,9 +16,11 @@ export default function ShopLayout() {
 	const { user, departments } = useLoaderData<typeof loader>()
 
 	return (
-		<main className='grid grid-rows-layout min-h-screen p-4 lg:container lg:mx-auto'>
-			<ShopHeader user={user} />
-			<QuickFilterBar departments={departments} />
+		<main className='grid grid-rows-layout min-h-screen p-4 mx-auto max-w-[1024px]'>
+			<div>
+				<ShopHeader user={user} />
+				<QuickFilterBar departments={departments} />
+			</div>
 			<Outlet />
 			<Footer />
 		</main>

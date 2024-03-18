@@ -1,6 +1,7 @@
 type Account = {
 	email: string
 	password: string
+	cart: string[]
 }
 
 type Product = {

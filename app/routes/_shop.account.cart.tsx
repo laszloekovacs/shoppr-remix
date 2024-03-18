@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { Form, useLoaderData } from '@remix-run/react'
+import { WithId } from 'mongodb'
 import invariant from 'tiny-invariant'
 import { db, toObjectId } from '~/services/database.server'
 import { auth } from '~/services/session.server'
@@ -10,12 +11,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		failureRedirect: `/login?returnTo=${pathname}`
 	})
 
-	const account = await db.accounts.findOne({ email })
+	const account = await db.accounts.findOne<WithId<Account>>({ email })
 	invariant(account, 'Account not found')
 
 	// get all products in the cart from database
 	const ids = account.cart?.map((id: string) => toObjectId(id)) ?? []
-	const items = await db.products.find({ _id: { $in: [...ids] } }).toArray()
+	const items = await db.products
+		.find<WithId<Product>>({ _id: { $in: [...ids] } })
+		.toArray()
 
 	return json({ email, items })
 }
@@ -23,60 +26,79 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function AcccountPage() {
 	const { email, items } = useLoaderData<typeof loader>()
 
+	if (!items)
+		return (
+			<div className='grid place-content-center h-full'>
+				<p>No items in your cart!</p>
+			</div>
+		)
+
 	return (
-		<section>
-			<h2 className='mb-6'>Shopping Cart</h2>
+		<section className='flex flex-row gap-8 items-start'>
+			<main className='flex flex-col'>
+				<header className='flex flex-row justify-between py-4'>
+					<h2>Shopping Cart</h2>
+					<p>
+						{items.length} {items.length > 1 ? 'items' : 'item'}
+					</p>
+				</header>
 
-			{items.length == 0 && (
-				<div className='grid place-content-center h-full'>
-					<p>No items in your cart!</p>
-				</div>
-			)}
+				<CardTable items={items} />
+			</main>
 
-			{items.length > 0 && (
-				<div className='flex flex-col gap-8'>
-					<ul className='flex flex-col gap-2'>
-						{items.map(item => (
-							<CartItem _id={item._id} name={item.name} key={item._id} />
-						))}
-					</ul>
-					<div className='flex flex-row gap-4'>
-						<Form method='POST' action='/checkout/payment'>
-							<button type='submit' disabled={items.length == 0}>
-								Go to Checkout
-							</button>
-						</Form>
-					</div>
-				</div>
-			)}
+			<aside className='flex flex-col gap-8'>
+				<Summary />
+
+				<Form method='POST' action='/checkout/payment'>
+					<button type='submit' disabled={items.length == 0}>
+						Go to Checkout
+					</button>
+				</Form>
+			</aside>
 		</section>
 	)
 }
 
-const CartItem = (props: { _id: string; name: string }) => {
+const CardTable = (props: { items: WithStringId<Product>[] }) => {
+	const { items } = props
+
 	return (
-		<article className='flex flex-row gap-4'>
-			<img src={`http://picsum.photos/100`} alt={props.name} />
-			<div className='flex flex-col justify-between'>
-				<h3>{props.name}</h3>
-				<div className='flex flex-row gap-4'>
-					<div>
-						<button>Remove</button>
-					</div>
-					<div>
-						<label htmlFor='quantity'>Quantity</label>
-						<input
-							id='quantity'
-							name='quantity'
-							type='number'
-							defaultValue='1'
-							className='border p-2'
-							min={1}
-							max={10}
-						/>
-					</div>
-				</div>
-			</div>
-		</article>
+		<table>
+			<thead>
+				<tr>
+					<th>Product</th>
+					<th>Description</th>
+					<th>Modify</th>
+					<th>Price</th>
+					<th>Remove</th>
+				</tr>
+			</thead>
+			<tbody>
+				{items.map(item => (
+					<tr key={item._id}>
+						<td>
+							<img src={`http://picsum.photos/100`} alt={item.name} />
+						</td>
+						<td>
+							<h3>{item.name}</h3>
+							<p>{item.department}</p>
+						</td>
+						<td>
+							<p>modify</p>
+						</td>
+						<td>
+							<p>{item.price}</p>
+						</td>
+						<td>
+							<button>Remove</button>
+						</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
 	)
+}
+
+const Summary = () => {
+	return <p>summary</p>
 }

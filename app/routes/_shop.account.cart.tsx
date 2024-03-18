@@ -68,7 +68,7 @@ const CardTable = (props: { items: WithStringId<Product>[] }) => {
 				<tr>
 					<th>Product</th>
 					<th>Description</th>
-					<th>Modify</th>
+					<th>Qty</th>
 					<th>Price</th>
 					<th>Remove</th>
 				</tr>
@@ -84,7 +84,7 @@ const CardTable = (props: { items: WithStringId<Product>[] }) => {
 							<p>{item.department}</p>
 						</td>
 						<td>
-							<p>modify</p>
+							<input type='number' min={1} max={10} />
 						</td>
 						<td>
 							<p>{item.price}</p>

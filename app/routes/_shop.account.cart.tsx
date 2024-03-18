@@ -1,7 +1,6 @@
 import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { Form, useLoaderData } from '@remix-run/react'
 import invariant from 'tiny-invariant'
-import { Card } from '~/components'
 import { db, toObjectId } from '~/services/database.server'
 import { auth } from '~/services/session.server'
 
@@ -25,15 +24,9 @@ export default function AcccountPage() {
 	const { email, items } = useLoaderData<typeof loader>()
 
 	return (
-		<div>
-			<div className='flex justify-between'>
-				<h2>Shopping Cart</h2>
-				<Form method='POST' action='/checkout/payment'>
-					<button type='submit' disabled={items.length == 0}>
-						Go to Checkout
-					</button>
-				</Form>
-			</div>
+		<section>
+			<h2 className='mb-6'>Shopping Cart</h2>
+
 			{items.length == 0 && (
 				<div className='grid place-content-center h-full'>
 					<p>No items in your cart!</p>
@@ -41,33 +34,47 @@ export default function AcccountPage() {
 			)}
 
 			{items.length > 0 && (
-				<div>
+				<div className='flex flex-col gap-8'>
 					<ul className='flex flex-col gap-2'>
 						{items.map(item => (
-							<li key={item._id}>
-								<CartItem _id={item._id} name={item.name} />
-							</li>
+							<CartItem _id={item._id} name={item.name} key={item._id} />
 						))}
 					</ul>
+					<div className='flex flex-row gap-4'>
+						<Form method='POST' action='/checkout/payment'>
+							<button type='submit' disabled={items.length == 0}>
+								Go to Checkout
+							</button>
+						</Form>
+					</div>
 				</div>
 			)}
-		</div>
+		</section>
 	)
 }
 
-type CartItemProps = {
-	_id: string
-	name: string
-}
-
-const CartItem = (props: CartItemProps) => {
+const CartItem = (props: { _id: string; name: string }) => {
 	return (
 		<article className='flex flex-row gap-4'>
 			<img src={`http://picsum.photos/100`} alt={props.name} />
 			<div className='flex flex-col justify-between'>
 				<h3>{props.name}</h3>
-				<div>
-					<button>Remove</button>
+				<div className='flex flex-row gap-4'>
+					<div>
+						<button>Remove</button>
+					</div>
+					<div>
+						<label htmlFor='quantity'>Quantity</label>
+						<input
+							id='quantity'
+							name='quantity'
+							type='number'
+							defaultValue='1'
+							className='border p-2'
+							min={1}
+							max={10}
+						/>
+					</div>
 				</div>
 			</div>
 		</article>

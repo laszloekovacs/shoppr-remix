@@ -32,7 +32,7 @@ export default function Index() {
 
 const List = ({ products }: { products: any[] }) => {
 	return (
-		<ul className='grid grid-flow-row grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 justify-items-strech'>
+		<ul className='grid grid-flow-row grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 content-normal place-content-center'>
 			{products.map(product => {
 				return (
 					<li key={product._id}>

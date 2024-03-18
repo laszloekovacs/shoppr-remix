@@ -1,4 +1,3 @@
-import { HeadersFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { stripe } from '~/services/stripe.server'
 
@@ -12,13 +11,40 @@ export default function DashboardIndex() {
 	const { balance } = useLoaderData<typeof loader>()
 
 	return (
-		<div>
-			<pre>{JSON.stringify(balance, null, 2)}</pre>
+		<div className='flex flex-col gap-8'>
+			<BalanceTable label='available' currencies={balance.available} />
+			<BalanceTable label='pending' currencies={balance.pending} />
+			<BalanceTable label='reserved' currencies={balance.connect_reserved} />
 		</div>
 	)
 }
 
-// cache the headers for 300 seconds, I dont want to spam stripe, not sure it works
-export const headers: HeadersFunction = ({ loaderHeaders }) => ({
-	'Cache-Control': 'max-age: 300'
-})
+const BalanceTable = ({
+	label,
+	currencies
+}: {
+	label: string
+	currencies: { amount: number; currency: string }[]
+}) => {
+	return (
+		<section data-id='balanceTable'>
+			<h3 className='text-2xl'>{label}</h3>
+			<table className='w-full'>
+				<thead>
+					<tr>
+						<th className='text-start'>Amount</th>
+						<th>Currency</th>
+					</tr>
+				</thead>
+				<tbody className='text-start'>
+					{currencies.map((b, i) => (
+						<tr key={i}>
+							<td>{b.amount}</td>
+							<td className='text-start'>{b.currency}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</section>
+	)
+}

@@ -44,7 +44,9 @@ export default function AcccountPage() {
 				<div>
 					<ul>
 						{items.map(item => (
-							<Card key={item._id.toString()} title={item.name} />
+							<li key={item._id}>
+								<CartItem _id={item._id} name={item.name} />
+							</li>
 						))}
 					</ul>
 				</div>
@@ -53,4 +55,17 @@ export default function AcccountPage() {
 	)
 }
 
-//<pre>{JSON.stringify({ email, items }, null, 2)}</pre>
+type CartItemProps = {
+	_id: string
+	name: string
+}
+
+const CartItem = (props: CartItemProps) => {
+	return (
+		<article>
+			<h3>{props.name}</h3>
+			<img src={`http://picsum.photos/200`} alt={props.name} />
+			<button>Remove</button>
+		</article>
+	)
+}

@@ -7,7 +7,7 @@ import { auth } from '~/services/session.server'
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const user = await auth.isAuthenticated(request)
 
-	const departments = await db.products.distinct<string>('department')
+	const departments: string[] = await db.products.distinct('department')
 	return json({ user, departments })
 }
 
@@ -33,19 +33,21 @@ const ShopHeader = (props: ShopHeaderProps) => {
 
 	return (
 		<header>
-			<Link to='/'>
-				<h1>Shoppr</h1>
-			</Link>
+			<div className='d-flex justify-content-between'>
+				<Link to='/'>
+					<h1>Shoppr</h1>
+				</Link>
 
-			<div>
-				{user?.email ? (
-					<>
-						<Link to='/account/cart'>{user?.email}</Link>
-						<Link to='/logout'>Logout</Link>
-					</>
-				) : (
-					<Link to='/login'>Login</Link>
-				)}
+				<div>
+					{user?.email ? (
+						<>
+							<Link to='/account/cart'>{user?.email}</Link>
+							<Link to='/logout'>Logout</Link>
+						</>
+					) : (
+						<Link to='/login'>Login</Link>
+					)}
+				</div>
 			</div>
 
 			<nav className='d-flex py-2 gap-4'>

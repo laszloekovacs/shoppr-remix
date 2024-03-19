@@ -21,39 +21,53 @@ export default function LoginPage() {
 	const navigate = useNavigate()
 
 	return (
-		<section>
-			<div className='max-w-[40ch] mx-auto'>
-				<Form method='POST' className='grid gap-8'>
-					<h1>Login</h1>
-					<p>Welcome to our website! Please login</p>
+		<main>
+			<Form method='POST'>
+				<h1>Login</h1>
+				<p>Welcome to our website! Please login</p>
 
+				<div className='mb-3'>
+					<label htmlFor='email' className='form-label'>
+						Email
+					</label>
 					<input
 						type='email'
 						name='email'
 						placeholder='Email'
 						required
-						className='border border-black px-2 py-1'
+						className='form-control'
 					/>
+				</div>
 
+				<div className='mb-3'>
+					<label htmlFor='password' className='form-label'>
+						Password
+					</label>
 					<input
 						type='password'
 						name='password'
 						placeholder='Password'
 						required
-						className='border border-black px-2 py-1'
+						className='form-control'
 					/>
+				</div>
 
-					<button type='submit'>Login</button>
+				<button type='submit' className='btn btn-primary'>
+					Login
+				</button>
 
+				<div>
 					<p>Don't have an account?</p>
 					<Link to='/register'>Register</Link>
-
 					<p>Dont want low prices and good deals?</p>
-					<div>
-						<button onClick={() => navigate(-1)}>go back</button>
-					</div>
-				</Form>
-			</div>
-		</section>
+				</div>
+
+				<button
+					onClick={() => navigate(-1)}
+					className='btn btn-outline-primary'>
+					go back
+				</button>
+			</Form>
+		</main>
 	)
 }

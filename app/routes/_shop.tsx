@@ -15,24 +15,29 @@ export default function ShopLayout() {
 	const { user, departments } = useLoaderData<typeof loader>()
 
 	return (
-		<main className='grid grid-rows-layout min-h-screen p-4 mx-auto max-w-[1024px]'>
-			<div>
-				<ShopHeader user={user} />
-				<QuickFilterBar departments={departments} />
-			</div>
+		<main className='container-fluid'>
+			<ShopHeader user={user} departments={departments} />
 			<Outlet />
 			<Footer />
 		</main>
 	)
 }
 
-const ShopHeader = ({ user }: { user: User | null }) => {
+type ShopHeaderProps = {
+	user: User | null
+	departments: string[]
+}
+
+const ShopHeader = (props: ShopHeaderProps) => {
+	const { user, departments } = props
+
 	return (
-		<header className='flex justify-between'>
+		<header>
 			<Link to='/'>
 				<h1>Shoppr</h1>
 			</Link>
-			<div className='flex gap-4 items-center'>
+
+			<div>
 				{user?.email ? (
 					<>
 						<Link to='/account/cart'>{user?.email}</Link>
@@ -42,18 +47,14 @@ const ShopHeader = ({ user }: { user: User | null }) => {
 					<Link to='/login'>Login</Link>
 				)}
 			</div>
-		</header>
-	)
-}
 
-const QuickFilterBar = ({ departments }: { departments: string[] }) => {
-	return (
-		<nav className='flex flex-row gap-8 text-lg font-bold'>
-			{departments.map(department => (
-				<Link key={department} to={`/`}>
-					{department}
-				</Link>
-			))}
-		</nav>
+			<nav className='d-flex py-2 gap-4'>
+				{departments.map(department => (
+					<Link key={department} to={`/`}>
+						{department}
+					</Link>
+				))}
+			</nav>
+		</header>
 	)
 }

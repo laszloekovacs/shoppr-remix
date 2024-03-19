@@ -7,24 +7,27 @@ import { auth } from '~/services/session.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const pathname = new URL(request.url).pathname
-	const email = await auth.isAuthenticated(request, {
+	const user = await auth.isAuthenticated(request, {
 		failureRedirect: `/login?returnTo=${pathname}`
 	})
 
-	const account = await db.accounts.findOne<WithId<Account>>({ email })
+	const account = await db.accounts.findOne<WithId<Account>>({
+		email: user.email
+	})
 	invariant(account, 'Account not found')
 
 	// get all products in the cart from database
-	const ids = account.cart?.map((id: string) => toObjectId(id)) ?? []
+	const ids = account.cart?.map(item => toObjectId(item.productId)) ?? []
+
 	const items = await db.products
 		.find<WithId<Product>>({ _id: { $in: [...ids] } })
 		.toArray()
 
-	return json({ email, items })
+	return json({ user, items })
 }
 
 export default function AcccountPage() {
-	const { email, items } = useLoaderData<typeof loader>()
+	const { user, items } = useLoaderData<typeof loader>()
 
 	if (!items)
 		return (
@@ -50,7 +53,7 @@ export default function AcccountPage() {
 				<Summary />
 
 				<Form method='POST' action='/checkout/payment'>
-					<button type='submit' disabled={items.length == 0}>
+					<button type='submit' disabled={items.length == 0} className='btn'>
 						Go to Checkout
 					</button>
 				</Form>
@@ -63,7 +66,7 @@ const CardTable = (props: { items: WithStringId<Product>[] }) => {
 	const { items } = props
 
 	return (
-		<table>
+		<table className='w-full'>
 			<thead>
 				<tr>
 					<th>Product</th>

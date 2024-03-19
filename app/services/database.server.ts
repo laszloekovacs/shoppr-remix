@@ -13,7 +13,9 @@ export const db = {
 	products: mongodb.db(MONGODB_DATABASE).collection('products'),
 	orders: mongodb.db(MONGODB_DATABASE).collection('orders'),
 	sessions: mongodb.db(MONGODB_DATABASE).collection('sessions'),
-	accounts: mongodb.db(MONGODB_DATABASE).collection('accounts')
+	accounts: mongodb.db(MONGODB_DATABASE).collection('accounts'),
+	test: mongodb.db(MONGODB_DATABASE).collection('test'),
+	logs: mongodb.db(MONGODB_DATABASE).collection('logs')
 }
 
 export const toObjectId = (id: string) => new ObjectId(id)

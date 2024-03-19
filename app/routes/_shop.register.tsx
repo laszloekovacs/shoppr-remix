@@ -15,11 +15,24 @@ export default function RegisterPage() {
 			<Form method='POST'>
 				<div>
 					<label htmlFor='email'>Email</label>
-					<input type='email' id='email' name='email' placeholder='Email' required autoFocus />
+					<input
+						type='email'
+						id='email'
+						name='email'
+						placeholder='Email'
+						required
+						autoFocus
+					/>
 				</div>
 				<div>
 					<label htmlFor='password'>Password</label>
-					<input type='password' id='password' name='password' placeholder='Password' required />
+					<input
+						type='password'
+						id='password'
+						name='password'
+						placeholder='Password'
+						required
+					/>
 				</div>
 				<button type='submit'>Register</button>
 			</Form>
@@ -44,7 +57,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 
 	// create the user
-	await db.accounts.insertOne({ email, password })
+	const result = await db.accounts.insertOne({ email, password })
+
+	invariant(result.acknowledged, 'User not created')
 
 	return redirect('/login')
 }

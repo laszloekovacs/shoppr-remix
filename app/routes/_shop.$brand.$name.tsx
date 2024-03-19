@@ -1,22 +1,20 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
 import { useFetcher, useLoaderData, useNavigate } from '@remix-run/react'
-import * as mongodb from 'mongodb'
+import { WithId } from 'mongodb'
 import invariant from 'tiny-invariant'
 import { db } from '~/services/database.server'
 import { auth } from '~/services/session.server'
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
 	invariant(params.brand, 'brand is required')
 	invariant(params.name, 'name is required')
 
-	const product = await db.products.findOne({
+	const product = await db.products.findOne<WithId<Product>>({
 		name: params.name,
 		brand: params.brand
 	})
 
-	if (!product) {
-		throw new Response('Not Found', { status: 404 })
-	}
+	invariant(product, 'Product not found')
 
 	return json({ product })
 }
@@ -26,12 +24,14 @@ export default function ProductPage() {
 	const navigate = useNavigate()
 	const fetcher = useFetcher<typeof action>()
 
-	const { _id, brand, name, department, attributes } = product
+	const { _id, brand, name, department } = product
 
 	return (
 		<div className='flex gap-4 flex-col'>
 			<div>
-				<button onClick={() => navigate(-1)}>back</button>
+				<button onClick={() => navigate(-1)} className='btn-outline'>
+					back
+				</button>
 			</div>
 			<h1>
 				{brand} {name}
@@ -44,7 +44,7 @@ export default function ProductPage() {
 
 			<fetcher.Form method='post'>
 				<input type='hidden' name='productId' value={product._id} />
-				<button>Add to Cart</button>
+				<button className='btn'>Add to Cart</button>
 			</fetcher.Form>
 
 			{fetcher.data?.message && <p>{fetcher.data.message}</p>}
@@ -56,7 +56,7 @@ export default function ProductPage() {
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const pathname = new URL(request.url).pathname
 
-	const email = await auth.isAuthenticated(request, {
+	const user = await auth.isAuthenticated(request, {
 		failureRedirect: `/login?returnTo=${pathname}`
 	})
 
@@ -66,11 +66,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	const result = await db.accounts.updateOne(
 		{
-			email
+			email: user.email
 		},
 		{
 			$addToSet: {
-				cart: productId
+				cart: {
+					productId,
+					quantity: 1
+				}
 			}
 		}
 	)

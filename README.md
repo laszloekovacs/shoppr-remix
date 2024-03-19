@@ -17,6 +17,8 @@ trigger a successfull payment intent
 stripe trigger checkout.session.completed
 ```
 
+4242
+
 
 ## TODOS:
 - when querying, project the required fields
@@ -25,3 +27,12 @@ stripe trigger checkout.session.completed
 - proper headers
 - more load indicators, disabling, streaming
 - http headers
+- file upload
+- orders
+- auth0 
+- db indexing
+
+
+## Notes
+https://www.hyperui.dev/
+https://www.tailwindawesome.com/?price=free&type=template

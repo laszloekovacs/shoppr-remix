@@ -3,8 +3,8 @@ import { Form, Link, json, redirect, useLoaderData } from '@remix-run/react'
 import { db } from '~/services/database.server'
 
 export const loader = async () => {
-	const items = await db.products.find({}).toArray()
-	return json(items)
+	const products = await db.products.find({}).toArray()
+	return json({ products })
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -54,11 +54,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		return errors
 	}
 
-	return redirect('/dashboard/item/' + brand + '/' + name)
+	return new Response(null, { statusText: 'Created', status: 201 })
 }
 
 export default function ProductsPage() {
-	const items = useLoaderData<typeof loader>()
+	const { products } = useLoaderData<typeof loader>()
 
 	return (
 		<div>
@@ -66,31 +66,19 @@ export default function ProductsPage() {
 
 			<Form method='POST' className='flex items-center gap-4'>
 				<label htmlFor='name'>Name</label>
-				<input
-					type='text'
-					name='name'
-					placeholder='Name'
-					className='border border-black py-1 px-2'
-				/>
+				<input type='text' name='name' placeholder='Name' className='input' />
 
 				<label htmlFor='brand'>Brand</label>
-				<input
-					type='text'
-					name='brand'
-					placeholder='Brand'
-					className='border border-black py-1 px-2'
-				/>
+				<input type='text' name='brand' placeholder='Brand' className='input' />
 
-				<div>
-					<button>Create</button>
-				</div>
+				<button className='btn'>Create</button>
 			</Form>
 
 			<h2>Products</h2>
 
 			<table className='w-full'>
 				<tbody>
-					{items.map((item: any) => (
+					{products.map((item: any) => (
 						<ProductTableItem
 							key={item._id}
 							name={item.name}

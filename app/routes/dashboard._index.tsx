@@ -14,7 +14,6 @@ export default function DashboardIndex() {
 		<div className='flex flex-col gap-8'>
 			<BalanceTable label='available' currencies={balance.available} />
 			<BalanceTable label='pending' currencies={balance.pending} />
-			<BalanceTable label='reserved' currencies={balance.connect_reserved} />
 		</div>
 	)
 }

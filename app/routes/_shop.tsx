@@ -8,7 +8,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const user = await auth.isAuthenticated(request)
 
 	const departments = await db.products.distinct<string>('department')
-
 	return json({ user, departments })
 }
 
@@ -27,16 +26,18 @@ export default function ShopLayout() {
 	)
 }
 
-const ShopHeader = ({ user }: { user: any }) => {
+const ShopHeader = ({ user }: { user: User | null }) => {
 	return (
 		<header className='flex justify-between'>
 			<Link to='/'>
 				<h1>Shoppr</h1>
 			</Link>
 			<div className='flex gap-4 items-center'>
-				<Link to='/account/cart'>{user}</Link>
-				{user ? (
-					<Link to='/logout'>Logout</Link>
+				{user?.email ? (
+					<>
+						<Link to='/account/cart'>{user?.email}</Link>
+						<Link to='/logout'>Logout</Link>
+					</>
 				) : (
 					<Link to='/login'>Login</Link>
 				)}

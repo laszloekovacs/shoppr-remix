@@ -1,7 +1,16 @@
+type User = {
+	email: string
+}
+
 type Account = {
 	email: string
 	password: string
-	cart: string[]
+	cart?: CartItem[]
+}
+
+type CartItem = {
+	productId: string
+	quantity: number
 }
 
 type Product = {
@@ -11,8 +20,11 @@ type Product = {
 	department: string
 	price: number
 	stock: number
-	published: string
+	isPublished: string
+	images: string[]
 	attributes: { [key: string]: string }[]
 }>
 
 type WithStringId<T> = T & { _id: string }
+
+// should implement ModelView DTO's?

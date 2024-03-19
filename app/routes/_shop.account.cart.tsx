@@ -7,11 +7,13 @@ import { auth } from '~/services/session.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const pathname = new URL(request.url).pathname
-	const email = await auth.isAuthenticated(request, {
+	const user = await auth.isAuthenticated(request, {
 		failureRedirect: `/login?returnTo=${pathname}`
 	})
 
-	const account = await db.accounts.findOne<WithId<Account>>({ email })
+	const account = await db.accounts.findOne<WithId<Account>>({
+		eamil: user.email
+	})
 	invariant(account, 'Account not found')
 
 	// get all products in the cart from database
@@ -20,11 +22,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		.find<WithId<Product>>({ _id: { $in: [...ids] } })
 		.toArray()
 
-	return json({ email, items })
+	return json({ user, items })
 }
 
 export default function AcccountPage() {
-	const { email, items } = useLoaderData<typeof loader>()
+	const { user, items } = useLoaderData<typeof loader>()
 
 	if (!items)
 		return (

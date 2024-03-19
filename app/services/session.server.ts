@@ -5,6 +5,7 @@ import { FormStrategy } from 'remix-auth-form'
 import invariant from 'tiny-invariant'
 import { CRYPT_SALT } from './constants.server'
 import { db } from './database.server'
+import { WithId } from 'mongodb'
 
 export const sessionStorage = createCookieSessionStorage({
 	cookie: {
@@ -16,18 +17,18 @@ export const sessionStorage = createCookieSessionStorage({
 		secure: true
 	}
 })
-
 export const { getSession, commitSession, destroySession } = sessionStorage
-export const auth = new Authenticator<string>(sessionStorage)
 
-const formStrategy = new FormStrategy<string>(async ({ form }) => {
+export const auth = new Authenticator<User>(sessionStorage)
+
+const formStrategy = new FormStrategy<User>(async ({ form }) => {
 	const email = form.get('email') as string
 	const rawPassword = form.get('password') as string
 	const password = await bcrypt.hash(rawPassword, CRYPT_SALT)
 	invariant(email, 'Email is required')
 	invariant(rawPassword, 'Password is required')
 
-	const user = await db.accounts.findOne({ email })
+	const user = await db.accounts.findOne<WithId<Account>>({ email })
 
 	if (!user) {
 		throw new AuthorizationError('Invalid email')
@@ -37,7 +38,7 @@ const formStrategy = new FormStrategy<string>(async ({ form }) => {
 		throw new AuthorizationError('Invalid password')
 	}
 
-	return email
+	return { email: user.email }
 })
 
 auth.use(formStrategy, 'user-pass')

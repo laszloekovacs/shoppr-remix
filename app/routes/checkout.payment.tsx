@@ -40,7 +40,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	})
 
 	const session = await stripe.checkout.sessions.create({
-		line_items: [
+		line_items,
+		shipping_address_collection: { allowed_countries: ['HU'] },
+		mode: 'payment',
+		success_url: `${SHOPPR_DOMAIN}/checkout/thankyou/?status=success`,
+		cancel_url: `${SHOPPR_DOMAIN}/checkout/thankyou/?status=canceled`
+	})
+
+	invariant(session.url, 'stripe redirect url is null')
+
+	return redirect(session.url)
+}
+
+/*
+ [
 			{
 				price_data: {
 					currency: 'huf',
@@ -72,15 +85,4 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 				quantity: 2
 			}
 		],
-		shipping_address_collection: { allowed_countries: ['HU'] },
-		mode: 'payment',
-		success_url: `${SHOPPR_DOMAIN}/checkout/thankyou/?status=success`,
-		cancel_url: `${SHOPPR_DOMAIN}/checkout/thankyou/?status=canceled`
-	})
-
-	if (session.url === null) {
-		throw new Error('stripe redirect url is null')
-	}
-
-	return redirect(session.url)
-}
+*/

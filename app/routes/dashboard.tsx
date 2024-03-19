@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from '@remix-run/node'
+import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { Link, Outlet, useLoaderData } from '@remix-run/react'
 import { Footer } from '~/components'
 import { auth } from '~/services/session.server'
@@ -14,7 +14,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		failureRedirect: '/login'
 	})
 
-	return { user }
+	return json({ user })
 }
 
 export default function DashboardPage() {
@@ -28,7 +28,7 @@ export default function DashboardPage() {
 						<h1>Dashboard</h1>
 					</Link>
 
-					<div>{user && <p>{user}</p>}</div>
+					<div>{user && <p>{user.email}</p>}</div>
 				</div>
 
 				<nav className='flex gap-2'>

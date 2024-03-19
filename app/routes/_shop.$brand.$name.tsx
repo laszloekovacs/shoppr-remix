@@ -1,22 +1,20 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
 import { useFetcher, useLoaderData, useNavigate } from '@remix-run/react'
-import * as mongodb from 'mongodb'
+import { WithId } from 'mongodb'
 import invariant from 'tiny-invariant'
 import { db } from '~/services/database.server'
 import { auth } from '~/services/session.server'
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
 	invariant(params.brand, 'brand is required')
 	invariant(params.name, 'name is required')
 
-	const product = await db.products.findOne({
+	const product = await db.products.findOne<WithId<Product>>({
 		name: params.name,
 		brand: params.brand
 	})
 
-	if (!product) {
-		throw new Response('Not Found', { status: 404 })
-	}
+	invariant(product, 'Product not found')
 
 	return json({ product })
 }

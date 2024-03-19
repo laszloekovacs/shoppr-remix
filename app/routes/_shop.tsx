@@ -27,15 +27,15 @@ export default function ShopLayout() {
 	)
 }
 
-const ShopHeader = ({ user }: { user: any }) => {
+const ShopHeader = ({ user }: { user: User | null }) => {
 	return (
 		<header className='flex justify-between'>
 			<Link to='/'>
 				<h1>Shoppr</h1>
 			</Link>
 			<div className='flex gap-4 items-center'>
-				<Link to='/account/cart'>{user}</Link>
-				{user ? (
+				<Link to='/account/cart'>{user?.email}</Link>
+				{user?.email ? (
 					<Link to='/logout'>Logout</Link>
 				) : (
 					<Link to='/login'>Login</Link>

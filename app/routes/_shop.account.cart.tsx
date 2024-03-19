@@ -12,7 +12,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	})
 
 	const account = await db.accounts.findOne<WithId<Account>>({
-		eamil: user.email
+		email: user.email
 	})
 	invariant(account, 'Account not found')
 
@@ -52,7 +52,7 @@ export default function AcccountPage() {
 				<Summary />
 
 				<Form method='POST' action='/checkout/payment'>
-					<button type='submit' disabled={items.length == 0}>
+					<button type='submit' disabled={items.length == 0} className='btn'>
 						Go to Checkout
 					</button>
 				</Form>

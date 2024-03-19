@@ -31,3 +31,8 @@ stripe trigger checkout.session.completed
 - orders
 - auth0 
 - db indexing
+
+
+## Notes
+https://www.hyperui.dev/
+https://www.tailwindawesome.com/?price=free&type=template

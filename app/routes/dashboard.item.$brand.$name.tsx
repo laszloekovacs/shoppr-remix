@@ -60,7 +60,9 @@ export default function ItemPage() {
 
 			<p>database _id:&nbsp;{product._id}</p>
 
-			<button onClick={() => navigate(-1)}>back</button>
+			<button onClick={() => navigate(-1)} className='btn-outline'>
+				back
+			</button>
 
 			<fetcher.Form method='POST' ref={formRef}>
 				<fieldset disabled={!isEditing}>
@@ -74,10 +76,20 @@ export default function ItemPage() {
 						/>
 
 						<label htmlFor='price'>Unit price</label>
-						<input id='price' type='number' name='price' defaultValue={product?.price} />
+						<input
+							id='price'
+							type='number'
+							name='price'
+							defaultValue={product?.price}
+						/>
 
 						<label htmlFor='stock'>Stock</label>
-						<input id='stock' type='number' name='stock' defaultValue={product?.stock} />
+						<input
+							id='stock'
+							type='number'
+							name='stock'
+							defaultValue={product?.stock}
+						/>
 
 						<label htmlFor='published'>Published</label>
 						<input
@@ -89,11 +101,13 @@ export default function ItemPage() {
 					</div>
 				</fieldset>
 
-				<button onClick={handleSubmit}>
+				<button onClick={handleSubmit} className='btn'>
 					{fetcher.state === 'submitting' ? 'Updating...' : 'Update'}
 				</button>
 
-				<button onClick={handleEdit}>{isEditing ? 'Cancel' : 'Edit'}</button>
+				<button onClick={handleEdit} className='btn-outline'>
+					{isEditing ? 'Cancel' : 'Edit'}
+				</button>
 			</fetcher.Form>
 			<p>{actionData?.error}</p>
 		</section>
@@ -111,7 +125,10 @@ export const action = async ({ request, params }: LoaderFunctionArgs) => {
 	// checkbox does not send anything when not on.
 	const published = data?.published === 'on' ? true : false
 
-	const result = await db.products.replaceOne({ name, brand }, { name, brand, ...data, published })
+	const result = await db.products.replaceOne(
+		{ name, brand },
+		{ name, brand, ...data, published }
+	)
 
 	if (result.modifiedCount !== 1) {
 		return { error: 'Could not update product' }

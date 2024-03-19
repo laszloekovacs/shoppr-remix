@@ -63,7 +63,7 @@ const CardTable = (props: { items: WithStringId<Product>[] }) => {
 	const { items } = props
 
 	return (
-		<table>
+		<table className='w-full'>
 			<thead>
 				<tr>
 					<th>Product</th>

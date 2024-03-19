@@ -21,27 +21,38 @@ export default function DashboardPage() {
 	const { user } = useLoaderData<typeof loader>()
 
 	return (
-		<section className='grid grid-rows-layout min-h-screen p-4 mx-auto max-w-[1024px]'>
-			<div>
-				<div className='flex flex-row justify-between'>
-					<Link to='/dashboard'>
-						<h1>Dashboard</h1>
-					</Link>
-
-					<div>{user && <p>{user.email}</p>}</div>
-				</div>
-
-				<nav className='flex gap-2'>
-					{links.map(link => (
-						<Link key={link.to} to={link.to}>
-							{link.label}
-						</Link>
-					))}
-				</nav>
-			</div>
+		<main className='container-fluid'>
+			<DashboardHeader user={user} />
 			<Outlet />
-
 			<Footer />
-		</section>
+		</main>
+	)
+}
+
+type DashboardHeaderProps = {
+	user: User
+}
+
+const DashboardHeader = (props: DashboardHeaderProps) => {
+	const { user } = props
+
+	return (
+		<header>
+			<div className='d-flex justify-content-between'>
+				<Link to='/dashboard'>
+					<h1>Dashboard</h1>
+				</Link>
+
+				{user && <p>{user.email}</p>}
+			</div>
+
+			<nav className='d-flex gap-4'>
+				{links.map(link => (
+					<Link key={link.to} to={link.to}>
+						{link.label}
+					</Link>
+				))}
+			</nav>
+		</header>
 	)
 }

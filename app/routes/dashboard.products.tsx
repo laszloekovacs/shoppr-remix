@@ -1,10 +1,38 @@
-import { ActionFunctionArgs } from '@remix-run/node'
-import { Form, Link, json, redirect, useLoaderData } from '@remix-run/react'
+import {
+	ActionFunctionArgs,
+	LoaderFunctionArgs,
+	SerializeFrom
+} from '@remix-run/node'
+import {
+	Form,
+	Link,
+	json,
+	redirect,
+	useLoaderData,
+	useNavigate,
+	useNavigation
+} from '@remix-run/react'
+import { WithId } from 'mongodb'
 import { db } from '~/services/database.server'
 
-export const loader = async () => {
-	const products = await db.products.find({}).toArray()
-	return json({ products })
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+	const query = new URL(request.url).searchParams
+
+	const page = parseInt(query.get('page') || '1')
+	const limit = parseInt(query.get('limit') || '10')
+
+	// calculate skip
+	const skip = (page - 1) * limit
+
+	// get products
+	const products = await db.products
+		.find<WithId<Product>>({}, { skip, limit })
+		.toArray()
+
+	// get distinct brands for autocomplete in datalist
+	const brands: string[] = await db.products.distinct('brand')
+
+	return json({ products, brands })
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -58,45 +86,82 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 }
 
 export default function ProductsPage() {
-	const { products } = useLoaderData<typeof loader>()
+	const { products, brands } = useLoaderData<typeof loader>()
 
 	return (
-		<div>
+		<main>
 			<h2>Create Products</h2>
+			<Form method='POST' className='row mb-3'>
+				<div className='mb-3 col'>
+					<label htmlFor='name' className='form-label'>
+						Name
+					</label>
+					<input
+						id='name'
+						type='text'
+						name='name'
+						placeholder='Name'
+						className='form-control form-control-sm'
+					/>
+				</div>
 
-			<Form method='POST' className='flex items-center gap-4'>
-				<label htmlFor='name'>Name</label>
-				<input type='text' name='name' placeholder='Name' className='input' />
+				<div className='mb-3 col'>
+					<label htmlFor='brand' className='form-label'>
+						Brand
+					</label>
+					<input
+						id='brand'
+						type='text'
+						name='brand'
+						placeholder='Brand'
+						className='form-control form-control-sm'
+						list='brands'
+					/>
+					<datalist id='brands'>
+						{brands.map((brand: string) => (
+							<option key={brand} value={brand} />
+						))}
+					</datalist>
+				</div>
 
-				<label htmlFor='brand'>Brand</label>
-				<input type='text' name='brand' placeholder='Brand' className='input' />
-
-				<button className='btn'>Create</button>
+				<div className='col'>
+					<button className='btn btn-primary btn-sm'>Create</button>
+				</div>
 			</Form>
 
-			<h2>Products</h2>
-
-			<table className='w-full'>
-				<tbody>
-					{products.map((item: any) => (
-						<ProductTableItem
-							key={item._id}
-							name={item.name}
-							brand={item.brand}
-						/>
-					))}
-				</tbody>
-			</table>
-		</div>
+			<ProductTable products={products} />
+		</main>
 	)
 }
 
-const ProductTableItem = ({ name, brand }: { name: string; brand: string }) => (
-	<tr className='trow'>
-		<td>{brand}</td>
-		<td>{name}</td>
-		<td>
-			<Link to={`/dashboard/item/${brand}/${name}`}>details</Link>
-		</td>
-	</tr>
-)
+const ProductTable = ({
+	products
+}: {
+	products: SerializeFrom<WithId<Product>>[]
+}) => {
+	return (
+		<section>
+			<h2>Products</h2>
+			<table className='table table-striped'>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Brand</th>
+					</tr>
+				</thead>
+				<tbody>
+					{products.map(item => (
+						<tr key={item._id}>
+							<td>
+								<Link to={`/dashboard/item/${item.brand}/${item.name}`}>
+									{item.name}
+								</Link>
+							</td>
+							<td>{item.brand}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</section>
+	)
+}

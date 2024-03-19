@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, defer } from '@remix-run/node'
+import { LoaderFunctionArgs, defer, json } from '@remix-run/node'
 import { Await, useLoaderData } from '@remix-run/react'
 import { Suspense } from 'react'
 import Stripe from 'stripe'
@@ -10,52 +10,61 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 	const skip = (parseInt(page) - 1) * 10
 
-	const orders = db.orders
+	const orders = await db.orders
 		.find<Stripe.Checkout.Session>({}, { limit, skip })
 		.toArray()
 
-	const total = db.orders.countDocuments()
+	const total = await db.orders.countDocuments()
 
-	return defer({ orders })
+	return json({ orders, total })
 }
 
 export default function OrdersPage() {
-	const { orders } = useLoaderData<typeof loader>()
+	const { orders, total } = useLoaderData<typeof loader>()
 
 	return (
 		<main>
 			<h2>Orders</h2>
-			<Suspense fallback={<div>Loading...</div>}>
-				<Await resolve={orders}>
-					{orders => <OrdersTable session={orders} />}
-				</Await>
-			</Suspense>
-			<p>pagination</p>
+			<OrdersTable session={orders} total={total} />
 		</main>
 	)
 }
 
-const OrdersTable = ({ session }: { session: Stripe.Checkout.Session[] }) => {
-	const list = session.map(session => (
-		<tr key={session.id}>
-			<td>{session.amount_total}</td>
-			<td>{session.amount_subtotal}</td>
-			<td>{session.created}</td>
-		</tr>
-	))
-
+const OrdersTable = ({
+	session,
+	total
+}: {
+	total: number
+	session: Stripe.Checkout.Session[]
+}) => {
 	return (
 		<div>
 			<table className='table'>
 				<thead>
 					<tr>
+						<th>Customer</th>
+						<th>State</th>
+						<th>City</th>
 						<th>Total</th>
 						<th>Subtotal</th>
-						<th>Created</th>
 					</tr>
 				</thead>
-				<tbody>{list}</tbody>
+				<tbody>
+					{session.map(session => (
+						<tr key={session.id}>
+							<td>{session.customer_details?.email}</td>
+							<td>
+								<span className='badge text-bg-success'>{'sent'}</span>
+							</td>
+							<td>{session.customer_details?.address?.city}</td>
+							<td>{session.amount_total}</td>
+							<td>{session.amount_subtotal}</td>
+						</tr>
+					))}
+				</tbody>
 			</table>
+
+			<p>Total pages: {total}</p>
 		</div>
 	)
 }

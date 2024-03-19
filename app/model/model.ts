@@ -5,7 +5,12 @@ type User = {
 type Account = {
 	email: string
 	password: string
-	cart?: string[]
+	cart?: CartItem[]
+}
+
+type CartItem = {
+	productId: string
+	quantity: number
 }
 
 type Product = {

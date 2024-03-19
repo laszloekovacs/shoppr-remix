@@ -17,7 +17,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	invariant(account, 'Account not found')
 
 	// get all products in the cart from database
-	const ids = account.cart?.map((id: string) => toObjectId(id)) ?? []
+	const ids = account.cart?.map(item => toObjectId(item.productId)) ?? []
+
 	const items = await db.products
 		.find<WithId<Product>>({ _id: { $in: [...ids] } })
 		.toArray()

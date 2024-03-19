@@ -24,7 +24,7 @@ export default function ProductPage() {
 	const navigate = useNavigate()
 	const fetcher = useFetcher<typeof action>()
 
-	const { _id, brand, name, department, attributes } = product
+	const { _id, brand, name, department } = product
 
 	return (
 		<div className='flex gap-4 flex-col'>
@@ -54,7 +54,7 @@ export default function ProductPage() {
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const pathname = new URL(request.url).pathname
 
-	const email = await auth.isAuthenticated(request, {
+	const user = await auth.isAuthenticated(request, {
 		failureRedirect: `/login?returnTo=${pathname}`
 	})
 
@@ -64,11 +64,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	const result = await db.accounts.updateOne(
 		{
-			email
+			email: user.email
 		},
 		{
 			$addToSet: {
-				cart: productId
+				cart: {
+					productId,
+					quantity: 1
+				}
 			}
 		}
 	)

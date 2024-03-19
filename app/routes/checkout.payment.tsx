@@ -1,4 +1,5 @@
 import { ActionFunctionArgs, redirect } from '@remix-run/node'
+import { ObjectId, WithId } from 'mongodb'
 import Stripe from 'stripe'
 import invariant from 'tiny-invariant'
 import { SHOPPR_DOMAIN } from '~/services/constants.server'
@@ -13,31 +14,40 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	})
 
 	// retrieve users cart
-	const account = await db.accounts.findOne<Account>({ where: { email: user } })
+	const account = await db.accounts.findOne<Account>({
+		email: user.email
+	})
 
 	invariant(account, 'account not found')
 	invariant(account.cart, 'cart is empty')
 
-	// look up products and format them into line_items
 	type LineItem = Stripe.Checkout.SessionCreateParams.LineItem
+	let line_items: LineItem[] = []
 
-	const line_items: LineItem[] = account.cart.map(item => {
-		return {
+	// loop trough cart items, fetch the product
+	for await (const cartItem of account.cart) {
+		const product = await db.products.findOne<WithId<Product>>({
+			_id: new ObjectId(cartItem.productId)
+		})
+
+		invariant(product, 'product not found')
+
+		line_items.push({
 			price_data: {
 				currency: 'huf',
-				unit_amount: 0,
+				unit_amount: product.price! * 100,
 				product_data: {
-					name: 'T-shirt',
-					description: 'A red t-shirt',
-					images: ['https://picsum.photos/200'],
+					name: product.name,
+					description: product.name,
+					images: product.images ?? [],
 					metadata: {
-						product_id: 0
+						order_id: product._id.toString()
 					}
 				}
 			},
-			quantity: 1
-		}
-	})
+			quantity: cartItem.quantity
+		})
+	}
 
 	const session = await stripe.checkout.sessions.create({
 		line_items,

@@ -29,7 +29,9 @@ export default function ProductPage() {
 	return (
 		<div className='flex gap-4 flex-col'>
 			<div>
-				<button onClick={() => navigate(-1)}>back</button>
+				<button onClick={() => navigate(-1)} className='btn-outline'>
+					back
+				</button>
 			</div>
 			<h1>
 				{brand} {name}
@@ -42,7 +44,7 @@ export default function ProductPage() {
 
 			<fetcher.Form method='post'>
 				<input type='hidden' name='productId' value={product._id} />
-				<button>Add to Cart</button>
+				<button className='btn'>Add to Cart</button>
 			</fetcher.Form>
 
 			{fetcher.data?.message && <p>{fetcher.data.message}</p>}

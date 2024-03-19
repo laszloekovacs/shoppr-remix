@@ -6,7 +6,7 @@ export const Footer = () => (
 		<nav className='d-flex gap-2'>
 			<Link to='/dashboard'>Dashboard</Link>
 			<Link to='/'>Home</Link>
-			<Link to='/account/cart'>Checkout</Link>
+			<Link to='/account/cart'>Cart</Link>
 		</nav>
 	</footer>
 )

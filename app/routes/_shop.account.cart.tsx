@@ -38,10 +38,10 @@ export default function AcccountPage() {
 
 	return (
 		<section className='row'>
-			<div className='col-8'>
+			<div className='col-sm-8'>
 				<CartTable items={items} />
 			</div>
-			<div className='col-4'>
+			<div className='col-sm-4'>
 				<Summary items={items} />
 			</div>
 		</section>

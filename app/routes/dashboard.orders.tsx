@@ -1,15 +1,14 @@
-import { LoaderFunctionArgs, defer, json } from '@remix-run/node'
+import { LoaderFunctionArgs, defer } from '@remix-run/node'
 import { Await, useLoaderData } from '@remix-run/react'
-import { WithId } from 'mongodb'
 import { Suspense } from 'react'
 import Stripe from 'stripe'
 import { db } from '~/services/database.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const page = new URL(request.url).searchParams.get('page') || '1'
+	const limit = parseInt(new URL(request.url).searchParams.get('limit') || '10')
 
 	const skip = (parseInt(page) - 1) * 10
-	const limit = 10
 
 	const orders = db.orders
 		.find<Stripe.Checkout.Session>({}, { limit, skip })
@@ -47,7 +46,7 @@ const OrdersTable = ({ session }: { session: Stripe.Checkout.Session[] }) => {
 
 	return (
 		<div>
-			<table>
+			<table className='table'>
 				<thead>
 					<tr>
 						<th>Total</th>
@@ -60,5 +59,3 @@ const OrdersTable = ({ session }: { session: Stripe.Checkout.Session[] }) => {
 		</div>
 	)
 }
-
-//<pre>{JSON.stringify(session, null, 2)}</pre>

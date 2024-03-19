@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, json } from '@remix-run/node'
+import { LoaderFunctionArgs, SerializeFrom, json } from '@remix-run/node'
 import { Form, useLoaderData } from '@remix-run/react'
 import { WithId } from 'mongodb'
 import invariant from 'tiny-invariant'
@@ -23,85 +23,92 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		.find<WithId<Product>>({ _id: { $in: [...ids] } })
 		.toArray()
 
-	return json({ user, items })
+	return json({ items })
 }
 
 export default function AcccountPage() {
-	const { user, items } = useLoaderData<typeof loader>()
+	const { items } = useLoaderData<typeof loader>()
 
 	if (!items)
 		return (
-			<div className='grid place-content-center h-full'>
+			<div>
 				<p>No items in your cart!</p>
 			</div>
 		)
 
 	return (
-		<section className='flex flex-row gap-8 items-start'>
-			<main className='flex flex-col'>
-				<header className='flex flex-row justify-between py-4'>
-					<h2>Shopping Cart</h2>
-					<p>
-						{items.length} {items.length > 1 ? 'items' : 'item'}
-					</p>
-				</header>
-
-				<CardTable items={items} />
-			</main>
-
-			<aside className='flex flex-col gap-8'>
-				<Summary />
-
-				<Form method='POST' action='/checkout/payment'>
-					<button type='submit' disabled={items.length == 0} className='btn'>
-						Go to Checkout
-					</button>
-				</Form>
-			</aside>
+		<section className='row'>
+			<div className='col-8'>
+				<CartTable items={items} />
+			</div>
+			<div className='col-4'>
+				<Summary items={items} />
+			</div>
 		</section>
 	)
 }
 
-const CardTable = (props: { items: WithStringId<Product>[] }) => {
-	const { items } = props
-
+const Summary = ({ items }: { items: SerializeFrom<WithId<Product>>[] }) => {
 	return (
-		<table className='w-full'>
-			<thead>
-				<tr>
-					<th>Product</th>
-					<th>Description</th>
-					<th>Qty</th>
-					<th>Price</th>
-					<th>Remove</th>
-				</tr>
-			</thead>
-			<tbody>
-				{items.map(item => (
-					<tr key={item._id}>
-						<td>
-							<img src={`http://picsum.photos/100`} alt={item.name} />
-						</td>
-						<td>
-							<h3>{item.name}</h3>
-							<p>{item.department}</p>
-						</td>
-						<td>
-							<input type='number' min={1} max={10} />
-						</td>
-						<td>
-							<p>{item.price}</p>
-						</td>
-						<td>
-							<button>Remove</button>
-						</td>
-					</tr>
-				))}
-			</tbody>
-		</table>
+		<aside>
+			<h2>Summary</h2>
+
+			<Form method='POST' action='/checkout/payment'>
+				<button
+					type='submit'
+					disabled={items.length == 0}
+					className='btn btn-primary'>
+					Go to Checkout
+				</button>
+			</Form>
+		</aside>
 	)
 }
 
-const Summary = () => {
-	return <p>summary</p>
+const CartTable = (props: { items: SerializeFrom<WithId<Product>>[] }) => {
+	const { items } = props
+
+	return (
+		<main>
+			<header>
+				<h2>Shopping Cart</h2>
+				<p>
+					{items.length} {items.length > 1 ? 'items' : 'item'}
+				</p>
+			</header>
+			<table className='w-full'>
+				<thead>
+					<tr>
+						<th>Product</th>
+						<th>Description</th>
+						<th>Qty</th>
+						<th>Price</th>
+						<th>Remove</th>
+					</tr>
+				</thead>
+				<tbody>
+					{items.map(item => (
+						<tr key={item._id}>
+							<td>
+								<img src={`http://picsum.photos/100`} alt={item.name} />
+							</td>
+							<td>
+								<h3>{item.name}</h3>
+								<p>{item.department}</p>
+							</td>
+							<td>
+								<input type='number' min={1} max={10} />
+							</td>
+							<td>
+								<p>{item.price}</p>
+							</td>
+							<td>
+								<button>Remove</button>
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</main>
+	)
 }

@@ -36,7 +36,5 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 }
 
 const handleSessionCompleted = async (session: Stripe.Checkout.Session) => {
-	const items = await stripe.checkout.sessions.listLineItems(session.id, {
-		limit: 100
-	})
+	await db.orders.insertOne(session)
 }

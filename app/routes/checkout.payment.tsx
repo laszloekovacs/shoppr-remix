@@ -14,7 +14,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						description: 'A red t-shirt',
 						images: ['https://picsum.photos/200'],
 						metadata: {
-							_id: 23
+							order_id: '23'
 						}
 					}
 				},
@@ -29,7 +29,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						description: 'A blue t-shirt',
 						images: ['https://picsum.photos/300'],
 						metadata: {
-							_id: 233
+							order_id: '233'
 						}
 					}
 				},

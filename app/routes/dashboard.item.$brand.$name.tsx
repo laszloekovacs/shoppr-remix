@@ -1,12 +1,11 @@
 import { LoaderFunctionArgs } from '@remix-run/node'
 import {
-	isRouteErrorResponse,
 	useActionData,
 	useFetcher,
 	useLoaderData,
-	useNavigate,
-	useRouteError
+	useNavigate
 } from '@remix-run/react'
+import { WithId } from 'mongodb'
 import { useRef, useState } from 'react'
 import invariant from 'tiny-invariant'
 import { db } from '~/services/database.server'
@@ -16,7 +15,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 	invariant(params.name, 'name is required')
 	const { brand, name } = params
 
-	const product = await db.products.findOne({ name, brand })
+	const product = await db.products.findOne<WithId<Product>>({ name, brand })
 
 	if (!product) {
 		throw new Response('Not found', { status: 404 })
@@ -49,61 +48,88 @@ export default function ItemPage() {
 
 	return (
 		<section>
-			<h1>
-				{product.brand} - {product.name}
-			</h1>
+			<header className='flex gap-8 mb-6'>
+				<div>
+					<button onClick={() => navigate(-1)} className='btn-outline'>
+						back
+					</button>
+				</div>
+				<div>
+					<h1>
+						{product.brand} - {product.name}
+					</h1>
+				</div>
+			</header>
 
-			<h2>
-				<span>Department:&nbsp;</span>
-				{product.department}
-			</h2>
+			<section className='flex gap-8 flex-wrap mb-6'>
+				<p>database _id:&nbsp;{product._id}</p>
+			</section>
 
-			<p>database _id:&nbsp;{product._id}</p>
-
-			<button onClick={() => navigate(-1)} className='btn-outline'>
-				back
-			</button>
+			<section className='bg-orange-300 flex p-4 my-8'>
+				<fetcher.Form method='POST'>
+					<input
+						type='submit'
+						name='intent'
+						value='publish'
+						className='btn-outline'
+					/>
+				</fetcher.Form>
+			</section>
 
 			<fetcher.Form method='POST' ref={formRef}>
 				<fieldset disabled={!isEditing}>
-					<div>
-						<label htmlFor='department'>Department</label>
-						<input
-							id='department'
-							type='text'
-							name='department'
-							defaultValue={product?.department}
-						/>
+					<div className='grid gap-2'>
+						<div>
+							<label htmlFor='department'>Department</label>
+							<input
+								id='department'
+								type='text'
+								name='department'
+								placeholder='Department'
+								defaultValue={product?.department}
+								className='input'
+							/>
+						</div>
 
-						<label htmlFor='price'>Unit price</label>
-						<input
-							id='price'
-							type='number'
-							name='price'
-							defaultValue={product?.price}
-						/>
+						<div>
+							<label htmlFor='price'>Unit price</label>
+							<input
+								id='price'
+								type='number'
+								name='price'
+								placeholder='Unit price'
+								defaultValue={product?.price}
+								className='input'
+							/>
+						</div>
 
-						<label htmlFor='stock'>Stock</label>
-						<input
-							id='stock'
-							type='number'
-							name='stock'
-							defaultValue={product?.stock}
-						/>
+						<div>
+							<label htmlFor='stock'>Stock</label>
+							<input
+								id='stock'
+								type='number'
+								name='stock'
+								placeholder='Stock'
+								defaultValue={product?.stock}
+								className='input'
+							/>
+						</div>
 
-						<label htmlFor='published'>Published</label>
-						<input
-							id='published'
-							type='checkbox'
-							name='published'
-							defaultChecked={product?.published}
-						/>
+						<div>
+							<label htmlFor='published'>Published</label>
+							<input
+								id='published'
+								type='checkbox'
+								name='published'
+								defaultChecked={product?.isPublished ? true : false}
+							/>
+						</div>
 					</div>
-				</fieldset>
 
-				<button onClick={handleSubmit} className='btn'>
-					{fetcher.state === 'submitting' ? 'Updating...' : 'Update'}
-				</button>
+					<button onClick={handleSubmit} className='btn'>
+						{fetcher.state === 'submitting' ? 'Updating...' : 'Update'}
+					</button>
+				</fieldset>
 
 				<button onClick={handleEdit} className='btn-outline'>
 					{isEditing ? 'Cancel' : 'Edit'}
@@ -123,45 +149,16 @@ export const action = async ({ request, params }: LoaderFunctionArgs) => {
 	const data = Object.fromEntries(formData)
 
 	// checkbox does not send anything when not on.
-	const published = data?.published === 'on' ? true : false
+	const isPublished = data?.isPublished === 'on' ? true : false
 
 	const result = await db.products.replaceOne(
 		{ name, brand },
-		{ name, brand, ...data, published }
+		{ name, brand, isPublished, ...data }
 	)
 
-	if (result.modifiedCount !== 1) {
+	if (result.modifiedCount != 1) {
 		return { error: 'Could not update product' }
 	}
 
-	return null
-}
-
-export const ErrorBoundary = () => {
-	const error = useRouteError()
-
-	if (isRouteErrorResponse(error)) {
-		return (
-			<div>
-				<h1>{error.status}</h1>
-				<p>{error.data}</p>
-			</div>
-		)
-	}
-
-	if (error instanceof Error) {
-		return (
-			<div>
-				<h1>Oops, something went wrong!</h1>
-				<pre>{error.message}</pre>
-				<pre>{error.stack}</pre>
-			</div>
-		)
-	}
-
-	return (
-		<div>
-			<h1>Oops, something went wrong!</h1>
-		</div>
-	)
+	return new Response(null, { statusText: 'Updated', status: 200 })
 }

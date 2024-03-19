@@ -15,6 +15,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		.find<Stripe.Checkout.Session>({}, { limit, skip })
 		.toArray()
 
+	const total = db.orders.countDocuments()
+
 	return defer({ orders })
 }
 
@@ -29,20 +31,19 @@ export default function OrdersPage() {
 					{orders => <OrdersTable session={orders} />}
 				</Await>
 			</Suspense>
+			<p>pagination</p>
 		</main>
 	)
 }
 
 const OrdersTable = ({ session }: { session: Stripe.Checkout.Session[] }) => {
-	const list = session.map(session => {
-		return (
-			<tr key={session.id}>
-				<td>{session.amount_total}</td>
-				<td>{session.amount_subtotal}</td>
-				<td>{session.created}</td>
-			</tr>
-		)
-	})
+	const list = session.map(session => (
+		<tr key={session.id}>
+			<td>{session.amount_total}</td>
+			<td>{session.amount_subtotal}</td>
+			<td>{session.created}</td>
+		</tr>
+	))
 
 	return (
 		<div>
@@ -56,8 +57,8 @@ const OrdersTable = ({ session }: { session: Stripe.Checkout.Session[] }) => {
 				</thead>
 				<tbody>{list}</tbody>
 			</table>
-
-			<pre>{JSON.stringify(session, null, 2)}</pre>
 		</div>
 	)
 }
+
+//<pre>{JSON.stringify(session, null, 2)}</pre>

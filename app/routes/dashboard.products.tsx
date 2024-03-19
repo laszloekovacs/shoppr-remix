@@ -142,11 +142,13 @@ const ProductTable = ({
 	return (
 		<section>
 			<h2>Products</h2>
-			<table className='table table-striped'>
+			<table className='table table-hover'>
 				<thead>
 					<tr>
 						<th>Name</th>
 						<th>Brand</th>
+						<th>Price</th>
+						<th>Stock</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -158,6 +160,8 @@ const ProductTable = ({
 								</Link>
 							</td>
 							<td>{item.brand}</td>
+							<td>{item.price}</td>
+							<td>{item.stock}</td>
 						</tr>
 					))}
 				</tbody>

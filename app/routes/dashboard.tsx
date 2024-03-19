@@ -21,7 +21,7 @@ export default function DashboardPage() {
 	const { user } = useLoaderData<typeof loader>()
 
 	return (
-		<section className='grid grid-rows-layout min-h-screen p-4 gap-4'>
+		<section className='grid grid-rows-layout min-h-screen p-4 mx-auto max-w-[1024px]'>
 			<div>
 				<div className='flex flex-row justify-between'>
 					<Link to='/dashboard'>

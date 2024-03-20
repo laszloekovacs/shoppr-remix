@@ -1,0 +1,25 @@
+version: '3.8'
+volumes:
+  mongo_data:
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+
+  shoppr:
+    image: ghcr.io/username/repo:latest
+    container_name: shoppr
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: mongodb://carrots:carrots@mongo:27017/shoppr

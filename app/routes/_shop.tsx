@@ -15,7 +15,7 @@ export default function ShopLayout() {
 	const { user, departments } = useLoaderData<typeof loader>()
 
 	return (
-		<main className='container-fluid'>
+		<main>
 			<ShopHeader user={user} departments={departments} />
 			<Outlet />
 			<Footer />
@@ -32,13 +32,13 @@ const ShopHeader = (props: ShopHeaderProps) => {
 	const { user, departments } = props
 
 	return (
-		<header>
-			<div className='d-flex justify-content-between'>
+		<header className='mb-4'>
+			<div className='flex flex-row flex-nowrap justify-between pb-4'>
 				<Link to='/'>
-					<h1>Shoppr</h1>
+					<h1 className='mb-4'>Shoppr</h1>
 				</Link>
 
-				<div>
+				<div className='flex gap-4'>
 					{user?.email ? (
 						<>
 							<Link to='/account/cart'>{user?.email}</Link>
@@ -50,7 +50,7 @@ const ShopHeader = (props: ShopHeaderProps) => {
 				</div>
 			</div>
 
-			<nav className='d-flex py-2 gap-4'>
+			<nav className='py-4 flex flex-row gap-4 font-bold'>
 				{departments.map(department => (
 					<Link key={department} to={`/`}>
 						{department}

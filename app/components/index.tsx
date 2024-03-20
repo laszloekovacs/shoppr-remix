@@ -1,7 +1,7 @@
 import { Link } from '@remix-run/react'
 
 export const Footer = () => (
-	<footer className='my-5'>
+	<footer className='py-5'>
 		<h3>Debug links</h3>
 		<nav className='d-flex gap-2'>
 			<Link to='/dashboard'>Dashboard</Link>

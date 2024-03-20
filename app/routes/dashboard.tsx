@@ -4,7 +4,7 @@ import { Footer } from '~/components'
 import { auth } from '~/services/session.server'
 
 const links = [
-	{ label: 'Home', to: '/' },
+	{ label: 'Shop', to: '/' },
 	{ label: 'Orders', to: '/dashboard/orders' },
 	{ label: 'Products', to: '/dashboard/products' }
 ]
@@ -21,7 +21,7 @@ export default function DashboardPage() {
 	const { user } = useLoaderData<typeof loader>()
 
 	return (
-		<main className='container-fluid'>
+		<main>
 			<DashboardHeader user={user} />
 			<Outlet />
 			<Footer />
@@ -37,16 +37,19 @@ const DashboardHeader = (props: DashboardHeaderProps) => {
 	const { user } = props
 
 	return (
-		<header>
-			<div className='d-flex justify-content-between'>
+		<header className='pb-4'>
+			<div className='flex justify-between pb-4'>
 				<Link to='/dashboard'>
 					<h1>Dashboard</h1>
 				</Link>
 
-				{user && <p>{user.email}</p>}
+				<div>
+					<p>{user.email}</p>
+					<Link to='/logout'>Logout</Link>
+				</div>
 			</div>
 
-			<nav className='d-flex gap-4'>
+			<nav className='flex flex-row gap-4 py-4  font-bold'>
 				{links.map(link => (
 					<Link key={link.to} to={link.to}>
 						{link.label}

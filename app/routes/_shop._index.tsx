@@ -31,7 +31,7 @@ export default function Index() {
 
 const ProductList = ({ products }: { products: WithStringId<Product>[] }) => {
 	return (
-		<section className='grid grid-flow-row grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 content-normal place-content-center'>
+		<section className='py-4 grid grid-flow-row grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 content-normal place-content-center'>
 			{products.map(product => (
 				<Link to={`/${product.brand}/${product.name}`} key={product._id}>
 					<Card title={product.name} />

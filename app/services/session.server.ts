@@ -7,7 +7,7 @@ import { CRYPT_SALT } from './constants.server'
 import { db } from './database.server'
 import { WithId } from 'mongodb'
 
-export const sessionStorage = createCookieSessionStorage({
+const sessionStorage = createCookieSessionStorage({
 	cookie: {
 		name: '__shoppr_session',
 		httpOnly: true,
@@ -17,7 +17,6 @@ export const sessionStorage = createCookieSessionStorage({
 		secure: true
 	}
 })
-export const { getSession, commitSession, destroySession } = sessionStorage
 
 export const auth = new Authenticator<User>(sessionStorage)
 
@@ -42,6 +41,3 @@ const formStrategy = new FormStrategy<User>(async ({ form }) => {
 })
 
 auth.use(formStrategy, 'user-pass')
-
-// reexport hash from bcrypt
-export const { hash } = bcrypt

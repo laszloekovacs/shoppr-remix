@@ -1,6 +1,7 @@
 version: '3.8'
 volumes:
   mongo_data:
+  shoppr_data:
 
 services:
   mongo:
@@ -10,16 +11,17 @@ services:
       - mongo_data:/data/db
     ports:
       - 27017:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: pass
+    env_file:
+      - .env.shoppr
 
   shoppr:
-    image: ghcr.io/username/repo:latest
+    image: ghcr.io/laszloekovacs/shoppr-remix:latest
     container_name: shoppr
+    volumes:
+      - shoppr_data:/app/public/uploads
     ports:
       - 3000:3000
     depends_on:
       - mongo
-    environment:
-      MONGO_URI: mongodb://carrots:carrots@mongo:27017/shoppr
+    env_file:
+      - .env.shoppr

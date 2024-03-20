@@ -5,7 +5,7 @@ import {
 } from '@remix-run/node'
 import { Form, Link, json, useLoaderData } from '@remix-run/react'
 import { WithId } from 'mongodb'
-import { db } from '~/services'
+import { db } from '~/services/index.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const query = new URL(request.url).searchParams

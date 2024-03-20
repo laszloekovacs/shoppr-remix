@@ -8,7 +8,7 @@ import {
 import { WithId } from 'mongodb'
 import { useRef, useState } from 'react'
 import invariant from 'tiny-invariant'
-import { db } from '~/services'
+import { db } from '~/services/index.server'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
 	invariant(params.brand, 'brand is required')

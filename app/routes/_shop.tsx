@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from '@remix-run/node'
 import { Link, Outlet, json, useLoaderData } from '@remix-run/react'
 import { Footer } from '~/components'
-import { db, auth } from '~/services'
+import { db, auth } from '~/services/index.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const user = await auth.isAuthenticated(request)

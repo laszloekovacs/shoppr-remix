@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, json } from '@remix-run/node'
-import { STRIPE_ENDPOINT_SECRET, db, stripeApi } from '~/services'
+import { STRIPE_ENDPOINT_SECRET, db, stripeApi } from '~/services/index.server'
 import type Stripe from 'stripe'
 
 export const action = async ({ request }: ActionFunctionArgs) => {

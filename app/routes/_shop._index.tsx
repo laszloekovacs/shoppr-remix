@@ -3,7 +3,7 @@ import { Await, Link, defer, useLoaderData } from '@remix-run/react'
 import { WithId } from 'mongodb'
 import { Suspense } from 'react'
 import { Card } from '~/components'
-import { db } from '~/services'
+import { db } from '~/services/index.server'
 
 export const meta: MetaFunction = () => {
 	return [

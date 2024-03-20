@@ -1,6 +1,6 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
 import { Form, Link, useNavigate } from '@remix-run/react'
-import { auth } from '~/services'
+import { auth } from '~/services/index.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	await auth.isAuthenticated(request, {

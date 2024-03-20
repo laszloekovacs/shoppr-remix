@@ -14,3 +14,8 @@ export {
 } from './constants.server'
 
 export { auth } from './session.server'
+
+export { hash } from 'bcrypt'
+
+import { ObjectId } from 'mongodb'
+export const toObjectID = (id: string) => new ObjectId(id)

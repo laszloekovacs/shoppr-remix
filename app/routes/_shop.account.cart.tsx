@@ -1,8 +1,8 @@
 import { LoaderFunctionArgs, SerializeFrom, json } from '@remix-run/node'
 import { Form, useLoaderData } from '@remix-run/react'
-import { ObjectId, WithId } from 'mongodb'
+import { WithId } from 'mongodb'
 import invariant from 'tiny-invariant'
-import { db, auth } from '~/services'
+import { db, auth, toObjectID as toObjectId } from '~/services/index.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const pathname = new URL(request.url).pathname
@@ -16,7 +16,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	invariant(account, 'Account not found')
 
 	// get all products in the cart from database
-	const ids = account.cart?.map(item => new ObjectId(item.productId)) ?? []
+	const ids = account.cart?.map(item => toObjectId(item.productId)) ?? []
 
 	const items = await db.products
 		.find<WithId<Product>>({ _id: { $in: [...ids] } })

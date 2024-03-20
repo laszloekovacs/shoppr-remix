@@ -48,33 +48,24 @@ export default function ItemPage() {
 
 	return (
 		<section>
-			<header className='flex gap-8 mb-6'>
-				<div>
-					<button onClick={() => navigate(-1)} className='btn-outline'>
-						back
-					</button>
-				</div>
-				<div>
-					<h1>
-						{product.brand} - {product.name}
-					</h1>
-				</div>
-			</header>
+			<button onClick={() => navigate(-1)}>back</button>
 
-			<section className='flex gap-8 flex-wrap mb-6'>
-				<p>database _id:&nbsp;{product._id}</p>
-			</section>
+			<fetcher.Form
+				method='POST'
+				className='bg-orange-300 flex p-4 my-8 justify-between'>
+				<h1>
+					{product.name} {product.brand}
+				</h1>
 
-			<section className='bg-orange-300 flex p-4 my-8'>
-				<fetcher.Form method='POST'>
-					<input
-						type='submit'
-						name='intent'
-						value='publish'
-						className='btn-outline'
-					/>
-				</fetcher.Form>
-			</section>
+				<button
+					name='intent'
+					value='publish'
+					className='bg-black text-white px-4 py-2 rounded'>
+					publish
+				</button>
+			</fetcher.Form>
+
+			<p>database _id:&nbsp;{product._id}</p>
 
 			<fetcher.Form method='POST' ref={formRef}>
 				<fieldset disabled={!isEditing}>

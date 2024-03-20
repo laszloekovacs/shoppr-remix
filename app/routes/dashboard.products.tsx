@@ -3,15 +3,7 @@ import {
 	LoaderFunctionArgs,
 	SerializeFrom
 } from '@remix-run/node'
-import {
-	Form,
-	Link,
-	json,
-	redirect,
-	useLoaderData,
-	useNavigate,
-	useNavigation
-} from '@remix-run/react'
+import { Form, Link, json, useLoaderData } from '@remix-run/react'
 import { WithId } from 'mongodb'
 import { db } from '~/services/database.server'
 
@@ -150,32 +142,36 @@ const ProductTable = ({
 	products: SerializeFrom<WithId<Product>>[]
 }) => {
 	return (
-		<section className='py-4'>
+		<section className='my-4'>
 			<h2 className='mb-4'>Products</h2>
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Brand</th>
-						<th>Price</th>
-						<th>Stock</th>
-					</tr>
-				</thead>
-				<tbody>
-					{products.map(item => (
-						<tr key={item._id}>
-							<td>
-								<Link to={`/dashboard/item/${item.brand}/${item.name}`}>
-									{item.name}
-								</Link>
-							</td>
-							<td>{item.brand}</td>
-							<td>{item.price}</td>
-							<td>{item.stock}</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
+
+			<div>
+				{products.length === 0 ? (
+					<div>No products found</div>
+				) : (
+					<div>
+						{products.map(product => (
+							<Link to={`/dashboard/item/${product.brand}/${product.name}`}>
+								<div
+									key={product._id}
+									className='grid grid-cols-5 hover:bg-slate-200'>
+									<div className='p-2'>
+										<img
+											src='https://www.picsum.photos/200'
+											alt='product'
+											className='w-12 h-12 object-fill'
+										/>
+									</div>
+									<div className='p-2'>{product.brand}</div>
+									<div className='p-2'>{product.name}</div>
+									<div className='p-2'>{product.price} huf</div>
+									<div className='p-2'>{product.stock} in stock</div>
+								</div>
+							</Link>
+						))}
+					</div>
+				)}
+			</div>
 		</section>
 	)
 }

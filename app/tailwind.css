@@ -4,7 +4,7 @@
 
 @layer base {
 	body {
-		@apply text-slate-700;
+		@apply text-stone-700;
 	}
 
 	h1 {
@@ -27,5 +27,12 @@
 
 	.main-layout {
 		grid-template-rows: min-content auto min-content;
+	}
+
+	.field {
+		@apply bg-slate-100 p-2;
+	}
+	.field:focus {
+		@apply outline-none bg-slate-200;
 	}
 }

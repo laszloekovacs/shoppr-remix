@@ -90,47 +90,57 @@ export default function ProductsPage() {
 
 	return (
 		<main>
-			<h2>Create Products</h2>
-			<Form method='POST' className='row mb-3'>
-				<div className='mb-3 col'>
-					<label htmlFor='name' className='form-label'>
-						Name
-					</label>
-					<input
-						id='name'
-						type='text'
-						name='name'
-						placeholder='Name'
-						className='form-control form-control-sm'
-					/>
-				</div>
-
-				<div className='mb-3 col'>
-					<label htmlFor='brand' className='form-label'>
-						Brand
-					</label>
-					<input
-						id='brand'
-						type='text'
-						name='brand'
-						placeholder='Brand'
-						className='form-control form-control-sm'
-						list='brands'
-					/>
-					<datalist id='brands'>
-						{brands.map((brand: string) => (
-							<option key={brand} value={brand} />
-						))}
-					</datalist>
-				</div>
-
-				<div className='col'>
-					<button className='btn btn-primary btn-sm'>Create</button>
-				</div>
-			</Form>
-
+			<CreateProductForm brands={brands} />
 			<ProductTable products={products} />
 		</main>
+	)
+}
+
+const CreateProductForm = ({ brands }: { brands: string[] }) => {
+	return (
+		<div className='p-4 border-2'>
+			<h4 className='mb-4 font-bold'>Create new Product</h4>
+
+			<Form method='POST'>
+				<div className='flex flex-col gap-4 mb-4'>
+					<div>
+						<label htmlFor='name' className='inline-block min-w-20'>
+							Name
+						</label>
+						<input
+							id='name'
+							type='text'
+							name='name'
+							placeholder='Name'
+							className='form-control'
+						/>
+					</div>
+
+					<div>
+						<label htmlFor='brand' className='inline-block min-w-20'>
+							Brand
+						</label>
+						<input
+							id='brand'
+							type='text'
+							name='brand'
+							placeholder='Brand'
+							list='brands'
+							className='form-control'
+						/>
+						<datalist id='brands'>
+							{brands.map((brand: string) => (
+								<option key={brand} value={brand} />
+							))}
+						</datalist>
+					</div>
+				</div>
+
+				<div className='text-center'>
+					<button className='btn'>Create</button>
+				</div>
+			</Form>
+		</div>
 	)
 }
 
@@ -140,9 +150,9 @@ const ProductTable = ({
 	products: SerializeFrom<WithId<Product>>[]
 }) => {
 	return (
-		<section>
-			<h2>Products</h2>
-			<table className='table table-hover'>
+		<section className='py-4'>
+			<h2 className='mb-4'>Products</h2>
+			<table>
 				<thead>
 					<tr>
 						<th>Name</th>

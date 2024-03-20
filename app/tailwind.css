@@ -29,10 +29,10 @@
 		grid-template-rows: min-content auto min-content;
 	}
 
-	.field {
+	.form-control {
 		@apply bg-slate-100 p-2;
 	}
-	.field:focus {
+	.form-control:focus {
 		@apply outline-none bg-slate-200;
 	}
 }

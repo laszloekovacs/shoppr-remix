@@ -1,6 +1,5 @@
 import { LoaderFunctionArgs, json } from '@remix-run/node'
-import { Form, useFetcher, useLoaderData, useSubmit } from '@remix-run/react'
-import { useState } from 'react'
+import { useFetcher, useLoaderData, useSubmit } from '@remix-run/react'
 import { db } from '~/services/database.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

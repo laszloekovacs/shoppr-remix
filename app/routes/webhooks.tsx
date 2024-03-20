@@ -1,7 +1,7 @@
 import { ActionFunctionArgs, json } from '@remix-run/node'
 import { STRIPE_ENDPOINT_SECRET } from '~/services/constants.server'
 import { db } from '~/services/database.server'
-import { stripe } from '~/services/stripe.server'
+import { stripeApi } from '~/services/stripe.server'
 import Stripe from 'stripe'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -10,7 +10,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	try {
 		// check if the event came from stripe
-		let event = stripe.webhooks.constructEvent(
+		let event = stripeApi.webhooks.constructEvent(
 			payload,
 			sig,
 			STRIPE_ENDPOINT_SECRET

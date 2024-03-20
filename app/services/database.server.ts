@@ -18,4 +18,4 @@ export const db = {
 	logs: mongodb.db(MONGODB_DATABASE).collection('logs')
 }
 
-export const toObjectId = (id: string) => new ObjectId(id)
+//export const toObjectId = (id: string) => new ObjectId(id)

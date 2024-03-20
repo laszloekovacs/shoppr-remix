@@ -5,7 +5,7 @@ import invariant from 'tiny-invariant'
 import { SHOPPR_DOMAIN } from '~/services/constants.server'
 import { db } from '~/services/database.server'
 import { auth } from '~/services/session.server'
-import { stripe } from '~/services/stripe.server'
+import { stripeApi } from '~/services/stripe.server'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
 	// get user
@@ -49,7 +49,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		})
 	}
 
-	const session = await stripe.checkout.sessions.create({
+	const session = await stripeApi.checkout.sessions.create({
 		line_items,
 		shipping_address_collection: { allowed_countries: ['HU'] },
 		mode: 'payment',

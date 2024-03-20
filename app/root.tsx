@@ -24,7 +24,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
 			<Meta />
 			<Links />
 		</head>
-		<body className='max-w-5xl mx-auto p-3'>
+		<body className='max-w-5xl mx-auto p-3 min-h-screen grid'>
 			{children}
 			<ScrollRestoration />
 			<Scripts />

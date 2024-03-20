@@ -15,7 +15,7 @@ export default function ShopLayout() {
 	const { user, departments } = useLoaderData<typeof loader>()
 
 	return (
-		<main>
+		<main className='grid main-layout'>
 			<ShopHeader user={user} departments={departments} />
 			<Outlet />
 			<Footer />

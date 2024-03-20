@@ -21,7 +21,7 @@ export default function DashboardPage() {
 	const { user } = useLoaderData<typeof loader>()
 
 	return (
-		<main>
+		<main className='grid main-layout'>
 			<DashboardHeader user={user} />
 			<Outlet />
 			<Footer />

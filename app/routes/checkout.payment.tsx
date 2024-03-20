@@ -1,11 +1,8 @@
 import { ActionFunctionArgs, redirect } from '@remix-run/node'
 import { ObjectId, WithId } from 'mongodb'
-import Stripe from 'stripe'
+import type Stripe from 'stripe'
 import invariant from 'tiny-invariant'
-import { SHOPPR_DOMAIN } from '~/services/constants.server'
-import { db } from '~/services/database.server'
-import { auth } from '~/services/session.server'
-import { stripeApi } from '~/services/stripe.server'
+import { SHOPPR_DOMAIN, db, auth, stripeApi } from '~/services'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
 	// get user

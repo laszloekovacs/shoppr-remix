@@ -1,9 +1,9 @@
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
-import { hash } from '~/services/session.server'
+import * as bcrypt from 'bcrypt'
+
 import invariant from 'tiny-invariant'
-import { CRYPT_SALT } from '~/services/constants.server'
-import { db } from '~/services/database.server'
+import { CRYPT_SALT, db } from '~/services'
 
 export default function RegisterPage() {
 	const actionData = useActionData<typeof action>()
@@ -45,7 +45,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	const email = formData.get('email') as string
 	const rawPassword = formData.get('password') as string
-	const password = await hash(rawPassword, CRYPT_SALT)
+	const password = await bcrypt.hash(rawPassword, CRYPT_SALT)
 
 	invariant(email, 'Email is required')
 	invariant(password, 'Password is required')

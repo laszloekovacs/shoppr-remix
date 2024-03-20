@@ -2,8 +2,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
 import { useFetcher, useLoaderData, useNavigate } from '@remix-run/react'
 import { WithId } from 'mongodb'
 import invariant from 'tiny-invariant'
-import { db } from '~/services/database.server'
-import { auth } from '~/services/session.server'
+import { db, auth } from '~/services'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
 	invariant(params.brand, 'brand is required')

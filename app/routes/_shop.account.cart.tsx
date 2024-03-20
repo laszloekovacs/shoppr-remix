@@ -2,8 +2,7 @@ import { LoaderFunctionArgs, SerializeFrom, json } from '@remix-run/node'
 import { Form, useLoaderData } from '@remix-run/react'
 import { ObjectId, WithId } from 'mongodb'
 import invariant from 'tiny-invariant'
-import { db } from '~/services/database.server'
-import { auth } from '~/services/session.server'
+import { db, auth } from '~/services'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const pathname = new URL(request.url).pathname

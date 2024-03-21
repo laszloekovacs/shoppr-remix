@@ -20,7 +20,6 @@ services:
       - 'traefik.http.routers.shoppr.rule=Host(`hostname.example.com`)'
       - 'traefik.http.routers.shoppr.entrypoints=websecure'
       - 'traefik.http.routers.shoppr.tls.certresolver=myresolver'
-      - 'traefik.http.routers.shoppr.service=shoppr'
 
   # use own mongodb if hw supports it
   mongo:

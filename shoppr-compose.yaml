@@ -11,8 +11,8 @@ services:
       - shoppr_data:/app/public/uploads
     ports:
       - 3000:3000
-    depends_on:
-      - mongo
+    #depends_on:
+    #  - mongo
     env_file:
       - .env.shoppr
     labels:

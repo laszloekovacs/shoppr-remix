@@ -1,28 +1,17 @@
-# build environment
-FROM node:20-alpine as build
-
-WORKDIR /build
-
-COPY package*.json /build
-
-RUN npm install
-
-COPY . .
-
-RUN npm run build
-
-# production environment
-FROM node:20-alpine as production
+FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json /app
+COPY package.json /app
 
 RUN npm install
 
-COPY --from=build build/build /app/build
-COPY public /app/public
+COPY ./ .
+
+RUN npm run build
+
+ENV MODE_ENV=production
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["npm","run", "start"]

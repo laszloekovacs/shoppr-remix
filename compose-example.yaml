@@ -17,7 +17,7 @@ services:
       - .env.shoppr
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.shoppr.rule=Host(`shoppr.am4.duckdns.org`)'
+      - 'traefik.http.routers.shoppr.rule=Host(`hostname.example.com`)'
       - 'traefik.http.routers.shoppr.entrypoints=websecure'
       - 'traefik.http.routers.shoppr.tls.certresolver=myresolver'
       - 'traefik.http.routers.shoppr.service=shoppr'

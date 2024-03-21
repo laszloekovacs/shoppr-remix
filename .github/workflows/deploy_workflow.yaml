@@ -36,7 +36,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          passwork: ${{ secrets.PASSWORD }}
+          password: ${{ secrets.PASSWORD }}
           script: |
             docker pull ghcr.io/${{github.repository}}:latest
             docker compose down

@@ -28,7 +28,6 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.shoppr.rule=Host(`shoppr.am4.duckdns.org`)'
-      - 'traefik.http.routers.shoppr.entrypoints=web'
+      - 'traefik.http.routers.shoppr.entrypoints=websecure'
       - 'traefik.http.routers.shoppr.tls.certresolver=myresolver'
-      - 'traefik.http.routers.shoppr.tls=true'
       - 'traefik.http.routers.shoppr.service=shoppr'

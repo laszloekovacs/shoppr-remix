@@ -1,6 +1,6 @@
 version: '3.8'
 volumes:
-  #mongo_data:
+  mongo_data:
   shoppr_data:
 
 services:
@@ -11,8 +11,8 @@ services:
       - shoppr_data:/app/public/uploads
     ports:
       - 3000:3000
-    #depends_on:
-    #  - mongo
+    depends_on:
+      - mongo
     env_file:
       - .env.shoppr
     labels:
@@ -21,13 +21,14 @@ services:
       - 'traefik.http.routers.shoppr.entrypoints=websecure'
       - 'traefik.http.routers.shoppr.tls.certresolver=myresolver'
       - 'traefik.http.routers.shoppr.service=shoppr'
-# use own mongodb if hw supports it
-#  mongo:
-#    image: mongo:latest
-#    container_name: mongo
-#    volumes:
-#      - mongo_data:/data/db
-#    ports:
-#      - 27017:27017
-#    env_file:
-#      - .env.shoppr
+
+  # use own mongodb if hw supports it
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - 27017:27017
+    env_file:
+      - .env.shoppr

@@ -39,7 +39,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             docker pull ghcr.io/${{github.repository}}:latest
-            docker compose down -f ~/docker-stacks/shoppr-compose.yaml
-            docker compose up -f ~/docker-stacks/shoppr-compose.yaml -d
+            docker compose -f ~/docker-stacks/shoppr-compose.yaml down
+            docker compose -f ~/docker-stacks/shoppr-compose.yaml up -d
             docker image prune -f
             docker container prune -f

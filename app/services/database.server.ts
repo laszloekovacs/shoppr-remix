@@ -4,14 +4,7 @@ import { MONGODB_CONNECTION_STRING, MONGODB_DATABASE } from './constants.server'
 
 export const mongodb = singleton(
 	'mongodb',
-	() =>
-		new MongoClient(MONGODB_CONNECTION_STRING, {
-			serverApi: {
-				version: ServerApiVersion.v1,
-				deprecationErrors: true,
-				strict: true
-			}
-		})
+	() => new MongoClient(MONGODB_CONNECTION_STRING)
 )
 
 export const db = {

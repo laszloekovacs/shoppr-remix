@@ -36,3 +36,9 @@ stripe trigger checkout.session.completed
 ## Notes
 https://www.hyperui.dev/
 https://www.tailwindawesome.com/?price=free&type=template
+
+## Deployment notes
+- Dockerfile 
+- deploy_workflow. check if repo secrets are properly set, set package visiblity
+- check compose file
+- check env file on server

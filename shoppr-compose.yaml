@@ -1,19 +1,9 @@
 version: '3.8'
 volumes:
-  mongo_data:
+  #mongo_data:
   shoppr_data:
 
 services:
-  mongo:
-    image: mongo:latest
-    container_name: mongo
-    volumes:
-      - mongo_data:/data/db
-    ports:
-      - 27017:27017
-    env_file:
-      - .env.shoppr
-
   shoppr:
     image: ghcr.io/laszloekovacs/shoppr-remix:latest
     container_name: shoppr
@@ -31,3 +21,13 @@ services:
       - 'traefik.http.routers.shoppr.entrypoints=websecure'
       - 'traefik.http.routers.shoppr.tls.certresolver=myresolver'
       - 'traefik.http.routers.shoppr.service=shoppr'
+# use own mongodb if hw supports it
+#  mongo:
+#    image: mongo:latest
+#    container_name: mongo
+#    volumes:
+#      - mongo_data:/data/db
+#    ports:
+#      - 27017:27017
+#    env_file:
+#      - .env.shoppr

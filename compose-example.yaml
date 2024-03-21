@@ -16,4 +16,4 @@ volumes:
       - 'traefik.http.routers.shoppr.rule=Host(`example.org`)'
       - 'traefik.http.routers.shoppr.entrypoints=websecure'
       - 'traefik.http.routers.shoppr.tls.certresolver=myresolver'
-      - 'traefik.http.services.your-app.loadbalancer.server.port=3000'
+      - 'traefik.http.services.shoppr.loadbalancer.server.port=3000'

@@ -20,8 +20,8 @@ COPY package*.json /app
 
 RUN npm install
 
-COPY --from=build /build/build /app/build
-COPY ./public /app/public
+COPY --from=build build/build /app/build
+COPY public /app/public
 
 EXPOSE 3000
 

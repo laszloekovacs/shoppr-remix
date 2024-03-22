@@ -3,4 +3,7 @@ import Stripe from 'stripe'
 
 import { STRIPE_SECRET_KEY } from './constants.server'
 
-export const stripe = singleton('stripe', () => new Stripe(STRIPE_SECRET_KEY))
+export const stripeApi = singleton(
+	'stripe',
+	() => new Stripe(STRIPE_SECRET_KEY)
+)

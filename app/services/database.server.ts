@@ -1,8 +1,6 @@
-import { MongoClient, ObjectId } from 'mongodb'
+import { MongoClient, ServerApiVersion } from 'mongodb'
 import { singleton } from './singleton.server'
-import { constants } from './constants.server'
-
-const { MONGODB_CONNECTION_STRING, MONGODB_DATABASE } = constants
+import { MONGODB_CONNECTION_STRING, MONGODB_DATABASE } from './constants.server'
 
 export const mongodb = singleton(
 	'mongodb',
@@ -17,5 +15,3 @@ export const db = {
 	test: mongodb.db(MONGODB_DATABASE).collection('test'),
 	logs: mongodb.db(MONGODB_DATABASE).collection('logs')
 }
-
-export const toObjectId = (id: string) => new ObjectId(id)

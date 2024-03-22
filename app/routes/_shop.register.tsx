@@ -1,9 +1,7 @@
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
-import { hash } from '~/services/session.server'
 import invariant from 'tiny-invariant'
-import { CRYPT_SALT } from '~/services/constants.server'
-import { db } from '~/services/database.server'
+import { CRYPT_SALT, db, hash } from '~/services/index.server'
 
 export default function RegisterPage() {
 	const actionData = useActionData<typeof action>()

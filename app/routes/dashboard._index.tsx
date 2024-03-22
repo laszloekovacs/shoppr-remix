@@ -1,8 +1,8 @@
 import { useLoaderData } from '@remix-run/react'
-import { stripe } from '~/services/stripe.server'
+import { stripeApi } from '~/services/index.server'
 
 export const loader = async () => {
-	const balance = await stripe.balance.retrieve()
+	const balance = await stripeApi.balance.retrieve()
 
 	return { balance }
 }

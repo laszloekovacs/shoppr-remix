@@ -1,8 +1,7 @@
-import { LoaderFunctionArgs, defer, json } from '@remix-run/node'
-import { Await, useLoaderData } from '@remix-run/react'
-import { Suspense } from 'react'
+import { LoaderFunctionArgs, json } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
 import Stripe from 'stripe'
-import { db } from '~/services/database.server'
+import { db } from '~/services/index.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const page = new URL(request.url).searchParams.get('page') || '1'

@@ -1,0 +1,19 @@
+version: '3.8'
+volumes:
+  shoppr_data:
+
+  shoppr:
+    image: ghcr.io/laszloekovacs/shoppr-remix:latest
+    container_name: shoppr
+    volumes:
+      - shoppr_data:/app/public/uploads
+    ports:
+      - 3000:3000
+    env_file:
+      - .env.shoppr
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.shoppr.rule=Host(`example.org`)'
+      - 'traefik.http.routers.shoppr.entrypoints=websecure'
+      - 'traefik.http.routers.shoppr.tls.certresolver=myresolver'
+      - 'traefik.http.services.shoppr.loadbalancer.server.port=3000'

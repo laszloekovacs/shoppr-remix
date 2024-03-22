@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { Link, Outlet, useLoaderData } from '@remix-run/react'
 import { Footer } from '~/components'
-import { auth } from '~/services/session.server'
+import { auth } from '~/services/index.server'
 
 const links = [
 	{ label: 'Shop', to: '/' },

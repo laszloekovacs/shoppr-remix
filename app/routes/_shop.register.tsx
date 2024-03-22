@@ -7,12 +7,14 @@ export default function RegisterPage() {
 	const actionData = useActionData<typeof action>()
 
 	return (
-		<div>
+		<main className='container max-width-500'>
 			<h1>Register</h1>
 			{actionData && actionData?.message && <p>{actionData?.message}</p>}
 			<Form method='POST'>
-				<div>
-					<label htmlFor='email'>Email</label>
+				<div className='form-group mb-3'>
+					<label htmlFor='email' className='form-label'>
+						Email
+					</label>
 					<input
 						type='email'
 						id='email'
@@ -20,21 +22,31 @@ export default function RegisterPage() {
 						placeholder='Email'
 						required
 						autoFocus
+						className='form-control'
 					/>
 				</div>
-				<div>
-					<label htmlFor='password'>Password</label>
+				<div className='form-group mb-3'>
+					<label htmlFor='password' className='form-label'>
+						Password
+					</label>
 					<input
 						type='password'
 						id='password'
 						name='password'
 						placeholder='Password'
 						required
+						className='form-control'
 					/>
 				</div>
-				<button type='submit'>Register</button>
+				<div className='row'>
+					<div className='col'>
+						<button type='submit' className='btn btn-primary'>
+							Register
+						</button>
+					</div>
+				</div>
 			</Form>
-		</div>
+		</main>
 	)
 }
 

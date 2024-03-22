@@ -39,3 +39,20 @@ export const Card = ({ title }: { title: string }) => {
 		</div>
 	)
 }
+
+export const AccountButton = ({ user }: { user: User | null }) => {
+	if (!user) {
+		return <Link to='/login'>Login</Link>
+	}
+
+	return (
+		<section className='row'>
+			<div className='col'>
+				<Link to='/account/cart'>{user.email}</Link>
+			</div>
+			<div className='col'>
+				<Link to='/logout'>Logout</Link>
+			</div>
+		</section>
+	)
+}

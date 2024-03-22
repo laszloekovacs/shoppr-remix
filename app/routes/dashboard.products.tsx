@@ -90,49 +90,47 @@ export default function ProductsPage() {
 
 const CreateProductForm = ({ brands }: { brands: string[] }) => {
 	return (
-		<div className='p-4 border-2'>
-			<h4 className='mb-4 font-bold'>Create new Product</h4>
+		<main className='my-4'>
+			<h4>Create new Product</h4>
 
 			<Form method='POST'>
-				<div className='flex flex-col gap-4 mb-4'>
-					<div>
-						<label htmlFor='name' className='inline-block min-w-20'>
-							Name
-						</label>
-						<input
-							id='name'
-							type='text'
-							name='name'
-							placeholder='Name'
-							className='form-control'
-						/>
-					</div>
+				<div className='form-group row mb-4'>
+					<label htmlFor='name' className='form-label col-2'>
+						Name
+					</label>
+					<input
+						id='name'
+						type='text'
+						name='name'
+						placeholder='Name'
+						className='form-control col'
+					/>
+				</div>
 
-					<div>
-						<label htmlFor='brand' className='inline-block min-w-20'>
-							Brand
-						</label>
-						<input
-							id='brand'
-							type='text'
-							name='brand'
-							placeholder='Brand'
-							list='brands'
-							className='form-control'
-						/>
-						<datalist id='brands'>
-							{brands.map((brand: string) => (
-								<option key={brand} value={brand} />
-							))}
-						</datalist>
-					</div>
+				<div className='form-group row mb-4'>
+					<label htmlFor='brand' className='form-label col-2'>
+						Brand
+					</label>
+					<input
+						id='brand'
+						type='text'
+						name='brand'
+						placeholder='Brand'
+						list='brands'
+						className='form-control col'
+					/>
+					<datalist id='brands'>
+						{brands.map((brand: string) => (
+							<option key={brand} value={brand} />
+						))}
+					</datalist>
 				</div>
 
 				<div className='text-center'>
-					<button className='btn'>Create</button>
+					<button className='btn btn-primary'>Create</button>
 				</div>
 			</Form>
-		</div>
+		</main>
 	)
 }
 
@@ -143,29 +141,27 @@ const ProductTable = ({
 }) => {
 	return (
 		<section className='my-4'>
-			<h2 className='mb-4'>Products</h2>
+			<h2>Products</h2>
 
-			<div>
+			<div className='row'>
 				{products.length === 0 ? (
-					<div>No products found</div>
+					<div className='col-12 text-center'>No products found</div>
 				) : (
 					<div>
 						{products.map(product => (
 							<Link to={`/dashboard/item/${product.brand}/${product.name}`}>
-								<div
-									key={product._id}
-									className='grid grid-cols-5 hover:bg-slate-200'>
-									<div className='p-2'>
+								<div key={product._id} className='row'>
+									<div className='col-2'>
 										<img
 											src='https://www.picsum.photos/200'
 											alt='product'
-											className='w-12 h-12 object-fill'
+											className='img-fluid rounded'
 										/>
 									</div>
-									<div className='p-2'>{product.brand}</div>
-									<div className='p-2'>{product.name}</div>
-									<div className='p-2'>{product.price} huf</div>
-									<div className='p-2'>{product.stock} in stock</div>
+									<div className='col'>{product.brand}</div>
+									<div className='col'>{product.name}</div>
+									<div className='col'>{product.price} huf</div>
+									<div className='col'>{product.stock} in stock</div>
 								</div>
 							</Link>
 						))}

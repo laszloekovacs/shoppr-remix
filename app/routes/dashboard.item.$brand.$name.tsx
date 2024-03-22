@@ -47,67 +47,78 @@ export default function ItemPage() {
 	}
 
 	return (
-		<section>
-			<button onClick={() => navigate(-1)}>back</button>
-
-			<fetcher.Form
-				method='POST'
-				className='bg-orange-300 flex p-4 my-8 justify-between'>
-				<h1>
-					{product.name} {product.brand}
-				</h1>
-
+		<main>
+			<div className='my-4'>
 				<button
-					name='intent'
-					value='publish'
-					className='bg-black text-white px-4 py-2 rounded'>
+					onClick={() => navigate(-1)}
+					className='btn btn-outline-secondary'>
+					back
+				</button>
+			</div>
+
+			<h1>
+				{product.name} {product.brand}
+			</h1>
+
+			<fetcher.Form method='POST'>
+				<button name='intent' value='publish' className='btn btn-dark'>
 					publish
 				</button>
 			</fetcher.Form>
 
-			<p>database _id:&nbsp;{product._id}</p>
+			<div className='my-2'>
+				<p>database _id:&nbsp;{product._id}</p>
+			</div>
 
 			<fetcher.Form method='POST' ref={formRef}>
 				<fieldset disabled={!isEditing}>
-					<div className='grid gap-2'>
-						<div>
-							<label htmlFor='department'>Department</label>
+					<div>
+						<div className='form-group'>
+							<label htmlFor='department' className='form-label'>
+								Department
+							</label>
 							<input
 								id='department'
 								type='text'
 								name='department'
 								placeholder='Department'
 								defaultValue={product?.department}
-								className='input'
+								className='form-control'
 							/>
 						</div>
 
-						<div>
-							<label htmlFor='price'>Unit price</label>
+						<div className='form-group'>
+							<label htmlFor='price' className='form-label'>
+								Unit price
+							</label>
 							<input
 								id='price'
 								type='number'
 								name='price'
 								placeholder='Unit price'
 								defaultValue={product?.price}
-								className='input'
+								className='form-control'
 							/>
 						</div>
 
-						<div>
-							<label htmlFor='stock'>Stock</label>
+						<div className='form-group'>
+							<label htmlFor='stock' className='form-label'>
+								Stock
+							</label>
 							<input
 								id='stock'
 								type='number'
 								name='stock'
 								placeholder='Stock'
 								defaultValue={product?.stock}
-								className='input'
+								className='form-control'
 							/>
 						</div>
 
-						<div>
-							<label htmlFor='published'>Published</label>
+						<div className='form-group'>
+							<label htmlFor='published' className='form-label'>
+								Published
+							</label>
 							<input
 								id='published'
 								type='checkbox'
@@ -117,17 +128,19 @@ export default function ItemPage() {
 						</div>
 					</div>
 
-					<button onClick={handleSubmit} className='btn'>
+					<button onClick={handleSubmit} className='btn btn-primary'>
 						{fetcher.state === 'submitting' ? 'Updating...' : 'Update'}
 					</button>
 				</fieldset>
 
-				<button onClick={handleEdit} className='btn-outline'>
-					{isEditing ? 'Cancel' : 'Edit'}
-				</button>
+				<div className='my-4'>
+					<button onClick={handleEdit} className='btn btn-outline-secondary'>
+						{isEditing ? 'Cancel' : 'Edit'}
+					</button>
+				</div>
 			</fetcher.Form>
 			<p>{actionData?.error}</p>
-		</section>
+		</main>
 	)
 }
 

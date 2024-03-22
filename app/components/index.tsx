@@ -1,21 +1,34 @@
 import { Link } from '@remix-run/react'
 
-export const Footer = () => (
-	<footer className='pt-4 pb-8 text-stone-500'>
-		<div className='flex flex-col md:flex-row gap-8 justify-evenly text-center'>
-			<nav className='columns-3'>
-				<Link to='/'>Home</Link>
-				<Link to='/dashboard'>Dashboard</Link>
-				<Link to='/dashboard/orders'>Orders</Link>
-				<Link to='/dashboard/products'>Products</Link>
-				<Link to='/register'>Register</Link>
-				<Link to='/checkout/thankyou?status=canceled'>Checkout canceled</Link>
-				<Link to='/checkout/thankyou?status=success'>Checkout success</Link>
-				<Link to='/account/cart'>Cart</Link>
-			</nav>
-		</div>
-	</footer>
-)
+export const Footer = () => {
+	const links = [
+		{ to: '/', label: 'Home' },
+		{ to: '/dashboard', label: 'Dashboard' },
+		{ to: '/dashboard/orders', label: 'Orders' },
+		{ to: '/dashboard/products', label: 'Products' },
+		{ to: '/register', label: 'Register' },
+		{ to: '/checkout/thankyou?status=canceled', label: 'Checkout canceled' },
+		{ to: '/checkout/thankyou?status=success', label: 'Checkout success' },
+		{ to: '/account/cart', label: 'Cart' }
+	]
+
+	return (
+		<footer className='container-fluid py-5'>
+			<div className='container'>
+				<ul className='row text-center nav'>
+					{links.map(link => (
+						<Link
+							key={link.to}
+							to={link.to}
+							className='col-sm-6 col-md-3 nav-link'>
+							{link.label}
+						</Link>
+					))}
+				</ul>
+			</div>
+		</footer>
+	)
+}
 
 export const Card = ({ title }: { title: string }) => {
 	return (

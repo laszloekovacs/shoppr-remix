@@ -10,10 +10,14 @@ import {
 	useLocation,
 	useRouteError
 } from '@remix-run/react'
-import stylesheet from 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'
+import styles from './styles.css'
 
 export const links: LinksFunction = () => [
-	{ rel: 'stylesheet', href: stylesheet }
+	{
+		rel: 'stylesheet',
+		href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'
+	},
+	{ rel: 'stylesheet', href: styles }
 ]
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
@@ -24,7 +28,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
 			<Meta />
 			<Links />
 		</head>
-		<body className='max-w-5xl mx-auto p-3 min-h-screen grid'>
+		<body className='container-fluid'>
 			{children}
 			<ScrollRestoration />
 			<Scripts />

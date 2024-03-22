@@ -32,11 +32,13 @@ export const Footer = () => {
 
 export const Card = ({ title }: { title: string }) => {
 	return (
-		<div>
-			<h3>{title}</h3>
-			<img src='https://picsum.photos/200' />
-			<span>This is a card component</span>
-		</div>
+		<article className='card'>
+			<img src='https://picsum.photos/200' className='img-fluid' />
+			<div className='card-body'>
+				<h4>{title}</h4>
+				<span>This is a card component</span>
+			</div>
+		</article>
 	)
 }
 

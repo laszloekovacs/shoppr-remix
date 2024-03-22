@@ -14,13 +14,17 @@ export default function CheckoutResultPage() {
 	const status = useLoaderData<typeof loader>()
 
 	return (
-		<section className='grid place-content-center p-8'>
-			<div className='flex flex-col gap-8 text-center'>
+		<section className='place-content-center'>
+			<div>
 				{status === 'success' ? <Success /> : <Cancelled />}
 
-				<div className='flex flex-row gap-8 justify-center'>
-					<Link to='/'>Return to Home</Link>
-					<Link to='/account/cart'>Back to Cart</Link>
+				<div className='row'>
+					<div className='col'>
+						<Link to='/'>Return to Home</Link>
+					</div>
+					<div className='col'>
+						<Link to='/account/cart'>Back to Cart</Link>
+					</div>
 				</div>
 			</div>
 		</section>

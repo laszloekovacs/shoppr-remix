@@ -9,7 +9,6 @@ export default function RegisterPage() {
 	return (
 		<main className='container max-width-500'>
 			<h1>Register</h1>
-			{actionData && actionData?.message && <p>{actionData?.message}</p>}
 			<Form method='POST'>
 				<div className='form-group mb-3'>
 					<label htmlFor='email' className='form-label'>
@@ -24,6 +23,9 @@ export default function RegisterPage() {
 						autoFocus
 						className='form-control'
 					/>
+					<div>
+						<p>{actionData?.message}</p>
+					</div>
 				</div>
 				<div className='form-group mb-3'>
 					<label htmlFor='password' className='form-label'>

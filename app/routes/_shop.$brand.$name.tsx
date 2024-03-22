@@ -26,29 +26,47 @@ export default function ProductPage() {
 	const { _id, brand, name, department } = product
 
 	return (
-		<div className='flex gap-4 flex-col'>
-			<div>
-				<button onClick={() => navigate(-1)} className='btn-outline'>
-					back
-				</button>
+		<main className='my-4'>
+			<div className='row my-4'>
+				<div className='col'>
+					<button
+						onClick={() => navigate(-1)}
+						className='btn btn-outline-secondary'>
+						back
+					</button>
+				</div>
+				<div className='col'>
+					<small className='text-neutral-500'>
+						{_id} / {department}
+					</small>
+				</div>
 			</div>
-			<h1>
-				{brand} {name}
-			</h1>
-			<small className='text-neutral-500'>
-				{_id} / {department}
-			</small>
 
-			<img src='https://picsum.photos/400/300' alt={name} width={400} />
+			<div>
+				<h1>
+					<span>{brand}</span>
+					<span>{name}</span>
+				</h1>
+			</div>
 
-			<fetcher.Form method='post'>
-				<input type='hidden' name='productId' value={product._id} />
-				<button className='btn'>Add to Cart</button>
-			</fetcher.Form>
-
-			{fetcher.data?.message && <p>{fetcher.data.message}</p>}
-			<pre>{JSON.stringify(product, null, 2)}</pre>
-		</div>
+			<div className='row'>
+				<div className='col-sm-6'>
+					<img
+						src='https://picsum.photos/400/300'
+						alt={name}
+						width={400}
+						className='img-fluid'
+					/>
+				</div>
+				<div className='col-sm-6'>
+					<fetcher.Form method='post'>
+						<input type='hidden' name='productId' value={product._id} />
+						<button className='btn btn-warning'>Add to Cart</button>
+					</fetcher.Form>
+					{fetcher.data?.message && <p>{fetcher.data.message}</p>}
+				</div>
+			</div>
+		</main>
 	)
 }
 

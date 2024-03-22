@@ -21,52 +21,66 @@ export default function LoginPage() {
 	const navigate = useNavigate()
 
 	return (
-		<main>
+		<main className='max-width-500 mx-auto'>
 			<Form method='POST'>
-				<h1>Login</h1>
-				<p>Welcome to our website! Please login</p>
+				<div className='mb-5'>
+					<h1>Login</h1>
+					<p>Welcome to our website! Please login</p>
+				</div>
 
-				<div className='mb-3'>
-					<label htmlFor='email' className='form-label'>
+				<div className='mb-3 row'>
+					<label htmlFor='email' className='col-sm-2 col-form-label'>
 						Email
 					</label>
-					<input
-						type='email'
-						name='email'
-						placeholder='Email'
-						required
-						className='form-control'
-					/>
+					<div className='col-sm-10'>
+						<input
+							type='email'
+							name='email'
+							placeholder='Email'
+							required
+							className='form-control'
+						/>
+					</div>
 				</div>
 
-				<div className='mb-3'>
-					<label htmlFor='password' className='form-label'>
+				<div className='mb-3 row'>
+					<label htmlFor='password' className='col-sm-2 form-label'>
 						Password
 					</label>
-					<input
-						type='password'
-						name='password'
-						placeholder='Password'
-						required
-						className='form-control'
-					/>
+					<div className='col-sm-10'>
+						<input
+							type='password'
+							name='password'
+							placeholder='Password'
+							required
+							className='form-control'
+						/>
+					</div>
 				</div>
 
-				<button type='submit' className='btn btn-primary'>
-					Login
-				</button>
+				<div className='row'>
+					<div className='col-2'>
+						<button type='submit' className='btn btn-primary'>
+							Login
+						</button>
+					</div>
+
+					<div className='col-2'>
+						<Link className='btn btn-outline-primary' to='/register'>
+							Register
+						</Link>
+					</div>
+				</div>
 
 				<div>
 					<p>Don't have an account?</p>
-					<Link to='/register'>Register</Link>
 					<p>Dont want low prices and good deals?</p>
+					<button
+						onClick={() => navigate(-1)}
+						className='btn btn-outline-primary'>
+						go back
+					</button>
 				</div>
-
-				<button
-					onClick={() => navigate(-1)}
-					className='btn btn-outline-primary'>
-					go back
-				</button>
 			</Form>
 		</main>
 	)

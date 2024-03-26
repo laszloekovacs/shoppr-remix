@@ -11,10 +11,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-	await auth.authenticate('user-pass', request, {
-		successRedirect: '/',
-		failureRedirect: '/login'
-	})
+	try {
+		await auth.authenticate('user-pass', request, {
+			successRedirect: '/',
+			failureRedirect: '/login'
+		})
+	} catch (err: unknown) {
+		return {
+			status: 401,
+			json: { message: 'Invalid email or password' }
+		}
+	}
 }
 
 export default function LoginPage() {

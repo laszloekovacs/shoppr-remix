@@ -26,3 +26,7 @@ type Product = {
 }>
 
 type WithStringId<T> = T & { _id: string }
+
+type ProductMetadata = {
+	variants?: [{ name: string; price: number; stock: number }]
+}

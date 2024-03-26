@@ -7,7 +7,7 @@ import {
 	unstable_createMemoryUploadHandler,
 	unstable_parseMultipartFormData
 } from '@remix-run/node'
-import { Form, Outlet, useFetcher, useLoaderData } from '@remix-run/react'
+import { Form, Link, Outlet, useFetcher, useLoaderData } from '@remix-run/react'
 import fs from 'fs'
 
 const max_size = 2_000_000
@@ -81,10 +81,16 @@ export default function UploadsPage() {
 					<h2 className='mb-3'>Uploaded Folders</h2>
 					<ul>
 						{data.folderNames.map((folder: string) => (
-							<li key={folder}>{folder}</li>
+							<li key={folder}>
+								<Link to={`/dashboard/uploads/${folder}`}>{folder}</Link>
+							</li>
 						))}
 					</ul>
 				</div>
+			</div>
+
+			<div>
+				<Outlet />
 			</div>
 		</section>
 	)

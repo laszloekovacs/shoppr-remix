@@ -6,20 +6,6 @@ import {
 } from '@remix-run/node'
 import { Form, Link, useActionData, useNavigate } from '@remix-run/react'
 import { auth } from '~/services/index.server'
-import { AuthError } from '~/services/session.server'
-
-export const isAuthError = (value: unknown): value is AuthError => {
-	return (
-		typeof value === 'object' &&
-		value !== null &&
-		'error' in value &&
-		'message' in value
-	)
-}
-
-export const isUser = (value: unknown): value is User => {
-	return typeof value === 'object' && value !== null && 'email' in value
-}
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	await auth.isAuthenticated(request, {
@@ -30,18 +16,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-	const result = await auth.authenticate('user-pass', request)
-
-	if (isUser(result)) {
-		return redirect('/')
-	}
-
-	return json(result)
+	await auth.authenticate('user-pass', request, {
+		successRedirect: '/',
+		failureRedirect: '/login'
+	})
 }
 
 export default function LoginPage() {
 	const navigate = useNavigate()
 	const actionResult = useActionData<typeof action>()
+
+	console.log(actionResult)
 
 	return (
 		<main className='max-width-500 mx-auto'>
@@ -64,12 +49,7 @@ export default function LoginPage() {
 							className='form-control'
 						/>
 					</div>
-					<span className='form-text text-danger'>
-						{isAuthError(actionResult) &&
-							actionResult?.error === 'email' &&
-							actionResult?.message}{' '}
-						&nbsp;
-					</span>
+					<span className='form-text text-danger'></span>
 				</div>
 
 				<div className='mb-3 row'>
@@ -85,12 +65,7 @@ export default function LoginPage() {
 							className='form-control'
 						/>
 					</div>
-					<span className='form-text text-danger'>
-						{isAuthError(actionResult) &&
-							actionResult?.error === 'password' &&
-							actionResult?.message}{' '}
-						&nbsp;
-					</span>
+					<span className='form-text text-danger'></span>
 				</div>
 
 				<div className='row'>

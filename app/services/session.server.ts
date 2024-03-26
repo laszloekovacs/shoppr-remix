@@ -17,32 +17,34 @@ const sessionStorage = createCookieSessionStorage({
 	}
 })
 
-export type AuthError = {
-	error: string
-	message: string
+export class AuthenticationError extends Error {
+	constructor(public message: string, public error: string) {
+		super(message)
+	}
 }
 
-// define a new authenticator
-export const auth = new Authenticator<User | AuthError>(sessionStorage)
+export const auth = new Authenticator<User | AuthenticationError>(
+	sessionStorage
+)
 
-// ... with a form strategy. This will not throw any errors, redirect options wont be used
-// when authenticate is called
-const formStrategy = new FormStrategy<User | AuthError>(async ({ form }) => {
-	const email = form.get('email') as string
-	const rawPassword = form.get('password') as string
-	const password = await bcrypt.hash(rawPassword, CRYPT_SALT)
+const formStrategy = new FormStrategy<User | AuthenticationError>(
+	async ({ form }) => {
+		const email = form.get('email') as string
+		const rawPassword = form.get('password') as string
+		const password = await bcrypt.hash(rawPassword, CRYPT_SALT)
 
-	const user = await db.accounts.findOne<WithId<Account>>({ email })
+		const user = await db.accounts.findOne<WithId<Account>>({ email })
 
-	if (!user) {
-		return { message: 'Invalid email', error: 'email' }
+		if (!user) {
+			throw new AuthenticationError('Invalid email', 'email')
+		}
+
+		if (user.password !== password) {
+			throw new AuthenticationError('Invalid password', 'password')
+		}
+
+		return { email: user.email }
 	}
-
-	if (user.password !== password) {
-		return { message: 'Invalid password', error: 'password' }
-	}
-
-	return { email: user.email }
-})
+)
 
 auth.use(formStrategy, 'user-pass')

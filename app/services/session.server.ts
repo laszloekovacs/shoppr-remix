@@ -1,8 +1,7 @@
 import { createCookieSessionStorage } from '@remix-run/node'
 import * as bcrypt from 'bcrypt'
-import { Authenticator, AuthorizationError } from 'remix-auth'
+import { Authenticator } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
-import invariant from 'tiny-invariant'
 import { CRYPT_SALT } from './constants.server'
 import { db } from './database.server'
 import { WithId } from 'mongodb'
@@ -18,23 +17,29 @@ const sessionStorage = createCookieSessionStorage({
 	}
 })
 
-export const auth = new Authenticator<User>(sessionStorage)
+export type AuthError = {
+	error: string
+	message: string
+}
 
-const formStrategy = new FormStrategy<User>(async ({ form }) => {
+// define a new authenticator
+export const auth = new Authenticator<User | AuthError>(sessionStorage)
+
+// ... with a form strategy. This will not throw any errors, redirect options wont be used
+// when authenticate is called
+const formStrategy = new FormStrategy<User | AuthError>(async ({ form }) => {
 	const email = form.get('email') as string
 	const rawPassword = form.get('password') as string
 	const password = await bcrypt.hash(rawPassword, CRYPT_SALT)
-	invariant(email, 'Email is required')
-	invariant(rawPassword, 'Password is required')
 
 	const user = await db.accounts.findOne<WithId<Account>>({ email })
 
 	if (!user) {
-		throw new AuthorizationError('Invalid email')
+		return { message: 'Invalid email', error: 'email' }
 	}
 
 	if (user.password !== password) {
-		throw new AuthorizationError('Invalid password')
+		return { message: 'Invalid password', error: 'password' }
 	}
 
 	return { email: user.email }

@@ -26,5 +26,3 @@ type Product = {
 }>
 
 type WithStringId<T> = T & { _id: string }
-
-// should implement ModelView DTO's?

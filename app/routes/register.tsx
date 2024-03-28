@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node'
-import { Form, useActionData } from '@remix-run/react'
+import { Form, Link, useActionData } from '@remix-run/react'
 import invariant from 'tiny-invariant'
 import { CRYPT_SALT, db, hash } from '~/services/index.server'
 
@@ -7,47 +7,56 @@ export default function RegisterPage() {
 	const actionData = useActionData<typeof action>()
 
 	return (
-		<main className='container max-width-500'>
-			<h1>Register</h1>
-			<Form method='POST'>
-				<div className='form-group mb-3'>
-					<label htmlFor='email' className='form-label'>
-						Email
-					</label>
-					<input
-						type='email'
-						id='email'
-						name='email'
-						placeholder='Email'
-						required
-						autoFocus
-						className='form-control'
-					/>
-					<div>
-						<p>{actionData?.message}</p>
-					</div>
+		<main className='container-fluid'>
+			<div className='row justify-content-center'>
+				<div className='col max-w-420'>
+					<h1 className='mb-3'>Register</h1>
+					<Form method='POST'>
+						<div className='form-group mb-3'>
+							<label htmlFor='email' className='form-label'>
+								Email
+							</label>
+							<input
+								type='email'
+								id='email'
+								name='email'
+								placeholder='Email'
+								required
+								autoFocus
+								className='form-control'
+							/>
+							<div className='text-danger'>
+								<p>{actionData?.message}</p>
+							</div>
+						</div>
+						<div className='form-group mb-3'>
+							<label htmlFor='password' className='form-label'>
+								Password
+							</label>
+							<input
+								type='password'
+								id='password'
+								name='password'
+								placeholder='Password'
+								required
+								className='form-control'
+							/>
+						</div>
+
+						<div className='form-group mb-3'>
+							<button type='submit' className='btn btn-primary'>
+								Register
+							</button>
+						</div>
+						<p className='mb-3'>
+							Already have an account? <Link to='/login'>Login</Link>
+						</p>
+						<p>
+							Return to <Link to='/'>Home</Link>
+						</p>
+					</Form>
 				</div>
-				<div className='form-group mb-3'>
-					<label htmlFor='password' className='form-label'>
-						Password
-					</label>
-					<input
-						type='password'
-						id='password'
-						name='password'
-						placeholder='Password'
-						required
-						className='form-control'
-					/>
-				</div>
-				<div className='row'>
-					<div className='col'>
-						<button type='submit' className='btn btn-primary'>
-							Register
-						</button>
-					</div>
-				</div>
-			</Form>
+			</div>
 		</main>
 	)
 }

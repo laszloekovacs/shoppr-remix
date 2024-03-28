@@ -80,8 +80,12 @@ export default function LoginPage() {
 						</button>
 					</div>
 
-					<p>
+					<p className='mb-3'>
 						Don't have an account? <Link to='/register'>Register</Link>
+					</p>
+
+					<p>
+						Return to <Link to='/'>Home</Link>
 					</p>
 				</Form>
 			</div>

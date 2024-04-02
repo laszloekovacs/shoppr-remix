@@ -17,7 +17,7 @@ const constants = {
 
 for (const [key, value] of Object.entries(constants)) {
 	if (!value) {
-		throw new Error(`Missing ${key} evnironment variable`)
+		throw new Error(`Missing ${key} environment variable`)
 	}
 }
 

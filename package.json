@@ -4,18 +4,20 @@
 	"sideEffects": false,
 	"type": "module",
 	"scripts": {
-		"dev": "remix dev --manual",
+		"dev": "remix vite:dev",
+		"build": "remix vite:build",
 		"test": "vitest",
-		"build": "remix build",
+		"dev-rx": "remix dev --manual",
+		"build-rx": "remix build",
 		"lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
 		"start": "remix-serve ./build/index.js",
 		"typecheck": "tsc"
 	},
 	"dependencies": {
 		"@remix-run/css-bundle": "^2.8.1",
-		"@remix-run/node": "^2.8.0",
-		"@remix-run/react": "^2.8.0",
-		"@remix-run/serve": "^2.8.0",
+		"@remix-run/node": "^2.8.1",
+		"@remix-run/react": "^2.8.1",
+		"@remix-run/serve": "^2.8.1",
 		"@stripe/stripe-js": "^3.0.7",
 		"bootstrap": "^5.3.3",
 		"dashvar": "^0.4.3",
@@ -45,7 +47,8 @@
 		"eslint-plugin-react": "^7.33.2",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"typescript": "^5.1.6",
-		"vitest": "^1.3.1"
+		"vitest": "^1.3.1",
+		"vite-tsconfig-paths": "^4.2.1"
 	},
 	"engines": {
 		"node": ">=18.0.0"

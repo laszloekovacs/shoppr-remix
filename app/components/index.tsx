@@ -10,7 +10,8 @@ export const Footer = () => {
 		{ to: '/checkout/thankyou?status=canceled', label: 'Checkout canceled' },
 		{ to: '/checkout/thankyou?status=success', label: 'Checkout success' },
 		{ to: '/account/cart', label: 'Cart' },
-		{ to: '/dashboard/uploads', label: 'Upload' }
+		{ to: '/dashboard/uploads', label: 'Upload' },
+		{ to: '/dashboard/accounts', label: 'Accounts' }
 	]
 
 	return (

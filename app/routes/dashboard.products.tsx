@@ -156,6 +156,7 @@ const ProductTable = ({
 											src='https://www.picsum.photos/200'
 											alt='product'
 											className='img-fluid rounded'
+											width={80}
 										/>
 									</div>
 									<div className='col'>{product.brand}</div>

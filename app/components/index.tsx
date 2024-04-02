@@ -43,28 +43,3 @@ export const Card = ({ title, price }: { title: string; price: string }) => {
 		</article>
 	)
 }
-
-export const AccountButton = ({ user }: { user: User | null }) => {
-	if (!user) {
-		return <Link to='/login'>Login</Link>
-	}
-
-	return (
-		<section className='row'>
-			<div className='col'>
-				<Link to='/account/cart'>{user.email}</Link>
-			</div>
-			<div className='col'>
-				<Link to='/api/form/logout'>Logout</Link>
-			</div>
-		</section>
-	)
-}
-
-export const CartButton = ({ count }: { count: number }) => {
-	return (
-		<Link to='/account/cart' className='btn btn-primary'>
-			<span>{count}</span>
-		</Link>
-	)
-}

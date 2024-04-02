@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { Link, Outlet, useLoaderData } from '@remix-run/react'
-import { AccountButton, Footer } from '~/components'
+import { Footer } from '~/components'
+import { AccountButton } from './_shop'
 import { auth } from '~/services/index.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

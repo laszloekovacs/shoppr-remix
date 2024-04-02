@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from '@remix-run/node'
 import { Link, Outlet, json, useLoaderData } from '@remix-run/react'
 import { WithId } from 'mongodb'
-import { AccountButton, CartButton, Footer } from '~/components'
+import { Footer } from '~/components'
 import { db, auth } from '~/services/index.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -32,17 +32,66 @@ export default function ShopLayout() {
 	return (
 		<main>
 			<header className='d-flex flex-row justify-content-between mb-2'>
-				<Link to='/'>
-					<h1>Shoppr</h1>
-				</Link>
 				<div>
-					<CartButton count={cartQuantity} />
-					<AccountButton user={user} />
+					<Link to='/'>
+						<h1>Shoppr</h1>
+					</Link>
+				</div>
+				<div>
+					<div className='row'>
+						<div className='col'>
+							<CartButton count={cartQuantity} />
+						</div>
+						<div className='col'>
+							<AccountButton user={user} />
+						</div>
+					</div>
 				</div>
 			</header>
-
+			<div>
+				<Departments departments={departments} />
+			</div>
 			<Outlet />
 			<Footer />
 		</main>
+	)
+}
+
+export const CartButton = ({ count }: { count: number }) => {
+	return (
+		<Link to='/account/cart' className='btn btn-primary'>
+			<span>{count}</span>
+		</Link>
+	)
+}
+
+export const Departments = ({ departments }: { departments: string[] }) => {
+	return (
+		<div className='container-fuild'>
+			<ul className='row'>
+				{departments.map(department => (
+					<li key={department} className='col'>
+						{department}
+					</li>
+				))}
+			</ul>
+		</div>
+	)
+}
+
+export const AccountButton = ({ user }: { user: User | null }) => {
+	if (!user) {
+		return <Link to='/login'>Login</Link>
+	}
+
+	return (
+		<section className='row'>
+			<div className='col'>
+				<Link to='/account/cart'>{user.email}</Link>
+			</div>
+			<div className='col'>
+				<Link to='/api/form/logout'>Logout</Link>
+			</div>
+		</section>
 	)
 }

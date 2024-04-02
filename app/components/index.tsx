@@ -59,3 +59,11 @@ export const AccountButton = ({ user }: { user: User | null }) => {
 		</section>
 	)
 }
+
+export const CartButton = ({ count }: { count: number }) => {
+	return (
+		<Link to='/account/cart' className='btn btn-primary'>
+			<span>{count}</span>
+		</Link>
+	)
+}

@@ -35,7 +35,10 @@ const ProductList = ({ products }: { products: WithStringId<Product>[] }) => {
 			{products.map(product => (
 				<div key={product._id} className='col-6 col-sm-4 col-md-3 col-lg-2'>
 					<Link to={`/item/${product.brand}/${product.name}`} key={product._id}>
-						<Card title={product.name} />
+						<Card
+							title={product.name}
+							price={product?.price?.toString() ?? '0'}
+						/>
 					</Link>
 				</div>
 			))}

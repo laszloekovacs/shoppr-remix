@@ -45,6 +45,7 @@ export default function ProductPage() {
 			<div>
 				<h1>
 					<span>{brand}</span>
+					<span> - </span>
 					<span>{name}</span>
 				</h1>
 			</div>

@@ -15,7 +15,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	})
 	invariant(account, 'Account not found')
 
-	// get all products in the cart from database
+	// map products found in cart to database
 	const ids = account.cart?.map(item => toObjectId(item.productId)) ?? []
 
 	const items = await db.products
@@ -75,7 +75,7 @@ const CartTable = (props: { items: SerializeFrom<WithId<Product>>[] }) => {
 					{items.length} {items.length > 1 ? 'items' : 'item'}
 				</p>
 			</header>
-			<table className='w-full'>
+			<table className='table'>
 				<thead>
 					<tr>
 						<th>Product</th>
@@ -89,11 +89,17 @@ const CartTable = (props: { items: SerializeFrom<WithId<Product>>[] }) => {
 					{items.map(item => (
 						<tr key={item._id}>
 							<td>
-								<img src={`http://picsum.photos/100`} alt={item.name} />
+								<img
+									src={`http://picsum.photos/100`}
+									alt={item.name}
+									width={80}
+								/>
 							</td>
 							<td>
-								<h3>{item.name}</h3>
-								<p>{item.department}</p>
+								<div>
+									<h3>{item.name}</h3>
+									<p>{item.department}</p>
+								</div>
 							</td>
 							<td>
 								<input type='number' min={1} max={10} />

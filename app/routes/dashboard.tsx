@@ -7,6 +7,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const user = await auth.isAuthenticated(request, {
 		failureRedirect: '/login'
 	})
+	// this should be the point where we could check for
+	// roles and permissions. no jwt token from auth0 sadly.
 
 	return json({ user })
 }

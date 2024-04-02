@@ -6,6 +6,7 @@ type Account = {
 	email: string
 	password: string
 	cart?: CartItem[]
+	photo?: string
 }
 
 type CartItem = {

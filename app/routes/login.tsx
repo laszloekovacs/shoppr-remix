@@ -1,7 +1,7 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
+import { LoaderFunctionArgs } from '@remix-run/node'
 import { Form, Link, useActionData } from '@remix-run/react'
-import { AuthorizationError } from 'remix-auth'
 import { auth } from '~/services/index.server'
+import { action } from '~/routes/api.form.login'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	await auth.isAuthenticated(request, {
@@ -11,27 +11,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	return null
 }
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-	try {
-		await auth.authenticate('user-pass', request, {
-			successRedirect: '/',
-			throwOnError: true
-		})
-	} catch (error) {
-		if (error instanceof AuthorizationError) {
-			return json({ error: error.message }, { status: 401 })
-		}
-		throw error
-	}
-}
-
 export default function LoginPage() {
 	const actionResult = useActionData<typeof action>()
 
 	return (
 		<main className='container-fluid'>
 			<div className='row justify-content-center'>
-				<Form method='POST' className='col max-w-420'>
+				<Form method='POST' action='/api/form/login' className='col max-w-420'>
 					<h1 className='mb-3'>Login</h1>
 					<p className='mb-3'>Welcome to our website! Please login</p>
 

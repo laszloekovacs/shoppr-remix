@@ -54,7 +54,7 @@ export const AccountButton = ({ user }: { user: User | null }) => {
 				<Link to='/account/cart'>{user.email}</Link>
 			</div>
 			<div className='col'>
-				<Link to='/logout'>Logout</Link>
+				<Link to='/api/form/logout'>Logout</Link>
 			</div>
 		</section>
 	)

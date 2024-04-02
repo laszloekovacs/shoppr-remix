@@ -34,7 +34,7 @@ const ProductList = ({ products }: { products: WithStringId<Product>[] }) => {
 		<section className='row'>
 			{products.map(product => (
 				<div key={product._id} className='col-6 col-sm-4 col-md-3 col-lg-2'>
-					<Link to={`/${product.brand}/${product.name}`} key={product._id}>
+					<Link to={`/item/${product.brand}/${product.name}`} key={product._id}>
 						<Card title={product.name} />
 					</Link>
 				</div>

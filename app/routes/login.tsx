@@ -74,6 +74,16 @@ export default function LoginPage() {
 						Return to <Link to='/'>Home</Link>
 					</p>
 				</Form>
+				<Form method='POST' action='/api/auth0/login' className='col max-w-420'>
+					<h1 className='mb-3'>Login with Auth0</h1>
+					<p className='mb-3'>Welcome to our website! Please login</p>
+
+					<div className='mb-3'>
+						<button type='submit' className='btn btn-primary'>
+							Login with Auth0
+						</button>
+					</div>
+				</Form>
 			</div>
 		</main>
 	)

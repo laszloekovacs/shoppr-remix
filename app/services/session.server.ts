@@ -12,8 +12,6 @@ import {
 	CRYPT_SALT
 } from './constants.server'
 
-const CALLBACK_URL = '/auth0/callback'
-
 const sessionStorage = createCookieSessionStorage({
 	cookie: {
 		name: '__shoppr_session',
@@ -54,6 +52,8 @@ auth.use(formStrategy, 'user-pass')
 //
 // Auth0 Strategy
 //
+const CALLBACK_URL = '/api/auth0/callback'
+
 const auth0Strategy = new Auth0Strategy<User>(
 	{
 		callbackURL: CALLBACK_URL,
@@ -63,19 +63,30 @@ const auth0Strategy = new Auth0Strategy<User>(
 	},
 	async ({ accessToken, refreshToken, extraParams, profile }) => {
 		if (!profile || !profile.emails || !profile.emails[0]) {
-			throw new AuthorizationError('auth0')
+			throw new AuthorizationError('no profile or email found')
 		}
 
 		const user = await db.accounts.findOne<WithId<Account>>({
 			email: profile.emails[0].value
 		})
 
-		if (!user) {
-			throw new AuthorizationError('auth0')
+		if (user) {
+			return { email: user.email }
 		}
 
-		return { email: user.email }
+		// could not find user, create one
+		const result = await db.accounts.insertOne({
+			email: profile.emails[0].value,
+			photo:
+				profile.photos && profile.photos[0] ? profile.photos[0].value : null
+		})
+
+		if (!result.acknowledged) {
+			throw new AuthorizationError('could not create user')
+		}
+
+		return { email: profile.emails[0].value }
 	}
 )
 
-// auth.use(auth0Strategy, 'auth0')
+auth.use(auth0Strategy, 'auth0')
